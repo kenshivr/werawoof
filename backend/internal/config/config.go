@@ -1,0 +1,59 @@
+package config
+
+import (
+	"github.com/spf13/viper"
+)
+
+type Config struct {
+	App      AppConfig
+	Database DatabaseConfig
+	Redis    RedisConfig
+	JWT      JWTConfig
+}
+
+type AppConfig struct {
+	Env         string `mapstructure:"APP_ENV"`
+	Port        string `mapstructure:"APP_PORT"`
+	FrontendURL string `mapstructure:"FRONTEND_URL"`
+}
+
+type DatabaseConfig struct {
+	URL string `mapstructure:"DATABASE_URL"`
+}
+
+type RedisConfig struct {
+	URL string `mapstructure:"REDIS_URL"`
+}
+
+type JWTConfig struct {
+	Secret          string `mapstructure:"JWT_SECRET"`
+	ExpirationHours int    `mapstructure:"JWT_EXPIRATION_HOURS"`
+}
+
+func Load() (*Config, error) {
+	viper.AutomaticEnv()
+
+	viper.SetDefault("APP_ENV", "development")
+	viper.SetDefault("APP_PORT", "8080")
+	viper.SetDefault("JWT_EXPIRATION_HOURS", 24)
+
+	cfg := &Config{
+		App: AppConfig{
+			Env:         viper.GetString("APP_ENV"),
+			Port:        viper.GetString("APP_PORT"),
+			FrontendURL: viper.GetString("FRONTEND_URL"),
+		},
+		Database: DatabaseConfig{
+			URL: viper.GetString("DATABASE_URL"),
+		},
+		Redis: RedisConfig{
+			URL: viper.GetString("REDIS_URL"),
+		},
+		JWT: JWTConfig{
+			Secret:          viper.GetString("JWT_SECRET"),
+			ExpirationHours: viper.GetInt("JWT_EXPIRATION_HOURS"),
+		},
+	}
+
+	return cfg, nil
+}
