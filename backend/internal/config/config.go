@@ -9,6 +9,13 @@ type Config struct {
 	Database DatabaseConfig
 	Redis    RedisConfig
 	JWT      JWTConfig
+	Google   GoogleConfig
+}
+
+type GoogleConfig struct {
+	ClientID     string `mapstructure:"GOOGLE_CLIENT_ID"`
+	ClientSecret string `mapstructure:"GOOGLE_CLIENT_SECRET"`
+	RedirectURL  string `mapstructure:"GOOGLE_REDIRECT_URL"`
 }
 
 type AppConfig struct {
@@ -52,6 +59,11 @@ func Load() (*Config, error) {
 		JWT: JWTConfig{
 			Secret:          viper.GetString("JWT_SECRET"),
 			ExpirationHours: viper.GetInt("JWT_EXPIRATION_HOURS"),
+		},
+		Google: GoogleConfig{
+			ClientID:     viper.GetString("GOOGLE_CLIENT_ID"),
+			ClientSecret: viper.GetString("GOOGLE_CLIENT_SECRET"),
+			RedirectURL:  viper.GetString("GOOGLE_REDIRECT_URL"),
 		},
 	}
 
