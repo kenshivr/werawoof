@@ -35,6 +35,10 @@ func (r *UserRepository) FindByID(id uint) (*domain.User, error) {
 	return &user, nil
 }
 
+func (r *UserRepository) Update(user *domain.User) error {
+	return r.db.Save(user).Error
+}
+
 func (r *UserRepository) MarkVerified(id uint) error {
 	return r.db.Model(&domain.User{}).Where("id = ?", id).Update("verified", true).Error
 }
