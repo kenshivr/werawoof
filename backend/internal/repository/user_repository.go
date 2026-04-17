@@ -34,3 +34,11 @@ func (r *UserRepository) FindByID(id uint) (*domain.User, error) {
 	}
 	return &user, nil
 }
+
+func (r *UserRepository) MarkVerified(id uint) error {
+	return r.db.Model(&domain.User{}).Where("id = ?", id).Update("verified", true).Error
+}
+
+func (r *UserRepository) UpdatePassword(id uint, passwordHash string) error {
+	return r.db.Model(&domain.User{}).Where("id = ?", id).Update("password_hash", passwordHash).Error
+}

@@ -15,10 +15,11 @@ import (
 )
 
 type AuthService struct {
-	userRepo  *repository.UserRepository
-	redis     *redispkg.Client
-	jwtSecret string
-	jwtTTL    time.Duration
+	userRepo            *repository.UserRepository
+	redis               *redispkg.Client
+	jwtSecret           string
+	jwtTTL              time.Duration
+	verificationService *VerificationService
 }
 
 func NewAuthService(userRepo *repository.UserRepository, redis *redispkg.Client, jwtSecret string, jwtExpirationHours int) *AuthService {
@@ -28,6 +29,10 @@ func NewAuthService(userRepo *repository.UserRepository, redis *redispkg.Client,
 		jwtSecret: jwtSecret,
 		jwtTTL:    time.Duration(jwtExpirationHours) * time.Hour,
 	}
+}
+
+func (s *AuthService) SetVerificationService(vs *VerificationService) {
+	s.verificationService = vs
 }
 
 func (s *AuthService) Register(name, email, password string) (*domain.User, error) {
@@ -52,6 +57,10 @@ func (s *AuthService) Register(name, email, password string) (*domain.User, erro
 
 	if err := s.userRepo.Create(user); err != nil {
 		return nil, err
+	}
+
+	if s.verificationService != nil {
+		go s.verificationService.SendVerificationEmail(context.Background(), user.ID, user.Email, user.Name)
 	}
 
 	return user, nil

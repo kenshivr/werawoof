@@ -36,9 +36,13 @@ func main() {
 	userRepo := repository.NewUserRepository(db)
 	authService := service.NewAuthService(userRepo, redisClient, cfg.JWT.Secret, cfg.JWT.ExpirationHours)
 	oauthService := service.NewOAuthService(userRepo, authService, cfg.Google.ClientID, cfg.Google.ClientSecret, cfg.Google.RedirectURL)
+	emailService := service.NewEmailService(cfg.Resend.APIKey, cfg.Resend.FromEmail, cfg.App.FrontendURL)
+	verificationService := service.NewVerificationService(userRepo, redisClient, emailService, cfg.App.FrontendURL)
+	authService.SetVerificationService(verificationService)
 
 	authHandler := handler.NewAuthHandler(authService)
 	oauthHandler := handler.NewOAuthHandler(oauthService)
+	verificationHandler := handler.NewVerificationHandler(verificationService)
 
 	r := gin.Default()
 
@@ -51,6 +55,9 @@ func main() {
 		auth.POST("/logout", middleware.Auth(authService), authHandler.Logout)
 		auth.GET("/google", oauthHandler.Redirect)
 		auth.GET("/google/callback", oauthHandler.Callback)
+		auth.GET("/verify", verificationHandler.VerifyAccount)
+		auth.POST("/forgot-password", verificationHandler.ForgotPassword)
+		auth.POST("/reset-password", verificationHandler.ResetPassword)
 	}
 
 	log.Printf("server running on port %s", cfg.App.Port)

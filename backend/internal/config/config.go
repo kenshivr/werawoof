@@ -10,6 +10,12 @@ type Config struct {
 	Redis    RedisConfig
 	JWT      JWTConfig
 	Google   GoogleConfig
+	Resend   ResendConfig
+}
+
+type ResendConfig struct {
+	APIKey  string `mapstructure:"RESEND_API_KEY"`
+	FromEmail string `mapstructure:"RESEND_FROM_EMAIL"`
 }
 
 type GoogleConfig struct {
@@ -64,6 +70,10 @@ func Load() (*Config, error) {
 			ClientID:     viper.GetString("GOOGLE_CLIENT_ID"),
 			ClientSecret: viper.GetString("GOOGLE_CLIENT_SECRET"),
 			RedirectURL:  viper.GetString("GOOGLE_REDIRECT_URL"),
+		},
+		Resend: ResendConfig{
+			APIKey:    viper.GetString("RESEND_API_KEY"),
+			FromEmail: viper.GetString("RESEND_FROM_EMAIL"),
 		},
 	}
 
