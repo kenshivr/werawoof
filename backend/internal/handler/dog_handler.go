@@ -1,19 +1,22 @@
 package handler
 
 import (
+	"context"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kenshivr/werawoof/internal/service"
+	cloudinarypkg "github.com/kenshivr/werawoof/pkg/cloudinary"
 )
 
 type DogHandler struct {
 	dogService *service.DogService
+	cloudinary *cloudinarypkg.Client
 }
 
-func NewDogHandler(dogService *service.DogService) *DogHandler {
-	return &DogHandler{dogService: dogService}
+func NewDogHandler(dogService *service.DogService, cloudinary *cloudinarypkg.Client) *DogHandler {
+	return &DogHandler{dogService: dogService, cloudinary: cloudinary}
 }
 
 func (h *DogHandler) Create(c *gin.Context) {
@@ -121,4 +124,45 @@ func (h *DogHandler) Delete(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "dog deleted"})
+}
+
+func (h *DogHandler) UploadPhoto(c *gin.Context) {
+	userID := mustGetUserID(c)
+
+	dogID, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		return
+	}
+
+	fileHeader, err := c.FormFile("photo")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "photo file is required"})
+		return
+	}
+
+	file, err := fileHeader.Open()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not read file"})
+		return
+	}
+	defer file.Close()
+
+	url, err := h.cloudinary.UploadImage(context.Background(), file)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not upload photo"})
+		return
+	}
+
+	dog, err := h.dogService.AddPhoto(uint(dogID), userID, url)
+	if err != nil {
+		if err.Error() == "forbidden" {
+			c.JSON(http.StatusForbidden, gin.H{"error": "forbidden"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not save photo"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"dog": dog})
 }

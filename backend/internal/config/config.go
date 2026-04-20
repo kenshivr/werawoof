@@ -5,12 +5,20 @@ import (
 )
 
 type Config struct {
-	App      AppConfig
-	Database DatabaseConfig
-	Redis    RedisConfig
-	JWT      JWTConfig
-	Google   GoogleConfig
-	Resend   ResendConfig
+	App        AppConfig
+	Database   DatabaseConfig
+	Redis      RedisConfig
+	JWT        JWTConfig
+	Google     GoogleConfig
+	Resend     ResendConfig
+	Cloudinary CloudinaryConfig
+}
+
+type CloudinaryConfig struct {
+	CloudName string `mapstructure:"CLOUDINARY_CLOUD_NAME"`
+	APIKey    string `mapstructure:"CLOUDINARY_API_KEY"`
+	APISecret string `mapstructure:"CLOUDINARY_API_SECRET"`
+	Folder    string `mapstructure:"CLOUDINARY_FOLDER"`
 }
 
 type ResendConfig struct {
@@ -74,6 +82,12 @@ func Load() (*Config, error) {
 		Resend: ResendConfig{
 			APIKey:    viper.GetString("RESEND_API_KEY"),
 			FromEmail: viper.GetString("RESEND_FROM_EMAIL"),
+		},
+		Cloudinary: CloudinaryConfig{
+			CloudName: viper.GetString("CLOUDINARY_CLOUD_NAME"),
+			APIKey:    viper.GetString("CLOUDINARY_API_KEY"),
+			APISecret: viper.GetString("CLOUDINARY_API_SECRET"),
+			Folder:    viper.GetString("CLOUDINARY_FOLDER"),
 		},
 	}
 

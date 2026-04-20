@@ -68,3 +68,22 @@ func (s *DogService) Update(dogID, userID uint, name, breed, bio string, age int
 func (s *DogService) Delete(dogID, userID uint) error {
 	return s.dogRepo.Delete(dogID, userID)
 }
+
+func (s *DogService) AddPhoto(dogID, userID uint, photoURL string) (*domain.Dog, error) {
+	dog, err := s.dogRepo.FindByID(dogID)
+	if err != nil {
+		return nil, err
+	}
+
+	if dog.UserID != userID {
+		return nil, errors.New("forbidden")
+	}
+
+	dog.Photos = append(dog.Photos, photoURL)
+
+	if err := s.dogRepo.Update(dog); err != nil {
+		return nil, err
+	}
+
+	return dog, nil
+}
