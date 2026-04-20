@@ -5,15 +5,17 @@ import (
 
 	"github.com/kenshivr/werawoof/internal/domain"
 	"github.com/kenshivr/werawoof/internal/repository"
+	"github.com/kenshivr/werawoof/pkg/sse"
 )
 
 type SwipeService struct {
 	swipeRepo *repository.SwipeRepository
 	dogRepo   *repository.DogRepository
+	broker    *sse.Broker
 }
 
-func NewSwipeService(swipeRepo *repository.SwipeRepository, dogRepo *repository.DogRepository) *SwipeService {
-	return &SwipeService{swipeRepo: swipeRepo, dogRepo: dogRepo}
+func NewSwipeService(swipeRepo *repository.SwipeRepository, dogRepo *repository.DogRepository, broker *sse.Broker) *SwipeService {
+	return &SwipeService{swipeRepo: swipeRepo, dogRepo: dogRepo, broker: broker}
 }
 
 type SwipeResult struct {
@@ -65,6 +67,12 @@ func (s *SwipeService) Swipe(swiperDogID, swipedDogID, userID uint, direction do
 					return nil, err
 				}
 				result.Match = match
+
+				// Notify the other dog's owner
+				swipedDog, err := s.dogRepo.FindByID(swipedDogID)
+				if err == nil {
+					s.broker.Send(swipedDog.UserID, sse.Event{Type: "new_match", Data: match})
+				}
 			}
 		}
 	}

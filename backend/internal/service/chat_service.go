@@ -6,6 +6,7 @@ import (
 	"github.com/kenshivr/werawoof/internal/domain"
 	"github.com/kenshivr/werawoof/internal/repository"
 	"github.com/kenshivr/werawoof/pkg/hub"
+	"github.com/kenshivr/werawoof/pkg/sse"
 )
 
 type ChatService struct {
@@ -13,6 +14,7 @@ type ChatService struct {
 	swipeRepo *repository.SwipeRepository
 	dogRepo   *repository.DogRepository
 	hub       *hub.Hub
+	broker    *sse.Broker
 }
 
 func NewChatService(
@@ -20,8 +22,9 @@ func NewChatService(
 	swipeRepo *repository.SwipeRepository,
 	dogRepo *repository.DogRepository,
 	h *hub.Hub,
+	broker *sse.Broker,
 ) *ChatService {
-	return &ChatService{msgRepo: msgRepo, swipeRepo: swipeRepo, dogRepo: dogRepo, hub: h}
+	return &ChatService{msgRepo: msgRepo, swipeRepo: swipeRepo, dogRepo: dogRepo, hub: h, broker: broker}
 }
 
 // senderDogInMatch returns the sender's dog that belongs to this match, or 0 if not authorized
@@ -75,6 +78,8 @@ func (s *ChatService) SendMessage(matchID, senderUserID uint, content string) (*
 		RecipientID: recipientDog.UserID,
 		Payload:     msg,
 	}
+
+	s.broker.Send(recipientDog.UserID, sse.Event{Type: "new_message", Data: msg})
 
 	return msg, nil
 }
