@@ -118,8 +118,8 @@ func main() {
 		api.POST("/dogs/:id/photos", dogHandler.UploadPhoto)
 
 		api.POST("/swipe", swipeHandler.Swipe)
-		api.GET("/dogs/:dog_id/candidates", swipeHandler.GetCandidates)
-		api.GET("/dogs/:dog_id/matches", swipeHandler.GetMatches)
+		api.GET("/dogs/:id/candidates", swipeHandler.GetCandidates)
+		api.GET("/dogs/:id/matches", swipeHandler.GetMatches)
 
 		api.GET("/ws", chatHandler.Connect)
 		api.GET("/matches/:match_id/messages", chatHandler.GetHistory)

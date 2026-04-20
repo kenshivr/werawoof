@@ -68,15 +68,15 @@ func (h *SwipeHandler) Swipe(c *gin.Context) {
 // @Tags swipes
 // @Security BearerAuth
 // @Produce json
-// @Param dog_id path int true "Dog ID"
+// @Param id path int true "Dog ID"
 // @Success 200 {object} map[string]any
-// @Router /api/dogs/{dog_id}/matches [get]
+// @Router /api/dogs/{id}/matches [get]
 func (h *SwipeHandler) GetMatches(c *gin.Context) {
 	userID := mustGetUserID(c)
 
-	dogID, err := strconv.ParseUint(c.Param("dog_id"), 10, 64)
+	dogID, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid dog_id"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
 		return
 	}
 
@@ -98,15 +98,15 @@ func (h *SwipeHandler) GetMatches(c *gin.Context) {
 // @Tags swipes
 // @Security BearerAuth
 // @Produce json
-// @Param dog_id path int true "Dog ID"
+// @Param id path int true "Dog ID"
 // @Success 200 {object} map[string]any
-// @Router /api/dogs/{dog_id}/candidates [get]
+// @Router /api/dogs/{id}/candidates [get]
 func (h *SwipeHandler) GetCandidates(c *gin.Context) {
 	userID := mustGetUserID(c)
 
-	dogID, err := strconv.ParseUint(c.Param("dog_id"), 10, 64)
+	dogID, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid dog_id"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
 		return
 	}
 

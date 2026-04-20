@@ -77,7 +77,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/dogs/{dog_id}/candidates": {
+        "/api/dogs/{id}/candidates": {
             "get": {
                 "security": [
                     {
@@ -95,7 +95,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Dog ID",
-                        "name": "dog_id",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     }
@@ -111,7 +111,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/dogs/{dog_id}/matches": {
+        "/api/dogs/{id}/matches": {
             "get": {
                 "security": [
                     {
@@ -129,7 +129,7 @@ const docTemplate = `{
                     {
                         "type": "integer",
                         "description": "Dog ID",
-                        "name": "dog_id",
+                        "name": "id",
                         "in": "path",
                         "required": true
                     }

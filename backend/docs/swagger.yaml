@@ -105,12 +105,12 @@ paths:
       summary: Crear perro
       tags:
       - dogs
-  /api/dogs/{dog_id}/candidates:
+  /api/dogs/{id}/candidates:
     get:
       parameters:
       - description: Dog ID
         in: path
-        name: dog_id
+        name: id
         required: true
         type: integer
       produces:
@@ -126,12 +126,12 @@ paths:
       summary: Obtener perros candidatos para swipe
       tags:
       - swipes
-  /api/dogs/{dog_id}/matches:
+  /api/dogs/{id}/matches:
     get:
       parameters:
       - description: Dog ID
         in: path
-        name: dog_id
+        name: id
         required: true
         type: integer
       produces:
