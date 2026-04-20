@@ -39,3 +39,13 @@ func (r *DogRepository) Update(dog *domain.Dog) error {
 func (r *DogRepository) Delete(id, userID uint) error {
 	return r.db.Where("id = ? AND user_id = ?", id, userID).Delete(&domain.Dog{}).Error
 }
+
+// FindCandidates returns dogs not owned by userID and not yet swiped by swiperDogID
+func (r *DogRepository) FindCandidates(userID, swiperDogID uint) ([]domain.Dog, error) {
+	var dogs []domain.Dog
+	err := r.db.
+		Where("user_id != ?", userID).
+		Where("id NOT IN (?)", r.db.Model(&domain.Swipe{}).Select("swiped_id").Where("swiper_id = ?", swiperDogID)).
+		Find(&dogs).Error
+	return dogs, err
+}
