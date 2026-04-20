@@ -9,7 +9,9 @@ import (
 	"github.com/kenshivr/werawoof/internal/middleware"
 	"github.com/kenshivr/werawoof/internal/repository"
 	"github.com/kenshivr/werawoof/internal/service"
+	cloudinarypkg "github.com/kenshivr/werawoof/pkg/cloudinary"
 	"github.com/kenshivr/werawoof/pkg/database"
+	"github.com/kenshivr/werawoof/pkg/hub"
 	"github.com/kenshivr/werawoof/pkg/redis"
 )
 
@@ -33,6 +35,16 @@ func main() {
 		log.Fatalf("failed to connect to redis: %v", err)
 	}
 
+	cloudinaryClient, err := cloudinarypkg.New(
+		cfg.Cloudinary.CloudName,
+		cfg.Cloudinary.APIKey,
+		cfg.Cloudinary.APISecret,
+		cfg.Cloudinary.Folder,
+	)
+	if err != nil {
+		log.Fatalf("failed to init cloudinary: %v", err)
+	}
+
 	userRepo := repository.NewUserRepository(db)
 	dogRepo := repository.NewDogRepository(db)
 	authService := service.NewAuthService(userRepo, redisClient, cfg.JWT.Secret, cfg.JWT.ExpirationHours)
@@ -41,14 +53,23 @@ func main() {
 	verificationService := service.NewVerificationService(userRepo, redisClient, emailService, cfg.App.FrontendURL)
 	authService.SetVerificationService(verificationService)
 
+	wsHub := hub.New()
+	go wsHub.Run()
+
+	swipeRepo := repository.NewSwipeRepository(db)
+	msgRepo := repository.NewMessageRepository(db)
 	userService := service.NewUserService(userRepo)
 	dogService := service.NewDogService(dogRepo)
+	swipeService := service.NewSwipeService(swipeRepo, dogRepo)
+	chatService := service.NewChatService(msgRepo, swipeRepo, dogRepo, wsHub)
 
 	authHandler := handler.NewAuthHandler(authService)
 	oauthHandler := handler.NewOAuthHandler(oauthService)
 	verificationHandler := handler.NewVerificationHandler(verificationService)
 	userHandler := handler.NewUserHandler(userService)
-	dogHandler := handler.NewDogHandler(dogService)
+	dogHandler := handler.NewDogHandler(dogService, cloudinaryClient)
+	swipeHandler := handler.NewSwipeHandler(swipeService)
+	chatHandler := handler.NewChatHandler(chatService, wsHub)
 
 	r := gin.Default()
 
@@ -78,6 +99,14 @@ func main() {
 		api.GET("/dogs/:id", dogHandler.GetByID)
 		api.PUT("/dogs/:id", dogHandler.Update)
 		api.DELETE("/dogs/:id", dogHandler.Delete)
+		api.POST("/dogs/:id/photos", dogHandler.UploadPhoto)
+
+		api.POST("/swipe", swipeHandler.Swipe)
+		api.GET("/dogs/:dog_id/candidates", swipeHandler.GetCandidates)
+		api.GET("/dogs/:dog_id/matches", swipeHandler.GetMatches)
+
+		api.GET("/ws", chatHandler.Connect)
+		api.GET("/matches/:match_id/messages", chatHandler.GetHistory)
 	}
 
 	log.Printf("server running on port %s", cfg.App.Port)
