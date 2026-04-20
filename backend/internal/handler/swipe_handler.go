@@ -17,6 +17,15 @@ func NewSwipeHandler(swipeService *service.SwipeService) *SwipeHandler {
 	return &SwipeHandler{swipeService: swipeService}
 }
 
+// Swipe godoc
+// @Summary Dar like o dislike a un perro
+// @Tags swipes
+// @Security BearerAuth
+// @Accept json
+// @Produce json
+// @Param body body SwipeRequest true "Swipe"
+// @Success 200 {object} map[string]any
+// @Router /api/swipe [post]
 func (h *SwipeHandler) Swipe(c *gin.Context) {
 	userID := mustGetUserID(c)
 
@@ -54,6 +63,14 @@ func (h *SwipeHandler) Swipe(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// GetMatches godoc
+// @Summary Obtener matches de un perro
+// @Tags swipes
+// @Security BearerAuth
+// @Produce json
+// @Param dog_id path int true "Dog ID"
+// @Success 200 {object} map[string]any
+// @Router /api/dogs/{dog_id}/matches [get]
 func (h *SwipeHandler) GetMatches(c *gin.Context) {
 	userID := mustGetUserID(c)
 
@@ -76,6 +93,14 @@ func (h *SwipeHandler) GetMatches(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"matches": matches})
 }
 
+// GetCandidates godoc
+// @Summary Obtener perros candidatos para swipe
+// @Tags swipes
+// @Security BearerAuth
+// @Produce json
+// @Param dog_id path int true "Dog ID"
+// @Success 200 {object} map[string]any
+// @Router /api/dogs/{dog_id}/candidates [get]
 func (h *SwipeHandler) GetCandidates(c *gin.Context) {
 	userID := mustGetUserID(c)
 

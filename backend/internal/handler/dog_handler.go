@@ -19,6 +19,15 @@ func NewDogHandler(dogService *service.DogService, cloudinary *cloudinarypkg.Cli
 	return &DogHandler{dogService: dogService, cloudinary: cloudinary}
 }
 
+// Create godoc
+// @Summary Crear perro
+// @Tags dogs
+// @Security BearerAuth
+// @Accept json
+// @Produce json
+// @Param body body CreateDogRequest true "Datos del perro"
+// @Success 201 {object} map[string]any
+// @Router /api/dogs [post]
 func (h *DogHandler) Create(c *gin.Context) {
 	userID := mustGetUserID(c)
 
@@ -45,6 +54,13 @@ func (h *DogHandler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"dog": dog})
 }
 
+// GetMyDogs godoc
+// @Summary Obtener mis perros
+// @Tags dogs
+// @Security BearerAuth
+// @Produce json
+// @Success 200 {object} map[string]any
+// @Router /api/dogs [get]
 func (h *DogHandler) GetMyDogs(c *gin.Context) {
 	userID := mustGetUserID(c)
 
@@ -126,6 +142,16 @@ func (h *DogHandler) Delete(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "dog deleted"})
 }
 
+// UploadPhoto godoc
+// @Summary Subir foto a un perro
+// @Tags dogs
+// @Security BearerAuth
+// @Accept multipart/form-data
+// @Produce json
+// @Param id path int true "Dog ID"
+// @Param photo formData file true "Foto"
+// @Success 200 {object} map[string]any
+// @Router /api/dogs/{id}/photos [post]
 func (h *DogHandler) UploadPhoto(c *gin.Context) {
 	userID := mustGetUserID(c)
 

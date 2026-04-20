@@ -46,6 +46,14 @@ func (h *ChatHandler) Connect(c *gin.Context) {
 	})
 }
 
+// GetHistory godoc
+// @Summary Obtener historial de mensajes de un match
+// @Tags chat
+// @Security BearerAuth
+// @Produce json
+// @Param match_id path int true "Match ID"
+// @Success 200 {object} map[string]any
+// @Router /api/matches/{match_id}/messages [get]
 func (h *ChatHandler) GetHistory(c *gin.Context) {
 	userID := mustGetUserID(c)
 

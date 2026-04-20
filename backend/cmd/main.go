@@ -1,9 +1,20 @@
+// @title WeraWoof API
+// @version 1.0
+// @description API para WeraWoof — app Tinder para dueños de perros
+// @host localhost:8080
+// @BasePath /
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 package main
 
 import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	_ "github.com/kenshivr/werawoof/docs"
 	"github.com/kenshivr/werawoof/internal/config"
 	"github.com/kenshivr/werawoof/internal/handler"
 	"github.com/kenshivr/werawoof/internal/middleware"
@@ -13,6 +24,7 @@ import (
 	"github.com/kenshivr/werawoof/pkg/database"
 	"github.com/kenshivr/werawoof/pkg/hub"
 	"github.com/kenshivr/werawoof/pkg/redis"
+	ssepkg "github.com/kenshivr/werawoof/pkg/sse"
 )
 
 func main() {
@@ -56,12 +68,14 @@ func main() {
 	wsHub := hub.New()
 	go wsHub.Run()
 
+	sseBroker := ssepkg.New()
+
 	swipeRepo := repository.NewSwipeRepository(db)
 	msgRepo := repository.NewMessageRepository(db)
 	userService := service.NewUserService(userRepo)
 	dogService := service.NewDogService(dogRepo)
-	swipeService := service.NewSwipeService(swipeRepo, dogRepo)
-	chatService := service.NewChatService(msgRepo, swipeRepo, dogRepo, wsHub)
+	swipeService := service.NewSwipeService(swipeRepo, dogRepo, sseBroker)
+	chatService := service.NewChatService(msgRepo, swipeRepo, dogRepo, wsHub, sseBroker)
 
 	authHandler := handler.NewAuthHandler(authService)
 	oauthHandler := handler.NewOAuthHandler(oauthService)
@@ -70,9 +84,11 @@ func main() {
 	dogHandler := handler.NewDogHandler(dogService, cloudinaryClient)
 	swipeHandler := handler.NewSwipeHandler(swipeService)
 	chatHandler := handler.NewChatHandler(chatService, wsHub)
+	sseHandler := handler.NewSSEHandler(sseBroker)
 
 	r := gin.Default()
 
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/health", handler.HealthCheck)
 
 	auth := r.Group("/auth")
@@ -107,6 +123,8 @@ func main() {
 
 		api.GET("/ws", chatHandler.Connect)
 		api.GET("/matches/:match_id/messages", chatHandler.GetHistory)
+
+		api.GET("/notifications", sseHandler.Stream)
 	}
 
 	log.Printf("server running on port %s", cfg.App.Port)

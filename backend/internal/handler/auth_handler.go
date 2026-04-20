@@ -16,6 +16,15 @@ func NewAuthHandler(authService *service.AuthService) *AuthHandler {
 	return &AuthHandler{authService: authService}
 }
 
+// Register godoc
+// @Summary Registrar usuario
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param body body RegisterRequest true "Datos de registro"
+// @Success 201 {object} map[string]any
+// @Failure 400,409 {object} map[string]any
+// @Router /auth/register [post]
 func (h *AuthHandler) Register(c *gin.Context) {
 	var req struct {
 		Name     string `json:"name" binding:"required"`
@@ -37,6 +46,15 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"user": user})
 }
 
+// Login godoc
+// @Summary Login
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param body body LoginRequest true "Credenciales"
+// @Success 200 {object} map[string]any
+// @Failure 400,401 {object} map[string]any
+// @Router /auth/login [post]
 func (h *AuthHandler) Login(c *gin.Context) {
 	var req struct {
 		Email    string `json:"email" binding:"required,email"`
@@ -57,6 +75,13 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
+// Logout godoc
+// @Summary Logout
+// @Tags auth
+// @Security BearerAuth
+// @Produce json
+// @Success 200 {object} map[string]any
+// @Router /auth/logout [post]
 func (h *AuthHandler) Logout(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
 	token := strings.TrimPrefix(authHeader, "Bearer ")

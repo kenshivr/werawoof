@@ -16,6 +16,13 @@ func NewUserHandler(userService *service.UserService) *UserHandler {
 	return &UserHandler{userService: userService}
 }
 
+// GetProfile godoc
+// @Summary Obtener perfil del usuario autenticado
+// @Tags users
+// @Security BearerAuth
+// @Produce json
+// @Success 200 {object} map[string]any
+// @Router /api/me [get]
 func (h *UserHandler) GetProfile(c *gin.Context) {
 	userID := mustGetUserID(c)
 
@@ -28,6 +35,15 @@ func (h *UserHandler) GetProfile(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
+// UpdateProfile godoc
+// @Summary Actualizar perfil
+// @Tags users
+// @Security BearerAuth
+// @Accept json
+// @Produce json
+// @Param body body UpdateProfileRequest true "Datos a actualizar"
+// @Success 200 {object} map[string]any
+// @Router /api/me [put]
 func (h *UserHandler) UpdateProfile(c *gin.Context) {
 	userID := mustGetUserID(c)
 

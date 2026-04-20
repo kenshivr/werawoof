@@ -1,0 +1,357 @@
+basePath: /
+definitions:
+  handler.CreateDogRequest:
+    properties:
+      age:
+        example: 3
+        type: integer
+      bio:
+        example: Le encanta jugar
+        type: string
+      breed:
+        example: Labrador
+        type: string
+      latitude:
+        example: -34.6037
+        type: number
+      longitude:
+        example: -58.3816
+        type: number
+      name:
+        example: Wera
+        type: string
+    type: object
+  handler.LoginRequest:
+    properties:
+      email:
+        example: juan@example.com
+        type: string
+      password:
+        example: secret123
+        type: string
+    type: object
+  handler.RegisterRequest:
+    properties:
+      email:
+        example: juan@example.com
+        type: string
+      name:
+        example: Juan
+        type: string
+      password:
+        example: secret123
+        type: string
+    type: object
+  handler.SwipeRequest:
+    properties:
+      direction:
+        example: like
+        type: string
+      swiped_dog_id:
+        example: 2
+        type: integer
+      swiper_dog_id:
+        example: 1
+        type: integer
+    type: object
+  handler.UpdateProfileRequest:
+    properties:
+      name:
+        example: Juan
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API para WeraWoof — app Tinder para dueños de perros
+  title: WeraWoof API
+  version: "1.0"
+paths:
+  /api/dogs:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Obtener mis perros
+      tags:
+      - dogs
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Datos del perro
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CreateDogRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Crear perro
+      tags:
+      - dogs
+  /api/dogs/{dog_id}/candidates:
+    get:
+      parameters:
+      - description: Dog ID
+        in: path
+        name: dog_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Obtener perros candidatos para swipe
+      tags:
+      - swipes
+  /api/dogs/{dog_id}/matches:
+    get:
+      parameters:
+      - description: Dog ID
+        in: path
+        name: dog_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Obtener matches de un perro
+      tags:
+      - swipes
+  /api/dogs/{id}/photos:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: Dog ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Foto
+        in: formData
+        name: photo
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Subir foto a un perro
+      tags:
+      - dogs
+  /api/matches/{match_id}/messages:
+    get:
+      parameters:
+      - description: Match ID
+        in: path
+        name: match_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Obtener historial de mensajes de un match
+      tags:
+      - chat
+  /api/me:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Obtener perfil del usuario autenticado
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Datos a actualizar
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Actualizar perfil
+      tags:
+      - users
+  /api/notifications:
+    get:
+      produces:
+      - text/event-stream
+      responses:
+        "200":
+          description: OK
+      security:
+      - BearerAuth: []
+      summary: Conectar a notificaciones en tiempo real (SSE)
+      tags:
+      - notifications
+  /api/swipe:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Swipe
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.SwipeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Dar like o dislike a un perro
+      tags:
+      - swipes
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Credenciales
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Logout
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Datos de registro
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Registrar usuario
+      tags:
+      - auth
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
