@@ -9,7 +9,8 @@ export const useDogsStore = defineStore('dogs', () => {
     const api = useApi()
     loading.value = true
     try {
-      dogs.value = await api.get<Dog[]>('/dogs')
+      const res = await api.get<{ dogs: Dog[] }>('/api/dogs')
+      dogs.value = res.dogs ?? []
     } finally {
       loading.value = false
     }
@@ -17,14 +18,14 @@ export const useDogsStore = defineStore('dogs', () => {
 
   const createDog = async (payload: CreateDogPayload) => {
     const api = useApi()
-    const dog = await api.post<Dog>('/dogs', payload)
+    const dog = await api.post<Dog>('/api/dogs', payload)
     dogs.value.push(dog)
     return dog
   }
 
   const updateDog = async (id: string, payload: UpdateDogPayload) => {
     const api = useApi()
-    const updated = await api.put<Dog>(`/dogs/${id}`, payload)
+    const updated = await api.put<Dog>(`/api/dogs/${id}`, payload)
     const idx = dogs.value.findIndex((d) => d.id === id)
     if (idx !== -1) dogs.value[idx] = updated
     return updated
@@ -32,7 +33,7 @@ export const useDogsStore = defineStore('dogs', () => {
 
   const deleteDog = async (id: string) => {
     const api = useApi()
-    await api.del(`/dogs/${id}`)
+    await api.del(`/api/dogs/${id}`)
     dogs.value = dogs.value.filter((d) => d.id !== id)
   }
 

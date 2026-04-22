@@ -1,8 +1,8 @@
 export default defineNuxtRouteMiddleware(() => {
-  const authStore = useAuthStore()
-  authStore.restoreSession()
-
-  if (!authStore.isAuthenticated) {
-    return navigateTo('/auth/login')
-  }
+  // TODO: re-enable auth guard before production
+  // const authStore = useAuthStore()
+  // authStore.restoreSession()
+  // if (!authStore.isAuthenticated) {
+  //   return navigateTo('/auth/login')
+  // }
 })

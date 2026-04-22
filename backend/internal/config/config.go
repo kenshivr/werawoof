@@ -52,6 +52,12 @@ type JWTConfig struct {
 }
 
 func Load() (*Config, error) {
+	viper.SetConfigFile(".env")
+	viper.SetConfigType("env")
+	if err := viper.ReadInConfig(); err != nil {
+		viper.SetConfigFile("../.env")
+		_ = viper.ReadInConfig()
+	}
 	viper.AutomaticEnv()
 
 	viper.SetDefault("APP_ENV", "development")

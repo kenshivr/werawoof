@@ -24,6 +24,10 @@ services:
       - "3004:3004"
     env_file:
       - .env
+    environment:
+      DATABASE_URL: postgres://admin:secret@postgres:5432/werawoof?sslmode=disable
+    volumes:
+      - ./backend/static:/app/static
     depends_on:
       - postgres
       - redis
@@ -32,7 +36,7 @@ services:
     build: ./frontend
     container_name: werawoof-frontend
     ports:
-      - "3003:3003"
+      - "3003:3000"
     env_file:
       - .env
     depends_on:
