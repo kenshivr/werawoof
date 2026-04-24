@@ -3,7 +3,9 @@ const route = useRoute()
 const authStore = useAuthStore()
 
 const isActive = (path: string) =>
-  path === '/app' ? route.path === '/app' : route.path.startsWith(path)
+  path === '/app/dogs'
+    ? route.path.startsWith('/app/dogs') || route.path.startsWith('/app/swipe')
+    : route.path.startsWith(path)
 
 const handleLogout = async () => {
   authStore.logout()
@@ -17,13 +19,16 @@ const handleLogout = async () => {
     <header class="bg-[#382615] shadow-xl sticky top-0 z-50">
       <div class="flex justify-between items-center px-8 py-4 w-full max-w-7xl mx-auto">
         <div class="flex items-center gap-8">
-          <span class="text-2xl font-black text-[#F4C07D] italic font-jakarta">WeraWoof</span>
+          <NuxtLink to="/app">
+            <img :src="'/images/logo-horizontal.png'" alt="WeraWoof" class="hidden md:block h-12 w-auto" />
+            <img :src="'/images/logo-icon.png'" alt="WeraWoof" class="md:hidden h-10 w-auto" />
+          </NuxtLink>
           <nav class="hidden md:flex items-center gap-6">
             <NuxtLink
-              to="/app"
+              to="/app/dogs"
               class="text-sm font-medium tracking-wide font-jakarta transition-all duration-200"
               :class="
-                isActive('/app')
+                isActive('/app/dogs')
                   ? 'text-[#F4C07D] border-b-2 border-[#F4C07D] pb-1'
                   : 'text-white/80 hover:text-white'
               "
@@ -47,7 +52,7 @@ const handleLogout = async () => {
                   ? 'text-[#F4C07D] border-b-2 border-[#F4C07D] pb-1'
                   : 'text-white/80 hover:text-white'
               "
-              >Mis Perros</NuxtLink
+              >Mis Canes</NuxtLink
             >
           </nav>
         </div>
@@ -60,9 +65,15 @@ const handleLogout = async () => {
           </button>
           <NuxtLink
             to="/app/profile"
-            class="w-10 h-10 rounded-full border-2 border-[#F4C07D] flex items-center justify-center bg-white/10 cursor-pointer hover:bg-white/20 transition-colors"
+            class="w-10 h-10 rounded-full border-2 border-[#F4C07D] overflow-hidden bg-white/10 cursor-pointer hover:opacity-90 transition-opacity flex items-center justify-center"
           >
-            <span class="material-symbols-outlined text-[#F4C07D]">person</span>
+            <img
+              v-if="authStore.user?.avatar"
+              :src="authStore.user.avatar"
+              alt="Foto de perfil"
+              class="w-full h-full object-cover"
+            />
+            <span v-else class="material-symbols-outlined text-[#F4C07D]">person</span>
           </NuxtLink>
         </div>
       </div>
@@ -78,13 +89,13 @@ const handleLogout = async () => {
       class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-white shadow-[0_-4px_20px_rgba(113,62,24,0.08)] rounded-t-3xl border-t border-[#DBD8D0]"
     >
       <NuxtLink
-        to="/app"
+        to="/app/dogs"
         class="flex flex-col items-center justify-center px-4 py-2 rounded-2xl transition-all duration-200"
-        :class="isActive('/app') ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#713E18]/50'"
+        :class="isActive('/app/dogs') ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#713E18]/50'"
       >
         <span
           class="material-symbols-outlined"
-          :style="isActive('/app') ? 'font-variation-settings: \'FILL\' 1' : ''"
+          :style="isActive('/app/dogs') ? 'font-variation-settings: \'FILL\' 1' : ''"
           >pets</span
         >
         <span class="text-[10px] font-bold uppercase tracking-tighter mt-0.5 font-jakarta"
@@ -116,7 +127,7 @@ const handleLogout = async () => {
       >
         <span class="material-symbols-outlined">house</span>
         <span class="text-[10px] font-bold uppercase tracking-tighter mt-0.5 font-jakarta"
-          >Mis Perros</span
+          >Mis Canes</span
         >
       </NuxtLink>
       <NuxtLink

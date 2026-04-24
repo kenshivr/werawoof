@@ -2,8 +2,12 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kenshivr/werawoof/internal/service"
@@ -32,12 +36,15 @@ func (h *DogHandler) Create(c *gin.Context) {
 	userID := mustGetUserID(c)
 
 	var req struct {
-		Name      string  `json:"name" binding:"required"`
-		Breed     string  `json:"breed"`
-		Bio       string  `json:"bio"`
-		Age       int     `json:"age"`
-		Latitude  float64 `json:"latitude"`
-		Longitude float64 `json:"longitude"`
+		Name            string   `json:"name" binding:"required"`
+		Breed           string   `json:"breed"`
+		Bio             string   `json:"bio"`
+		Sex             string   `json:"sex"`
+		Size            string   `json:"size"`
+		Age             int      `json:"age"`
+		PersonalityTags []string `json:"personality_tags"`
+		Latitude        float64  `json:"latitude"`
+		Longitude       float64  `json:"longitude"`
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -45,7 +52,17 @@ func (h *DogHandler) Create(c *gin.Context) {
 		return
 	}
 
-	dog, err := h.dogService.Create(userID, req.Name, req.Breed, req.Bio, req.Age, req.Latitude, req.Longitude)
+	dog, err := h.dogService.Create(userID, service.DogInput{
+		Name:            req.Name,
+		Breed:           req.Breed,
+		Bio:             req.Bio,
+		Sex:             req.Sex,
+		Size:            req.Size,
+		Age:             req.Age,
+		PersonalityTags: req.PersonalityTags,
+		Latitude:        req.Latitude,
+		Longitude:       req.Longitude,
+	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not create dog"})
 		return
@@ -99,12 +116,15 @@ func (h *DogHandler) Update(c *gin.Context) {
 	}
 
 	var req struct {
-		Name      string  `json:"name" binding:"required"`
-		Breed     string  `json:"breed"`
-		Bio       string  `json:"bio"`
-		Age       int     `json:"age"`
-		Latitude  float64 `json:"latitude"`
-		Longitude float64 `json:"longitude"`
+		Name            string   `json:"name" binding:"required"`
+		Breed           string   `json:"breed"`
+		Bio             string   `json:"bio"`
+		Sex             string   `json:"sex"`
+		Size            string   `json:"size"`
+		Age             int      `json:"age"`
+		PersonalityTags []string `json:"personality_tags"`
+		Latitude        float64  `json:"latitude"`
+		Longitude       float64  `json:"longitude"`
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -112,7 +132,17 @@ func (h *DogHandler) Update(c *gin.Context) {
 		return
 	}
 
-	dog, err := h.dogService.Update(uint(dogID), userID, req.Name, req.Breed, req.Bio, req.Age, req.Latitude, req.Longitude)
+	dog, err := h.dogService.Update(uint(dogID), userID, service.DogInput{
+		Name:            req.Name,
+		Breed:           req.Breed,
+		Bio:             req.Bio,
+		Sex:             req.Sex,
+		Size:            req.Size,
+		Age:             req.Age,
+		PersonalityTags: req.PersonalityTags,
+		Latitude:        req.Latitude,
+		Longitude:       req.Longitude,
+	})
 	if err != nil {
 		if err.Error() == "forbidden" {
 			c.JSON(http.StatusForbidden, gin.H{"error": "forbidden"})
@@ -167,20 +197,44 @@ func (h *DogHandler) UploadPhoto(c *gin.Context) {
 		return
 	}
 
-	file, err := fileHeader.Open()
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not read file"})
-		return
-	}
-	defer file.Close()
+	var photoURL string
 
-	url, err := h.cloudinary.UploadImage(context.Background(), file)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not upload photo"})
-		return
+	if h.cloudinary.IsConfigured() {
+		file, err := fileHeader.Open()
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "could not read file"})
+			return
+		}
+		defer file.Close()
+
+		photoURL, err = h.cloudinary.UploadImage(context.Background(), file)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "could not upload photo"})
+			return
+		}
+	} else {
+		dir := fmt.Sprintf("./static/dogs/%d", dogID)
+		if err := os.MkdirAll(dir, 0755); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "could not create directory"})
+			return
+		}
+		ext := filepath.Ext(fileHeader.Filename)
+		if ext == "" {
+			ext = ".jpg"
+		}
+		filename := fmt.Sprintf("%d%s", time.Now().UnixNano(), ext)
+		dst := filepath.Join(dir, filename)
+
+		if err := c.SaveUploadedFile(fileHeader, dst); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "could not save photo"})
+			return
+		}
+
+		scheme := "http"
+		photoURL = fmt.Sprintf("%s://%s/static/dogs/%d/%s", scheme, c.Request.Host, dogID, filename)
 	}
 
-	dog, err := h.dogService.AddPhoto(uint(dogID), userID, url)
+	dog, err := h.dogService.AddPhoto(uint(dogID), userID, photoURL)
 	if err != nil {
 		if err.Error() == "forbidden" {
 			c.JSON(http.StatusForbidden, gin.H{"error": "forbidden"})

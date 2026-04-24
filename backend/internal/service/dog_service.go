@@ -5,6 +5,7 @@ import (
 
 	"github.com/kenshivr/werawoof/internal/domain"
 	"github.com/kenshivr/werawoof/internal/repository"
+	"github.com/lib/pq"
 )
 
 type DogService struct {
@@ -15,15 +16,30 @@ func NewDogService(dogRepo *repository.DogRepository) *DogService {
 	return &DogService{dogRepo: dogRepo}
 }
 
-func (s *DogService) Create(userID uint, name, breed, bio string, age int, lat, lng float64) (*domain.Dog, error) {
+type DogInput struct {
+	Name            string
+	Breed           string
+	Bio             string
+	Sex             string
+	Size            string
+	Age             int
+	PersonalityTags []string
+	Latitude        float64
+	Longitude       float64
+}
+
+func (s *DogService) Create(userID uint, input DogInput) (*domain.Dog, error) {
 	dog := &domain.Dog{
-		UserID:    userID,
-		Name:      name,
-		Breed:     breed,
-		Bio:       bio,
-		Age:       age,
-		Latitude:  lat,
-		Longitude: lng,
+		UserID:          userID,
+		Name:            input.Name,
+		Breed:           input.Breed,
+		Bio:             input.Bio,
+		Sex:             input.Sex,
+		Size:            input.Size,
+		Age:             input.Age,
+		PersonalityTags: pq.StringArray(input.PersonalityTags),
+		Latitude:        input.Latitude,
+		Longitude:       input.Longitude,
 	}
 
 	if err := s.dogRepo.Create(dog); err != nil {
@@ -41,7 +57,7 @@ func (s *DogService) GetByUser(userID uint) ([]domain.Dog, error) {
 	return s.dogRepo.FindByUserID(userID)
 }
 
-func (s *DogService) Update(dogID, userID uint, name, breed, bio string, age int, lat, lng float64) (*domain.Dog, error) {
+func (s *DogService) Update(dogID, userID uint, input DogInput) (*domain.Dog, error) {
 	dog, err := s.dogRepo.FindByID(dogID)
 	if err != nil {
 		return nil, err
@@ -51,12 +67,15 @@ func (s *DogService) Update(dogID, userID uint, name, breed, bio string, age int
 		return nil, errors.New("forbidden")
 	}
 
-	dog.Name = name
-	dog.Breed = breed
-	dog.Bio = bio
-	dog.Age = age
-	dog.Latitude = lat
-	dog.Longitude = lng
+	dog.Name = input.Name
+	dog.Breed = input.Breed
+	dog.Bio = input.Bio
+	dog.Sex = input.Sex
+	dog.Size = input.Size
+	dog.Age = input.Age
+	dog.PersonalityTags = pq.StringArray(input.PersonalityTags)
+	dog.Latitude = input.Latitude
+	dog.Longitude = input.Longitude
 
 	if err := s.dogRepo.Update(dog); err != nil {
 		return nil, err

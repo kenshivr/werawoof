@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { User, LoginPayload, RegisterPayload, AuthResponse } from '~/types/auth'
+import type { User, LoginPayload, RegisterPayload, AuthResponse, UpdateProfilePayload } from '~/types/auth'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
@@ -42,5 +42,30 @@ export const useAuthStore = defineStore('auth', () => {
     setAuth(data)
   }
 
-  return { user, token, isAuthenticated, login, register, logout, restoreSession }
+  const fetchProfile = async () => {
+    const api = useApi()
+    const data = await api.get<{ user: User }>('/api/me')
+    user.value = data.user
+  }
+
+  const updateProfile = async (payload: UpdateProfilePayload, avatarFile?: File) => {
+    const api = useApi()
+    const data = await api.put<{ user: User }>('/api/me', payload)
+    user.value = data.user
+
+    if (avatarFile) {
+      const config = useRuntimeConfig()
+      const formData = new FormData()
+      formData.append('avatar', avatarFile)
+      const res = await $fetch<{ user: User }>('/api/me/avatar', {
+        method: 'POST',
+        baseURL: config.public.apiBase as string,
+        body: formData,
+        headers: { Authorization: `Bearer ${token.value}` },
+      })
+      user.value = res.user
+    }
+  }
+
+  return { user, token, isAuthenticated, login, register, logout, restoreSession, fetchProfile, updateProfile }
 })

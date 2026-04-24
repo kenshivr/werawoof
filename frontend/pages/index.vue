@@ -7,9 +7,6 @@ authStore.restoreSession()
 if (authStore.isAuthenticated) {
   await navigateTo('/app')
 }
-
-const heroImage =
-  'https://lh3.googleusercontent.com/aida-public/AB6AXuBSRJrDXTAUPRdQb_rcU2rznew6qav938_yk_RwRmV_VkZZYuZCfGLbji43Qo08LLoWzz6XwVU9Q3RaXVL_Hj63tHG1ijzV9djC8_S7mOYH_2U3vuEY-pXy_y9MNdFifZMeshO2SgtUmiZ9PkacisaAG9_rN2Kz7mYGysg-DDkXdQLNHB6-7sMa_rU3ct5Yr7XgHAm-wH4-BYN9G4UxEJQhZrr0MDnObHJRJKtFM2uB6HvoQSpTmuTJLqXxKN42TYgSUEvonUr7Kg'
 </script>
 
 <template>
@@ -17,7 +14,14 @@ const heroImage =
     <!-- Nav -->
     <header class="fixed top-0 z-50 w-full bg-[#382615] shadow-xl">
       <div class="flex items-center justify-between w-full max-w-7xl mx-auto px-8 py-4">
-        <div class="text-2xl font-black text-[#F4C07D] italic font-jakarta">WeraWoof</div>
+        <NuxtLink to="/">
+          <img
+            :src="'/images/logo-horizontal.png'"
+            alt="WeraWoof"
+            class="hidden md:block h-12 w-auto"
+          />
+          <img :src="'/images/logo-icon.png'" alt="WeraWoof" class="md:hidden h-10 w-auto" />
+        </NuxtLink>
         <nav class="hidden md:flex items-center gap-8">
           <NuxtLink
             to="/app"
@@ -32,7 +36,7 @@ const heroImage =
           <NuxtLink
             to="/app/dogs"
             class="text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
-            >My Dogs</NuxtLink
+            >Mis Perros</NuxtLink
           >
         </nav>
         <div class="flex items-center gap-4">
@@ -40,7 +44,7 @@ const heroImage =
             to="/auth/register"
             class="bg-primary-container text-on-primary-container font-medium text-sm tracking-wide px-6 py-2.5 rounded-2xl hover:opacity-90 transition-all duration-200 active:scale-95"
           >
-            Get Started
+            Comenzar
           </NuxtLink>
         </div>
       </div>
@@ -51,7 +55,7 @@ const heroImage =
       <section class="relative min-h-[870px] flex items-center overflow-hidden">
         <div class="absolute inset-0 z-0">
           <img
-            :src="heroImage"
+            :src="'/images/floor.jpg'"
             alt="Wera, a golden-colored dog, sitting happily in a sunny park."
             class="w-full h-full object-cover"
           />
@@ -62,25 +66,25 @@ const heroImage =
         <div class="relative z-10 w-full max-w-7xl mx-auto px-8">
           <div class="max-w-2xl mx-auto md:mx-0 text-center md:text-left">
             <h1 class="text-h1 font-h1 text-white mb-6 font-jakarta">
-              Find your dog's perfect match
+              Encuentra al match perfecto para tu perro
             </h1>
             <p class="text-body-lg text-white/90 mb-10 leading-relaxed">
-              Join the most sophisticated community for dog lovers. Whether it's for playdates,
-              walking buddies, or shared adventures, your pup's next best friend is just a swipe
-              away.
+              Únete a la comunidad más chida para amantes de los perritos. Ya sea para jugar,
+              salir a caminar o vivir nuevas aventuras, el mejor cuate de tu perro está a un
+              swipe de distancia.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               <NuxtLink
                 to="/auth/register"
                 class="bg-[#F4C07D] text-[#382615] font-medium text-lg px-10 py-5 rounded-2xl shadow-lg hover:-translate-y-1 transition-all duration-200 flex items-center justify-center gap-2"
               >
-                <span>Get Started</span>
+                <span> Comenzar </span>
                 <span class="material-symbols-outlined">arrow_forward</span>
               </NuxtLink>
               <button
                 class="hidden sm:flex border-2 border-white/30 bg-white/10 backdrop-blur-md text-white font-medium text-lg px-10 py-5 rounded-2xl hover:bg-white/20 transition-all duration-200 items-center justify-center"
               >
-                Explore Community
+                Ver comunidad
               </button>
             </div>
           </div>
@@ -92,9 +96,9 @@ const heroImage =
         <div class="max-w-7xl mx-auto px-8">
           <div class="text-center mb-16">
             <span class="text-primary font-medium uppercase tracking-[0.2em] mb-4 block text-sm"
-              >The Process</span
+              >El Proceso</span
             >
-            <h2 class="text-h2 font-h2 text-on-surface font-jakarta">Simple steps to joy</h2>
+            <h2 class="text-h2 font-h2 text-on-surface font-jakarta">Así de fácil es la felicidad</h2>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
             <div
@@ -105,10 +109,10 @@ const heroImage =
               >
                 <span class="material-symbols-outlined text-primary text-3xl">person_add</span>
               </div>
-              <h3 class="text-h3 font-h3 text-on-surface mb-4 font-jakarta">1. Create Profiles</h3>
+              <h3 class="text-h3 font-h3 text-on-surface mb-4 font-jakarta">1. Crea tu perfil</h3>
               <p class="text-body-md text-on-surface-variant">
-                Tell us about you and your furry friend. Share their energy level, favorite toys,
-                and personality quirks.
+                Cuéntanos sobre ti y tu peludo. Comparte su nivel de energía, sus juguetes
+                favoritos y todo lo que lo hace único.
               </p>
             </div>
             <div
@@ -120,11 +124,11 @@ const heroImage =
                 <span class="material-symbols-outlined text-primary text-3xl">swipe</span>
               </div>
               <h3 class="text-h3 font-h3 text-on-surface mb-4 font-jakarta">
-                2. Swipe &amp; Match
+                2. Swipe &amp; Conecta
               </h3>
               <p class="text-body-md text-on-surface-variant">
-                Browse local dogs and their owners. Find pups with similar temperaments and play
-                styles near you.
+                Explora perritos y dueños de tu zona. Encuentra los que mejor se lleven con
+                el tuyo.
               </p>
             </div>
             <div
@@ -135,10 +139,10 @@ const heroImage =
               >
                 <span class="material-symbols-outlined text-primary text-3xl">handshake</span>
               </div>
-              <h3 class="text-h3 font-h3 text-on-surface mb-4 font-jakarta">3. Meet Up</h3>
+              <h3 class="text-h3 font-h3 text-on-surface mb-4 font-jakarta">3. ¡A juntarse!</h3>
               <p class="text-body-md text-on-surface-variant">
-                Once you match, chat and arrange a safe meet-up in a local park. Watch the tail wags
-                commence!
+                Cuando hagan match, coordinen un encuentro seguro en un parque cercano.
+                ¡Las colas no van a parar de moverse!
               </p>
             </div>
           </div>
@@ -153,7 +157,7 @@ const heroImage =
               class="col-span-12 md:col-span-7 row-span-2 relative overflow-hidden rounded-2xl shadow-lg"
             >
               <img
-                :src="heroImage"
+                :src="'/images/hand.jpg'"
                 alt="Wera playing with a playful expression."
                 class="w-full h-full object-cover"
               />
@@ -163,11 +167,11 @@ const heroImage =
                 <div
                   class="bg-primary-container/20 backdrop-blur-sm px-4 py-1 rounded-full w-fit mb-4"
                 >
-                  <span class="text-[#F4C07D] font-medium text-sm">Local Favorites</span>
+                  <span class="text-[#F4C07D] font-medium text-sm">Favoritos de la zona</span>
                 </div>
-                <h3 class="text-h2 font-h2 mb-2 font-jakarta">Dog-Friendly Hotspots</h3>
+                <h3 class="text-h2 font-h2 mb-2 font-jakarta">Lugares Pet-Friendly</h3>
                 <p class="text-body-md opacity-90 max-w-lg">
-                  Discover the best parks, cafes, and trails vetted by the WeraWoof community.
+                  Descubre los mejores parques, cafés y senderos recomendados por la comunidad WeraWoof.
                 </p>
               </div>
             </div>
@@ -185,17 +189,17 @@ const heroImage =
                 "
                 >verified</span
               >
-              <h3 class="text-h3 font-h3 text-on-surface mb-2 font-jakarta">Verified Members</h3>
+              <h3 class="text-h3 font-h3 text-on-surface mb-2 font-jakarta">Miembros Verificados</h3>
               <p class="text-body-md text-on-surface-variant">
-                Our premium community ensures every member is verified for a safer play environment.
+                Nuestra comunidad garantiza que cada miembro esté verificado para un ambiente de juego más seguro.
               </p>
             </div>
             <div
               class="col-span-12 md:col-span-5 row-span-1 bg-[#382615] rounded-2xl p-8 flex items-center justify-between group cursor-pointer overflow-hidden relative"
             >
               <div class="z-10">
-                <h3 class="text-h3 font-h3 text-[#F4C07D] mb-2 font-jakarta">Join the Club</h3>
-                <p class="text-body-md text-white/70">Exclusive events and early access.</p>
+                <h3 class="text-h3 font-h3 text-[#F4C07D] mb-2 font-jakarta">Únete al Club</h3>
+                <p class="text-body-md text-white/70">Eventos exclusivos y acceso anticipado.</p>
               </div>
               <span
                 class="material-symbols-outlined text-[#F4C07D] text-6xl opacity-20 group-hover:scale-110 group-hover:opacity-40 transition-all duration-300"
@@ -209,15 +213,15 @@ const heroImage =
       <!-- CTA -->
       <section class="py-xl bg-primary text-on-primary">
         <div class="max-w-4xl mx-auto px-8 text-center">
-          <h2 class="text-h1 font-h1 mb-6 font-jakarta">Ready for more tail wags?</h2>
+          <h2 class="text-h1 font-h1 mb-6 font-jakarta">¿Listo para más colas meneando?</h2>
           <p class="text-body-lg mb-10 opacity-90">
-            Start your journey today and find the companion your dog has been waiting for.
+            Empieza hoy y encuentra al cuate que tu perro ha estado esperando.
           </p>
           <NuxtLink
             to="/auth/register"
             class="inline-block bg-[#F4C07D] text-[#382615] font-medium text-lg px-12 py-5 rounded-2xl shadow-2xl hover:scale-105 transition-all duration-200"
           >
-            Join WeraWoof Now
+            Únete a WeraWoof
           </NuxtLink>
         </div>
       </section>
@@ -230,8 +234,8 @@ const heroImage =
           <div class="col-span-1">
             <div class="text-3xl font-black text-[#F4C07D] italic mb-6 font-jakarta">WeraWoof</div>
             <p class="text-white/60 text-body-md mb-6 leading-relaxed">
-              Cultivating a premium community of dog enthusiasts focused on safe, joyful
-              socialization.
+              Construyendo la comunidad más chida de amantes de los perritos, enfocada en
+              una convivencia segura y llena de alegría.
             </p>
             <div class="flex gap-4">
               <a
@@ -249,34 +253,34 @@ const heroImage =
             </div>
           </div>
           <div>
-            <h4 class="text-lg font-bold mb-6 font-jakarta">Platform</h4>
+            <h4 class="text-lg font-bold mb-6 font-jakarta">Plataforma</h4>
             <ul class="space-y-4 text-white/60 text-body-md">
-              <li><a href="#" class="hover:text-[#F4C07D] transition-colors">Find Matches</a></li>
+              <li><a href="#" class="hover:text-[#F4C07D] transition-colors">Encontrar Matches</a></li>
               <li>
-                <a href="#" class="hover:text-[#F4C07D] transition-colors">Safety Features</a>
+                <a href="#" class="hover:text-[#F4C07D] transition-colors">Seguridad</a>
               </li>
-              <li><a href="#" class="hover:text-[#F4C07D] transition-colors">Premium Perks</a></li>
+              <li><a href="#" class="hover:text-[#F4C07D] transition-colors">Beneficios Premium</a></li>
               <li>
-                <a href="#" class="hover:text-[#F4C07D] transition-colors">Success Stories</a>
+                <a href="#" class="hover:text-[#F4C07D] transition-colors">Historias de Éxito</a>
               </li>
             </ul>
           </div>
           <div>
-            <h4 class="text-lg font-bold mb-6 font-jakarta">Company</h4>
+            <h4 class="text-lg font-bold mb-6 font-jakarta">Empresa</h4>
             <ul class="space-y-4 text-white/60 text-body-md">
-              <li><a href="#" class="hover:text-[#F4C07D] transition-colors">About Us</a></li>
-              <li><a href="#" class="hover:text-[#F4C07D] transition-colors">Careers</a></li>
-              <li><a href="#" class="hover:text-[#F4C07D] transition-colors">Contact</a></li>
-              <li><a href="#" class="hover:text-[#F4C07D] transition-colors">Press Kit</a></li>
+              <li><a href="#" class="hover:text-[#F4C07D] transition-colors">Quiénes Somos</a></li>
+              <li><a href="#" class="hover:text-[#F4C07D] transition-colors">Trabaja con Nosotros</a></li>
+              <li><a href="#" class="hover:text-[#F4C07D] transition-colors">Contacto</a></li>
+              <li><a href="#" class="hover:text-[#F4C07D] transition-colors">Prensa</a></li>
             </ul>
           </div>
           <div>
-            <h4 class="text-lg font-bold mb-6 font-jakarta">Newsletter</h4>
-            <p class="text-white/60 text-body-md mb-4">Stay updated on events and tips.</p>
+            <h4 class="text-lg font-bold mb-6 font-jakarta">Boletín</h4>
+            <p class="text-white/60 text-body-md mb-4">Mantente al día con eventos y tips.</p>
             <div class="flex">
               <input
                 type="email"
-                placeholder="Email address"
+                placeholder="Tu correo electrónico"
                 class="bg-white/10 border border-white/20 rounded-l-xl px-4 py-3 w-full outline-none text-sm focus:ring-1 focus:ring-[#F4C07D]"
               />
               <button
@@ -291,10 +295,10 @@ const heroImage =
           class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-white/40 text-sm"
         >
           <div class="flex gap-8">
-            <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+            <a href="#" class="hover:text-white transition-colors">Aviso de Privacidad</a>
+            <a href="#" class="hover:text-white transition-colors">Términos de Servicio</a>
           </div>
-          <p>© 2026 WeraWoof. All tail wags reserved.</p>
+          <p>© 2026 WeraWoof. Todos los meneos reservados.</p>
         </div>
       </div>
     </footer>
@@ -321,7 +325,7 @@ const heroImage =
       <NuxtLink to="/app/dogs" class="flex flex-col items-center justify-center text-[#713E18]/50">
         <span class="material-symbols-outlined text-2xl">house</span>
         <span class="text-[10px] font-bold uppercase tracking-tighter mt-1 font-jakarta"
-          >My Dogs</span
+          >Mis Perros</span
         >
       </NuxtLink>
       <NuxtLink
@@ -330,7 +334,7 @@ const heroImage =
       >
         <span class="material-symbols-outlined text-2xl">person</span>
         <span class="text-[10px] font-bold uppercase tracking-tighter mt-1 font-jakarta"
-          >Profile</span
+          >Perfil</span
         >
       </NuxtLink>
     </nav>

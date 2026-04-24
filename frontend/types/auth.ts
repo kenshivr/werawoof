@@ -3,6 +3,8 @@ export interface User {
   email: string
   name: string
   avatar?: string
+  location?: string
+  bio?: string
   emailVerified: boolean
   createdAt: string
 }
@@ -30,4 +32,10 @@ export interface ForgotPasswordPayload {
 export interface ResetPasswordPayload {
   token: string
   password: string
+}
+
+export interface UpdateProfilePayload {
+  name: string
+  location?: string
+  bio?: string
 }

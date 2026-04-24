@@ -11,6 +11,9 @@ type User struct {
 	Email        string         `gorm:"uniqueIndex;not null" json:"email"`
 	PasswordHash string         `gorm:"not null" json:"-"`
 	Name         string         `gorm:"not null" json:"name"`
+	Location     string         `json:"location"`
+	Bio          string         `json:"bio"`
+	Avatar       string         `json:"avatar"`
 	GoogleID     string         `gorm:"uniqueIndex" json:"-"`
 	Verified     bool           `gorm:"default:false" json:"verified"`
 	Dogs         []Dog          `gorm:"foreignKey:UserID" json:"dogs,omitempty"`

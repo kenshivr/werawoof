@@ -80,7 +80,7 @@ func main() {
 	authHandler := handler.NewAuthHandler(authService)
 	oauthHandler := handler.NewOAuthHandler(oauthService)
 	verificationHandler := handler.NewVerificationHandler(verificationService)
-	userHandler := handler.NewUserHandler(userService)
+	userHandler := handler.NewUserHandler(userService, cloudinaryClient)
 	dogHandler := handler.NewDogHandler(dogService, cloudinaryClient)
 	swipeHandler := handler.NewSwipeHandler(swipeService)
 	chatHandler := handler.NewChatHandler(chatService, wsHub)
@@ -121,6 +121,7 @@ func main() {
 	{
 		api.GET("/me", userHandler.GetProfile)
 		api.PUT("/me", userHandler.UpdateProfile)
+		api.POST("/me/avatar", userHandler.UploadAvatar)
 
 		api.POST("/dogs", dogHandler.Create)
 		api.GET("/dogs", dogHandler.GetMyDogs)

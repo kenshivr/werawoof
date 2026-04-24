@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { Dog, CreateDogPayload, UpdateDogPayload } from '~/types/dog'
+import type { Match } from '~/types/match'
 
 export const useDogsStore = defineStore('dogs', () => {
   const dogs = ref<Dog[]>([])
@@ -18,24 +19,48 @@ export const useDogsStore = defineStore('dogs', () => {
 
   const createDog = async (payload: CreateDogPayload) => {
     const api = useApi()
-    const dog = await api.post<Dog>('/api/dogs', payload)
-    dogs.value.push(dog)
-    return dog
+    const res = await api.post<{ dog: Dog }>('/api/dogs', payload)
+    dogs.value.push(res.dog)
+    return res.dog
   }
 
   const updateDog = async (id: string, payload: UpdateDogPayload) => {
     const api = useApi()
-    const updated = await api.put<Dog>(`/api/dogs/${id}`, payload)
-    const idx = dogs.value.findIndex((d) => d.id === id)
-    if (idx !== -1) dogs.value[idx] = updated
-    return updated
+    const res = await api.put<{ dog: Dog }>(`/api/dogs/${id}`, payload)
+    const idx = dogs.value.findIndex((d) => String(d.id) === id)
+    if (idx !== -1) dogs.value[idx] = res.dog
+    return res.dog
   }
 
   const deleteDog = async (id: string) => {
     const api = useApi()
     await api.del(`/api/dogs/${id}`)
-    dogs.value = dogs.value.filter((d) => d.id !== id)
+    dogs.value = dogs.value.filter((d) => String(d.id) !== id)
   }
 
-  return { dogs, loading, fetchDogs, createDog, updateDog, deleteDog }
+  const uploadPhoto = async (dogId: string, file: File) => {
+    const authStore = useAuthStore()
+    const config = useRuntimeConfig()
+    const formData = new FormData()
+    formData.append('photo', file)
+
+    const res = await $fetch<{ dog: Dog }>(`/api/dogs/${dogId}/photos`, {
+      method: 'POST',
+      baseURL: config.public.apiBase as string,
+      body: formData,
+      headers: { Authorization: `Bearer ${authStore.token}` },
+    })
+
+    const idx = dogs.value.findIndex((d) => String(d.id) === dogId)
+    if (idx !== -1) dogs.value[idx] = res.dog
+    return res.dog
+  }
+
+  const fetchMatches = async (dogId: string): Promise<Match[]> => {
+    const api = useApi()
+    const res = await api.get<{ matches: Match[] }>(`/api/dogs/${dogId}/matches`)
+    return res.matches ?? []
+  }
+
+  return { dogs, loading, fetchDogs, createDog, updateDog, deleteDog, uploadPhoto, fetchMatches }
 })

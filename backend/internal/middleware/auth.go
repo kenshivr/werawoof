@@ -10,13 +10,17 @@ import (
 
 func Auth(authService *service.AuthService) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		var token string
+
 		authHeader := c.GetHeader("Authorization")
-		if !strings.HasPrefix(authHeader, "Bearer ") {
+		if strings.HasPrefix(authHeader, "Bearer ") {
+			token = strings.TrimPrefix(authHeader, "Bearer ")
+		} else if q := c.Query("token"); q != "" {
+			token = q
+		} else {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "missing token"})
 			return
 		}
-
-		token := strings.TrimPrefix(authHeader, "Bearer ")
 
 		claims, err := authService.ValidateToken(c.Request.Context(), token)
 		if err != nil {
