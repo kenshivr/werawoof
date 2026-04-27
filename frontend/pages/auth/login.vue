@@ -2,10 +2,15 @@
 definePageMeta({ layout: 'default', middleware: 'guest' })
 
 const authStore = useAuthStore()
+const config = useRuntimeConfig()
 const form = reactive({ email: '', password: '' })
 const loading = ref(false)
 const error = ref('')
 const showPassword = ref(false)
+
+const loginWithGoogle = () => {
+  window.location.href = `${config.public.apiBase}/auth/google`
+}
 
 const heroImage =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuBSRJrDXTAUPRdQb_rcU2rznew6qav938_yk_RwRmV_VkZZYuZCfGLbji43Qo08LLoWzz6XwVU9Q3RaXVL_Hj63tHG1ijzV9djC8_S7mOYH_2U3vuEY-pXy_y9MNdFifZMeshO2SgtUmiZ9PkacisaAG9_rN2Kz7mYGysg-DDkXdQLNHB6-7sMa_rU3ct5Yr7XgHAm-wH4-BYN9G4UxEJQhZrr0MDnObHJRJKtFM2uB6HvoQSpTmuTJLqXxKN42TYgSUEvonUr7Kg'
@@ -94,6 +99,7 @@ const handleLogin = async () => {
             <button
               type="button"
               class="hidden md:flex w-full items-center justify-center gap-4 bg-white border-[1.5px] border-outline-variant hover:border-outline py-4 px-6 rounded-2xl transition-all duration-200 shadow-sm active:scale-[0.98]"
+              @click="loginWithGoogle"
             >
               <svg class="w-5 h-5" viewBox="0 0 24 24">
                 <path
@@ -227,6 +233,7 @@ const handleLogin = async () => {
               <button
                 type="button"
                 class="w-full flex items-center justify-center gap-3 bg-white border-[1.5px] border-[#B78F64] text-[#382615] text-label-md font-label-md rounded-2xl py-4 px-6 hover:bg-stone-50 active:scale-95 transition-all duration-200"
+                @click="loginWithGoogle"
               >
                 <svg class="w-5 h-5" viewBox="0 0 24 24">
                   <path

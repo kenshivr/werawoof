@@ -78,7 +78,7 @@ func main() {
 	chatService := service.NewChatService(msgRepo, swipeRepo, dogRepo, wsHub, sseBroker)
 
 	authHandler := handler.NewAuthHandler(authService)
-	oauthHandler := handler.NewOAuthHandler(oauthService)
+	oauthHandler := handler.NewOAuthHandler(oauthService, cfg.App.FrontendURL)
 	verificationHandler := handler.NewVerificationHandler(verificationService)
 	userHandler := handler.NewUserHandler(userService, cloudinaryClient)
 	dogHandler := handler.NewDogHandler(dogService, cloudinaryClient)

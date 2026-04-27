@@ -11,10 +11,11 @@ import (
 
 type OAuthHandler struct {
 	oauthService *service.OAuthService
+	frontendURL  string
 }
 
-func NewOAuthHandler(oauthService *service.OAuthService) *OAuthHandler {
-	return &OAuthHandler{oauthService: oauthService}
+func NewOAuthHandler(oauthService *service.OAuthService, frontendURL string) *OAuthHandler {
+	return &OAuthHandler{oauthService: oauthService, frontendURL: frontendURL}
 }
 
 func (h *OAuthHandler) Redirect(c *gin.Context) {
@@ -26,17 +27,17 @@ func (h *OAuthHandler) Redirect(c *gin.Context) {
 func (h *OAuthHandler) Callback(c *gin.Context) {
 	code := c.Query("code")
 	if code == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "missing code"})
+		c.Redirect(http.StatusTemporaryRedirect, h.frontendURL+"/auth/login?error=oauth_failed")
 		return
 	}
 
 	token, err := h.oauthService.HandleCallback(c.Request.Context(), code)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "oauth failed"})
+		c.Redirect(http.StatusTemporaryRedirect, h.frontendURL+"/auth/login?error=oauth_failed")
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	c.Redirect(http.StatusTemporaryRedirect, h.frontendURL+"/auth/callback?token="+token)
 }
 
 func generateState() string {

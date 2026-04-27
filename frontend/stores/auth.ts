@@ -1,5 +1,11 @@
 import { defineStore } from 'pinia'
-import type { User, LoginPayload, RegisterPayload, AuthResponse, UpdateProfilePayload } from '~/types/auth'
+import type {
+  User,
+  LoginPayload,
+  RegisterPayload,
+  AuthResponse,
+  UpdateProfilePayload,
+} from '~/types/auth'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
@@ -34,6 +40,7 @@ export const useAuthStore = defineStore('auth', () => {
     const api = useApi()
     const data = await api.post<AuthResponse>('/auth/login', payload)
     setAuth(data)
+    await fetchProfile()
   }
 
   const register = async (payload: RegisterPayload) => {
@@ -67,5 +74,24 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { user, token, isAuthenticated, login, register, logout, restoreSession, fetchProfile, updateProfile }
+  const loginWithToken = async (tokenValue: string) => {
+    token.value = tokenValue
+    if (import.meta.client) {
+      localStorage.setItem('token', tokenValue)
+    }
+    await fetchProfile()
+  }
+
+  return {
+    user,
+    token,
+    isAuthenticated,
+    login,
+    register,
+    logout,
+    restoreSession,
+    fetchProfile,
+    updateProfile,
+    loginWithToken,
+  }
 })
