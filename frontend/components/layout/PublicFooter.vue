@@ -17,7 +17,7 @@ const shareApp = async () => {
         <!-- Col 1: Brand -->
         <div class="flex-1">
           <NuxtLink to="/">
-            <img :src="'/images/logo-horizontal.png'" alt="WeraWoof" class="h-10 w-auto mb-6" />
+            <img :src="'/images/logo-horizontal.webp'" alt="WeraWoof" class="h-10 w-auto mb-6" />
           </NuxtLink>
           <p class="text-white/60 text-body-md mb-6 leading-relaxed">
             Construyendo la comunidad más chida de amantes de los perritos, enfocada en una

@@ -21,11 +21,11 @@ const handleLogout = async () => {
         <div class="flex items-center gap-8">
           <NuxtLink to="/app">
             <img
-              :src="'/images/logo-horizontal.png'"
+              :src="'/images/logo-horizontal.webp'"
               alt="WeraWoof"
               class="hidden md:block h-12 w-auto"
             />
-            <img :src="'/images/logo-icon.png'" alt="WeraWoof" class="md:hidden h-10 w-auto" />
+            <img :src="'/images/logo-icon.webp'" alt="WeraWoof" class="md:hidden h-10 w-auto" />
           </NuxtLink>
           <nav class="hidden md:flex items-center gap-6">
             <NuxtLink

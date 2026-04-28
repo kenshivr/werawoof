@@ -3,11 +3,11 @@
     <div class="flex items-center justify-between w-full max-w-7xl mx-auto px-8 py-4">
       <NuxtLink to="/">
         <img
-          :src="'/images/logo-horizontal.png'"
+          :src="'/images/logo-horizontal.webp'"
           alt="WeraWoof"
           class="hidden md:block h-12 w-auto"
         />
-        <img :src="'/images/logo-icon.png'" alt="WeraWoof" class="md:hidden h-10 w-auto" />
+        <img :src="'/images/logo-icon.webp'" alt="WeraWoof" class="md:hidden h-10 w-auto" />
       </NuxtLink>
       <NuxtLink
         to="/"

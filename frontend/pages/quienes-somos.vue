@@ -12,7 +12,7 @@ definePageMeta({ layout: false })
     <section class="relative min-h-[560px] flex items-end overflow-hidden">
       <div class="absolute inset-0 z-0">
         <img
-          :src="'/images/horizontal.jpeg'"
+          :src="'/images/horizontal.webp'"
           alt="Wera"
           class="w-full h-full object-cover object-[center_30%]"
         />
@@ -88,7 +88,7 @@ definePageMeta({ layout: false })
           <div
             class="relative h-[480px] rounded-3xl overflow-hidden shadow-xl bg-surface-container order-2 md:order-1"
           >
-            <img :src="'/images/bb.jpeg'" alt="Wera" class="w-full h-full object-cover" />
+            <img :src="'/images/bb.webp'" alt="Wera" class="w-full h-full object-cover" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#382615]/60 to-transparent" />
             <div class="absolute bottom-6 left-6">
               <span

@@ -47,7 +47,7 @@ if (authStore.isAuthenticated) {
       <section class="relative min-h-[870px] flex items-center overflow-hidden">
         <div class="absolute inset-0 z-0">
           <img
-            :src="'/images/horizontal.jpeg'"
+            :src="'/images/horizontal.webp'"
             alt="Wera, a golden-colored dog, sitting happily in a sunny park."
             class="w-full h-full object-cover"
           />
@@ -150,7 +150,7 @@ if (authStore.isAuthenticated) {
               class="col-span-12 md:col-span-7 row-span-2 relative overflow-hidden rounded-2xl shadow-lg"
             >
               <img
-                :src="'/images/hand.jpg'"
+                :src="'/images/hand.webp'"
                 alt="Wera playing with a playful expression."
                 class="w-full h-full object-cover"
               />
