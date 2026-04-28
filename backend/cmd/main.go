@@ -85,6 +85,7 @@ func main() {
 	swipeHandler := handler.NewSwipeHandler(swipeService)
 	chatHandler := handler.NewChatHandler(chatService, wsHub)
 	sseHandler := handler.NewSSEHandler(sseBroker)
+	contactHandler := handler.NewContactHandler(emailService)
 
 	r := gin.Default()
 
@@ -102,6 +103,7 @@ func main() {
 	r.Static("/static", "./static")
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/health", handler.HealthCheck)
+	r.POST("/contact", contactHandler.Send)
 
 	auth := r.Group("/auth")
 	{

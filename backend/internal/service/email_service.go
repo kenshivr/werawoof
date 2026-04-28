@@ -41,6 +41,36 @@ func (s *EmailService) SendVerification(toEmail, name, token string) error {
 	return err
 }
 
+func (s *EmailService) SendContact(name, phone, fromEmail, message string) error {
+	phoneLine := ""
+	if phone != "" {
+		phoneLine = fmt.Sprintf("<p><strong>Teléfono:</strong> %s</p>", phone)
+	}
+
+	_, err := s.client.Emails.Send(&resend.SendEmailRequest{
+		From:    s.fromEmail,
+		To:      []string{"vidal.fullstack@gmail.com"},
+		ReplyTo: fromEmail,
+		Subject: fmt.Sprintf("Nuevo mensaje de contacto de %s — WeraWoof", name),
+		Html: fmt.Sprintf(`
+			<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px">
+				<h2 style="color:#382615">📬 Nuevo mensaje de contacto</h2>
+				<div style="background:#DBD8D0;border-radius:12px;padding:20px;margin:16px 0">
+					<p><strong>Nombre:</strong> %s</p>
+					%s
+					<p><strong>Correo:</strong> <a href="mailto:%s">%s</a></p>
+					<hr style="border:none;border-top:1px solid #B78F64;margin:16px 0"/>
+					<p><strong>Mensaje:</strong></p>
+					<p style="white-space:pre-wrap">%s</p>
+				</div>
+				<p style="color:#7d571e;font-size:12px">Enviado desde el formulario de contacto de WeraWoof</p>
+			</div>
+		`, name, phoneLine, fromEmail, fromEmail, message),
+	})
+
+	return err
+}
+
 func (s *EmailService) SendPasswordReset(toEmail, name, token string) error {
 	link := fmt.Sprintf("%s/reset-password?token=%s", s.appURL, token)
 
