@@ -74,6 +74,20 @@ func (s *EmailService) SendContact(name, phone, fromEmail, message string) error
 	return s.send("vidal.fullstack@gmail.com", fromEmail, fmt.Sprintf("Nuevo mensaje de %s — WeraWoof", name), html)
 }
 
+func (s *EmailService) SendNewsletterNotification(subscriberEmail string) error {
+	html := fmt.Sprintf(`
+		<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px">
+			<h2 style="color:#382615">📧 Nuevo suscriptor al newsletter</h2>
+			<div style="background:#DBD8D0;border-radius:12px;padding:20px;margin:16px 0">
+				<p><strong>Correo:</strong> <a href="mailto:%s">%s</a></p>
+				<p><strong>Fuente:</strong> Footer de WeraWoof</p>
+			</div>
+			<p style="color:#7d571e;font-size:12px">Enviado desde el formulario de newsletter de WeraWoof</p>
+		</div>
+	`, subscriberEmail, subscriberEmail)
+	return s.send("vidal.fullstack@gmail.com", subscriberEmail, fmt.Sprintf("Nuevo suscriptor: %s — WeraWoof", subscriberEmail), html)
+}
+
 func (s *EmailService) SendPasswordReset(toEmail, name, token string) error {
 	link := fmt.Sprintf("%s/reset-password?token=%s", s.appURL, token)
 	html := fmt.Sprintf(`

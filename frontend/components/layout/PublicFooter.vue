@@ -3,9 +3,37 @@ const shareApp = async () => {
   if (navigator.share) {
     await navigator.share({
       title: 'WeraWoof',
-      text: 'Conecta a tu perro con nuevos amigos 🐾',
+      text: 'Conecta a tu can con nuevos amigos 🐾',
       url: window.location.origin,
     })
+  }
+}
+
+const newsletterEmail = ref('')
+const newsletterLoading = ref(false)
+const newsletterSuccess = ref(false)
+const newsletterError = ref('')
+
+async function subscribeNewsletter() {
+  newsletterError.value = ''
+  if (!newsletterEmail.value.trim()) {
+    newsletterError.value = 'Escribe tu correo.'
+    return
+  }
+  newsletterLoading.value = true
+  try {
+    const config = useRuntimeConfig()
+    await $fetch(`${config.public.apiBase}/newsletter`, {
+      method: 'POST',
+      body: { email: newsletterEmail.value.trim() },
+    })
+    newsletterSuccess.value = true
+    newsletterEmail.value = ''
+    setTimeout(() => (newsletterSuccess.value = false), 4000)
+  } catch {
+    newsletterError.value = 'No se pudo suscribir. Intenta de nuevo.'
+  } finally {
+    newsletterLoading.value = false
   }
 }
 </script>
@@ -20,8 +48,8 @@ const shareApp = async () => {
             <img :src="'/images/logo-horizontal.webp'" alt="WeraWoof" class="h-10 w-auto mb-6" />
           </NuxtLink>
           <p class="text-white/60 text-body-md mb-6 leading-relaxed">
-            Construyendo la comunidad más chida de amantes de los perritos, enfocada en una
-            convivencia segura y llena de alegría.
+            Construyendo la comunidad más chida de amantes de los canes, enfocada en una convivencia
+            segura y llena de alegría.
           </p>
           <div class="flex gap-3">
             <!-- WhatsApp -->
@@ -100,16 +128,27 @@ const shareApp = async () => {
           <p class="text-white/60 text-body-md mb-4">Mantente al día con eventos y tips.</p>
           <div class="flex">
             <input
+              v-model="newsletterEmail"
               type="email"
               placeholder="Tu correo electrónico"
               class="bg-white/10 border border-white/20 rounded-l-xl px-4 py-3 w-full outline-none text-sm focus:ring-1 focus:ring-[#F4C07D]"
+              :disabled="newsletterLoading"
+              @keyup.enter="subscribeNewsletter"
             />
             <button
-              class="bg-[#F4C07D] text-[#382615] px-4 rounded-r-xl font-bold hover:opacity-90 transition-opacity"
+              class="bg-[#F4C07D] text-[#382615] px-4 rounded-r-xl font-bold hover:opacity-90 transition-opacity disabled:opacity-60"
+              :disabled="newsletterLoading"
+              @click="subscribeNewsletter"
             >
-              <span class="material-symbols-outlined">send</span>
+              <span class="material-symbols-outlined">{{
+                newsletterLoading ? 'hourglass_empty' : 'send'
+              }}</span>
             </button>
           </div>
+          <p v-if="newsletterError" class="text-red-400 text-xs mt-2">{{ newsletterError }}</p>
+          <p v-if="newsletterSuccess" class="text-[#F4C07D] text-xs mt-2 font-medium">
+            ¡Ya estás suscrito!
+          </p>
         </div>
       </div>
 

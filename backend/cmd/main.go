@@ -59,6 +59,8 @@ func main() {
 
 	userRepo := repository.NewUserRepository(db)
 	dogRepo := repository.NewDogRepository(db)
+	reviewRepo := repository.NewReviewRepository(db)
+	subscriberRepo := repository.NewSubscriberRepository(db)
 	authService := service.NewAuthService(userRepo, redisClient, cfg.JWT.Secret, cfg.JWT.ExpirationHours)
 	oauthService := service.NewOAuthService(userRepo, authService, cfg.Google.ClientID, cfg.Google.ClientSecret, cfg.Google.RedirectURL)
 	emailService := service.NewEmailService(cfg.Gmail.User, cfg.Gmail.Password, cfg.Gmail.From, cfg.App.FrontendURL)
@@ -74,6 +76,7 @@ func main() {
 	msgRepo := repository.NewMessageRepository(db)
 	userService := service.NewUserService(userRepo)
 	dogService := service.NewDogService(dogRepo)
+	reviewService := service.NewReviewService(reviewRepo)
 	swipeService := service.NewSwipeService(swipeRepo, dogRepo, sseBroker)
 	chatService := service.NewChatService(msgRepo, swipeRepo, dogRepo, wsHub, sseBroker)
 
@@ -86,6 +89,8 @@ func main() {
 	chatHandler := handler.NewChatHandler(chatService, wsHub)
 	sseHandler := handler.NewSSEHandler(sseBroker)
 	contactHandler := handler.NewContactHandler(emailService)
+	reviewHandler := handler.NewReviewHandler(reviewService)
+	newsletterHandler := handler.NewNewsletterHandler(subscriberRepo, emailService)
 
 	r := gin.Default()
 
@@ -104,6 +109,8 @@ func main() {
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/health", handler.HealthCheck)
 	r.POST("/contact", contactHandler.Send)
+	r.POST("/newsletter", newsletterHandler.Subscribe)
+	r.GET("/reviews", reviewHandler.GetAll)
 
 	auth := r.Group("/auth")
 	{
@@ -140,6 +147,8 @@ func main() {
 		api.GET("/matches/:match_id/messages", chatHandler.GetHistory)
 
 		api.GET("/notifications", sseHandler.Stream)
+
+		api.POST("/reviews", reviewHandler.Upsert)
 	}
 
 	log.Printf("server running on port %s", cfg.App.Port)

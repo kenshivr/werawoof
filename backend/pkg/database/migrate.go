@@ -12,5 +12,7 @@ func Migrate(db *gorm.DB) error {
 		&domain.Swipe{},
 		&domain.Match{},
 		&domain.Message{},
+		&domain.Review{},
+		&domain.Subscriber{},
 	)
 }
