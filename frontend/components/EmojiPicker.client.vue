@@ -1,37 +1,31 @@
 <script setup lang="ts">
-import data from '@emoji-mart/data'
-import { Picker } from 'emoji-mart'
+import 'emoji-picker-element'
 
 const emit = defineEmits<{
   select: [native: string]
 }>()
 
-const container = ref<HTMLDivElement | null>(null)
-
-onMounted(() => {
-  const picker = new Picker({
-    data,
-    locale: 'es',
-    theme: 'light',
-    previewPosition: 'none',
-    skinTonePosition: 'none',
-    onEmojiSelect: (emoji: { native: string }) => emit('select', emoji.native),
-  })
-  container.value?.appendChild(picker as unknown as Node)
-})
+const onEmojiClick = (e: Event) => {
+  const detail = (e as CustomEvent).detail
+  if (detail?.emoji?.unicode) {
+    emit('select', detail.emoji.unicode)
+  }
+}
 </script>
 
 <template>
-  <div ref="container" class="emoji-picker-wrap" />
+  <div class="emoji-picker-wrap">
+    <emoji-picker locale="es" @emoji-click="onEmojiClick" />
+  </div>
 </template>
 
 <style>
-.emoji-picker-wrap em-emoji-picker {
+.emoji-picker-wrap emoji-picker {
   --border-radius: 16px;
   --font-family: 'Plus Jakarta Sans', sans-serif;
-  --color-border: #d3c4b4;
-  --color-border-over: #F4C07D;
-  --rgb-accent: 124, 87, 30;
+  --input-border-color: #d3c4b4;
+  --outline-color: #f4c07d;
+  --emoji-padding: 6px;
   width: 100%;
   height: 360px;
 }
