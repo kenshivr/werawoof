@@ -52,15 +52,13 @@
             class="w-full sm:w-auto bg-[#F4C07D] text-[#382615] px-10 py-4 rounded-2xl font-bold font-jakarta flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 active:scale-95"
             @click="clearError({ redirect: '/' })"
           >
-            <span class="material-symbols-outlined">home</span>
             Volver al inicio
           </button>
           <button
             class="w-full sm:w-auto border-2 border-[#7d571e] text-[#7d571e] px-10 py-4 rounded-2xl font-bold font-jakarta flex items-center justify-center gap-2 hover:bg-[#7d571e]/5 hover:-translate-y-0.5 transition-all duration-200 active:scale-95"
             @click="clearError({ redirect: '/app/dogs' })"
           >
-            <span class="material-symbols-outlined">pets</span>
-            Ver mis perros
+            Ver mis Canes
           </button>
         </div>
       </div>
@@ -96,7 +94,7 @@
       >
         <span class="material-symbols-outlined">house</span>
         <span class="text-[10px] font-bold uppercase tracking-tighter mt-0.5 font-jakarta"
-          >Mis Perros</span
+          >Mis Canes</span
         >
       </button>
     </nav>

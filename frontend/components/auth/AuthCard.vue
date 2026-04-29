@@ -73,7 +73,7 @@ const handleSubmit = async () => {
 const copy = computed(() =>
   isRegister.value
     ? {
-        leftTitleA: 'Tu perro merece',
+        leftTitleA: 'Tu can merece',
         leftTitleB: 'un mejor amigo.',
         leftBody:
           'Únete a miles de dueños que ya conectaron a sus peludos con nuevos compañeros de aventura, juego y cariño.',
@@ -94,7 +94,7 @@ const copy = computed(() =>
         leftTitleA: 'Donde cada patita',
         leftTitleB: 'encuentra su historia.',
         leftBody:
-          'Únete a la comunidad más grande de amantes de los perros y encuentra al compañero ideal para la próxima aventura de tu peludo.',
+          'Únete a la comunidad más grande de amantes de los canes y encuentra al compañero ideal para la próxima aventura de tu peludo.',
         heading: 'Bienvenido de nuevo',
         desktopSubText: '¿No tienes cuenta?',
         desktopSubLink: 'Crea una ahora',
@@ -117,7 +117,7 @@ const copy = computed(() =>
     <div class="md:hidden w-full max-w-[400px] text-center mb-5 flex flex-col justify-center gap-4">
       <img src="/images/logo-horizontal.webp" alt="WeraWoof" class="w-1/2 mx-auto" />
       <p class="text-body-md text-on-surface-variant mt-1">
-        Encontrá al compañero perfecto para tu perro
+        Encontrá al compañero perfecto para tu can
       </p>
     </div>
 

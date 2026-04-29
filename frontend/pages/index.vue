@@ -1,12 +1,5 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
-
-const authStore = useAuthStore()
-authStore.restoreSession()
-
-if (authStore.isAuthenticated) {
-  await navigateTo('/app')
-}
 </script>
 
 <template>
@@ -58,11 +51,11 @@ if (authStore.isAuthenticated) {
         <div class="relative z-10 w-full max-w-7xl mx-auto px-8">
           <div class="max-w-2xl mx-auto md:mx-0 text-center md:text-left">
             <h1 class="text-h1 font-h1 text-white mb-6 font-jakarta">
-              Encuentra al match perfecto para tu perro
+              Encuentra al match perfecto para tu can
             </h1>
             <p class="text-body-lg text-white/90 mb-10 leading-relaxed">
-              Únete a la comunidad más chida para amantes de los perritos. Ya sea para jugar, salir
-              a caminar o vivir nuevas aventuras, el mejor cuate de tu perro está a un swipe de
+              Únete a la comunidad más chida para amantes de los canes. Ya sea para jugar, salir a
+              caminar o vivir nuevas aventuras, el mejor cuate de tu can está a un swipe de
               distancia.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
@@ -121,7 +114,7 @@ if (authStore.isAuthenticated) {
                 2. Swipe &amp; Conecta
               </h3>
               <p class="text-body-md text-on-surface-variant">
-                Explora perritos y dueños de tu zona. Encuentra los que mejor se lleven con el tuyo.
+                Explora canes y dueños de tu zona. Encuentra los que mejor se lleven con el tuyo.
               </p>
             </div>
             <div
@@ -212,7 +205,7 @@ if (authStore.isAuthenticated) {
         <div class="max-w-4xl mx-auto px-8 text-center">
           <h2 class="text-h1 font-h1 mb-6 font-jakarta">¿Listo para más colas meneando?</h2>
           <p class="text-body-lg mb-10 opacity-90">
-            Empieza hoy y encuentra al cuate que tu perro ha estado esperando.
+            Empieza hoy y encuentra al cuate que tu can ha estado esperando.
           </p>
           <NuxtLink
             to="/auth/register"

@@ -17,49 +17,59 @@ const handleLogout = async () => {
   <div class="min-h-screen bg-[#DBD8D0] flex flex-col">
     <!-- Header -->
     <header class="bg-[#382615] shadow-xl sticky top-0 z-50">
-      <div class="flex justify-between items-center px-8 py-4 w-full max-w-7xl mx-auto">
-        <div class="flex items-center gap-8">
-          <NuxtLink to="/app">
-            <img
-              :src="'/images/logo-horizontal.webp'"
-              alt="WeraWoof"
-              class="hidden md:block h-12 w-auto"
-            />
-            <img :src="'/images/logo-icon.webp'" alt="WeraWoof" class="md:hidden h-10 w-auto" />
-          </NuxtLink>
-          <nav class="hidden md:flex items-center gap-6">
-            <NuxtLink
-              to="/app/dogs"
-              class="text-sm font-medium tracking-wide font-jakarta transition-all duration-200"
-              :class="
-                isActive('/app/dogs')
-                  ? 'text-[#F4C07D] border-b-2 border-[#F4C07D] pb-1'
-                  : 'text-white/80 hover:text-white'
-              "
-              >Explorar</NuxtLink
-            >
-            <NuxtLink
-              to="/app/matches"
-              class="text-sm font-medium tracking-wide font-jakarta transition-all duration-200"
-              :class="
-                isActive('/app/matches')
-                  ? 'text-[#F4C07D] border-b-2 border-[#F4C07D] pb-1'
-                  : 'text-white/80 hover:text-white'
-              "
-              >Matches</NuxtLink
-            >
-            <NuxtLink
-              to="/app/dogs"
-              class="text-sm font-medium tracking-wide font-jakarta transition-all duration-200"
-              :class="
-                isActive('/app/dogs')
-                  ? 'text-[#F4C07D] border-b-2 border-[#F4C07D] pb-1'
-                  : 'text-white/80 hover:text-white'
-              "
-              >Mis Canes</NuxtLink
-            >
-          </nav>
-        </div>
+      <div class="flex justify-between items-center px-8 py-4 w-full">
+        <NuxtLink to="/">
+          <img
+            :src="'/images/logo-horizontal.webp'"
+            alt="WeraWoof"
+            class="hidden md:block h-12 w-auto"
+          />
+          <img :src="'/images/logo-icon.webp'" alt="WeraWoof" class="md:hidden h-10 w-auto" />
+        </NuxtLink>
+
+        <nav class="hidden md:flex items-center gap-6">
+          <NuxtLink
+            to="/app/dogs"
+            class="text-sm font-medium tracking-wide font-jakarta transition-all duration-200"
+            :class="
+              isActive('/app/dogs')
+                ? 'text-[#F4C07D] border-b-2 border-[#F4C07D] pb-1'
+                : 'text-white/80 hover:text-white'
+            "
+            >Explorar</NuxtLink
+          >
+          <NuxtLink
+            to="/app/matches"
+            class="text-sm font-medium tracking-wide font-jakarta transition-all duration-200"
+            :class="
+              isActive('/app/matches')
+                ? 'text-[#F4C07D] border-b-2 border-[#F4C07D] pb-1'
+                : 'text-white/80 hover:text-white'
+            "
+            >Matches</NuxtLink
+          >
+          <NuxtLink
+            to="/app/dogs"
+            class="text-sm font-medium tracking-wide font-jakarta transition-all duration-200"
+            :class="
+              isActive('/app/dogs')
+                ? 'text-[#F4C07D] border-b-2 border-[#F4C07D] pb-1'
+                : 'text-white/80 hover:text-white'
+            "
+            >Mis Canes</NuxtLink
+          >
+          <NuxtLink
+            to="/comunidad"
+            class="text-sm font-medium tracking-wide font-jakarta transition-all duration-200"
+            :class="
+              isActive('/comunidad')
+                ? 'text-[#F4C07D] border-b-2 border-[#F4C07D] pb-1'
+                : 'text-white/80 hover:text-white'
+            "
+            >Comunidad</NuxtLink
+          >
+        </nav>
+
         <div class="flex items-center gap-3">
           <button
             class="hidden md:block text-xs text-white/50 hover:text-white/80 transition-colors"
