@@ -22,4 +22,6 @@ export interface CreateDogPayload {
   personality_tags?: string[]
 }
 
-export type UpdateDogPayload = Partial<CreateDogPayload>
+export type UpdateDogPayload = Partial<CreateDogPayload> & {
+  photos?: string[]
+}

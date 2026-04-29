@@ -26,6 +26,7 @@ type DogInput struct {
 	PersonalityTags []string
 	Latitude        float64
 	Longitude       float64
+	Photos          *[]string
 }
 
 func (s *DogService) Create(userID uint, input DogInput) (*domain.Dog, error) {
@@ -76,6 +77,9 @@ func (s *DogService) Update(dogID, userID uint, input DogInput) (*domain.Dog, er
 	dog.PersonalityTags = pq.StringArray(input.PersonalityTags)
 	dog.Latitude = input.Latitude
 	dog.Longitude = input.Longitude
+	if input.Photos != nil {
+		dog.Photos = pq.StringArray(*input.Photos)
+	}
 
 	if err := s.dogRepo.Update(dog); err != nil {
 		return nil, err

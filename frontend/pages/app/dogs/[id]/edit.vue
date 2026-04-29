@@ -1,30 +1,26 @@
 <template>
   <div class="bg-[#DBD8D0] min-h-full pb-32 md:pb-16">
-
-    <!-- ─── Heading ─── -->
     <div class="max-w-[1000px] mx-auto px-6 pt-10 pb-6 text-center">
-      <h1 class="text-[32px] md:text-[42px] font-extrabold text-[#382615] font-jakarta leading-tight mb-2">
-        Editar a {{ form.name || 'tu perro' }}
+      <h1
+        class="text-[32px] md:text-[42px] font-extrabold text-[#382615] font-jakarta leading-tight mb-2"
+      >
+        Editar a {{ form.name || 'tu can' }}
       </h1>
       <p class="text-[#4f4539] text-lg">Actualizá la información de tu compañero.</p>
     </div>
 
-    <!-- ─── Desktop grid ─── -->
     <div class="hidden md:grid max-w-[1000px] mx-auto px-6 grid-cols-12 gap-8">
-
-      <!-- Left col: form -->
       <div class="col-span-7 space-y-6">
-
-        <!-- Vital Statistics -->
         <div class="bg-white rounded-2xl shadow-[0_4px_20px_rgba(113,62,24,0.08)] p-8 space-y-6">
           <h2 class="text-2xl font-bold text-[#7d571e] font-jakarta border-b border-[#ffeadb] pb-3">
             Estadísticas Vitales
           </h2>
 
-          <!-- Name + Breed -->
           <div class="grid grid-cols-2 gap-5">
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta">Nombre del perro</label>
+              <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta"
+                >Nombre del can</label
+              >
               <input
                 v-model="form.name"
                 type="text"
@@ -34,7 +30,9 @@
               />
             </div>
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta">Raza</label>
+              <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta"
+                >Raza</label
+              >
               <div class="relative">
                 <select
                   v-model="form.breed"
@@ -44,7 +42,10 @@
                   <option value="">Seleccioná la raza</option>
                   <option v-for="b in breeds" :key="b" :value="b">{{ b }}</option>
                 </select>
-                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#4f4539]">expand_more</span>
+                <span
+                  class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#4f4539]"
+                  >expand_more</span
+                >
               </div>
             </div>
           </div>
@@ -52,8 +53,12 @@
           <!-- Age slider -->
           <div class="flex flex-col gap-3">
             <div class="flex justify-between items-center">
-              <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta">Edad</label>
-              <span class="text-[#7d571e] font-bold font-jakarta">{{ form.age }} {{ form.age === 1 ? 'año' : 'años' }}</span>
+              <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta"
+                >Edad</label
+              >
+              <span class="text-[#7d571e] font-bold font-jakarta"
+                >{{ form.age }} {{ form.age === 1 ? 'año' : 'años' }}</span
+              >
             </div>
             <input
               v-model.number="form.age"
@@ -65,37 +70,53 @@
           </div>
 
           <!-- Sex + Size -->
-          <div class="grid grid-cols-2 gap-5">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta">Sexo</label>
+              <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta"
+                >Sexo</label
+              >
               <div class="flex p-1 bg-[#fff1e8] rounded-xl w-full">
                 <button
                   type="button"
                   class="flex-1 py-2 px-4 rounded-[10px] font-bold transition-all text-sm font-jakarta"
-                  :class="form.sex === 'male' ? 'bg-white text-[#7d571e] shadow-sm' : 'text-[#4f4539]'"
+                  :class="
+                    form.sex === 'male' ? 'bg-white text-[#7d571e] shadow-sm' : 'text-[#4f4539]'
+                  "
                   @click="form.sex = 'male'"
-                >Macho</button>
+                >
+                  Macho
+                </button>
                 <button
                   type="button"
                   class="flex-1 py-2 px-4 rounded-[10px] font-bold transition-all text-sm font-jakarta"
-                  :class="form.sex === 'female' ? 'bg-white text-[#7d571e] shadow-sm' : 'text-[#4f4539]'"
+                  :class="
+                    form.sex === 'female' ? 'bg-white text-[#7d571e] shadow-sm' : 'text-[#4f4539]'
+                  "
                   @click="form.sex = 'female'"
-                >Hembra</button>
+                >
+                  Hembra
+                </button>
               </div>
             </div>
             <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta">Tamaño</label>
+              <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta"
+                >Tamaño</label
+              >
               <div class="flex gap-2">
                 <button
                   v-for="s in sizes"
                   :key="s.value"
                   type="button"
                   class="px-4 py-2 rounded-full border text-sm font-medium transition-all"
-                  :class="form.size === s.value
-                    ? 'bg-[#B78F64]/10 border-[#B78F64] text-[#B78F64] font-bold'
-                    : 'border-[#DBD8D0] text-[#4f4539] hover:border-[#B78F64]'"
+                  :class="
+                    form.size === s.value
+                      ? 'bg-[#B78F64]/10 border-[#B78F64] text-[#B78F64] font-bold'
+                      : 'border-[#DBD8D0] text-[#4f4539] hover:border-[#B78F64]'
+                  "
                   @click="form.size = s.value"
-                >{{ s.label }}</button>
+                >
+                  {{ s.label }}
+                </button>
               </div>
             </div>
           </div>
@@ -104,98 +125,130 @@
         <!-- About -->
         <div class="bg-white rounded-2xl shadow-[0_4px_20px_rgba(113,62,24,0.08)] p-8 space-y-6">
           <h2 class="text-2xl font-bold text-[#7d571e] font-jakarta border-b border-[#ffeadb] pb-3">
-            Sobre {{ form.name || 'tu perro' }}
+            Sobre {{ form.name || 'tu can' }}
           </h2>
 
           <!-- Personality tags -->
           <div class="flex flex-col gap-2">
-            <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta">Personalidad</label>
+            <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta"
+              >Personalidad</label
+            >
             <div class="flex flex-wrap gap-2">
               <button
                 v-for="tag in personalityOptions"
                 :key="tag"
                 type="button"
                 class="px-4 py-1.5 rounded-full text-sm font-medium transition-all border"
-                :class="form.personality_tags.includes(tag)
-                  ? 'bg-[#B78F64]/10 border-[#B78F64] text-[#B78F64] font-bold'
-                  : 'bg-[#ffeadb] border-transparent text-[#4f4539] hover:bg-[#fdddc3]'"
+                :class="
+                  form.personality_tags.includes(tag)
+                    ? 'bg-[#B78F64]/10 border-[#B78F64] text-[#B78F64] font-bold'
+                    : 'bg-[#ffeadb] border-transparent text-[#4f4539] hover:bg-[#fdddc3]'
+                "
                 @click="toggleTag(tag)"
-              >{{ tag }}</button>
+              >
+                {{ tag }}
+              </button>
             </div>
           </div>
 
           <!-- Bio -->
           <div class="flex flex-col gap-1.5">
             <div class="flex justify-between items-center">
-              <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta">Bio</label>
+              <label class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta"
+                >Bio</label
+              >
               <span class="text-xs text-[#4f4539]/60">{{ form.bio.length }} / 150</span>
             </div>
             <textarea
               v-model="form.bio"
               maxlength="150"
               rows="4"
-              placeholder="Contanos qué hace especial a tu perro..."
+              placeholder="Contanos qué hace especial a tu can..."
               class="w-full bg-white border border-[#DBD8D0] rounded-xl px-4 py-3 focus:border-[#B78F64] focus:ring-0 outline-none transition-all resize-none"
             />
           </div>
         </div>
-
       </div>
 
       <!-- Right col: photos + CTA -->
       <div class="col-span-5 space-y-6">
-
         <!-- Photos -->
         <div class="bg-white rounded-2xl shadow-[0_4px_20px_rgba(113,62,24,0.08)] p-8">
-          <h2 class="text-2xl font-bold text-[#7d571e] font-jakarta border-b border-[#ffeadb] pb-3 mb-5">
+          <h2
+            class="text-2xl font-bold text-[#7d571e] font-jakarta border-b border-[#ffeadb] pb-3 mb-5"
+          >
             Fotos (hasta 5)
           </h2>
 
-          <!-- Grid preview (existing + new) -->
+          <!-- Grid 3 filas × 2 columnas — todas las fotos visibles y arrastrables -->
           <div class="grid grid-cols-2 gap-2 mb-4">
+            <!-- Fotos arrastrables -->
             <div
-              v-for="i in 2"
-              :key="i"
-              class="aspect-square rounded-xl overflow-hidden relative"
+              v-for="(photo, i) in photos"
+              :key="photo.url"
+              draggable="true"
+              class="aspect-[4/3] rounded-xl overflow-hidden relative cursor-grab active:cursor-grabbing select-none transition-opacity"
+              :class="dragIndex === i ? 'opacity-40' : 'opacity-100'"
+              @dragstart="onDragStart(i)"
+              @dragover.prevent="onDragOver(i)"
+              @dragend="onDragEnd"
             >
-              <template v-if="allPhotos[i - 1]">
-                <img :src="allPhotos[i - 1]" class="w-full h-full object-cover" />
-                <button
-                  type="button"
-                  class="absolute top-2 right-2 bg-black/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-500 transition-colors"
-                  @click="removePhoto(i - 1)"
-                >
-                  <span class="material-symbols-outlined text-sm leading-none">close</span>
-                </button>
-              </template>
-              <div
-                v-else
-                class="w-full h-full border-2 border-dashed border-[#DBD8D0] bg-[#fff1e8] flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-[#F4C07D] transition-all"
-                @click="triggerFileInput"
+              <img :src="photo.url" class="w-full h-full object-cover pointer-events-none" />
+              <!-- Badge de orden -->
+              <span
+                class="absolute top-2 left-2 bg-black/40 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center font-jakarta"
+                >{{ i + 1 }}</span
               >
-                <span class="material-symbols-outlined text-[#4f4539]/50">add_a_photo</span>
-                <span class="text-[10px] font-bold uppercase text-[#4f4539]/50">Subir</span>
-              </div>
+              <!-- Eliminar -->
+              <button
+                type="button"
+                class="absolute top-2 right-2 bg-black/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-500 transition-colors"
+                @click.stop="removePhoto(i)"
+              >
+                <span class="material-symbols-outlined text-sm leading-none">close</span>
+              </button>
+              <!-- Grip hint -->
+              <span
+                class="material-symbols-outlined absolute bottom-1.5 left-1/2 -translate-x-1/2 text-white/50 text-base pointer-events-none"
+                >drag_indicator</span
+              >
+            </div>
+
+            <!-- Slots vacíos para subir -->
+            <div
+              v-for="j in 5 - photos.length"
+              :key="'slot-' + j"
+              class="aspect-[4/3] rounded-xl border-2 border-dashed border-[#DBD8D0] bg-[#fff1e8] flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-[#F4C07D] transition-all"
+              @click="triggerFileInput"
+            >
+              <span class="material-symbols-outlined text-[#4f4539]/50">add_a_photo</span>
+              <span class="text-[10px] font-bold uppercase text-[#4f4539]/50">Subir</span>
             </div>
           </div>
 
-          <!-- Drop zone -->
+          <!-- Drop zone compacto -->
           <div
-            class="border-2 border-dashed border-[#DBD8D0] rounded-xl p-8 flex flex-col items-center text-center gap-3 bg-[#fff1e8]/30 hover:bg-[#fff1e8] transition-all cursor-pointer"
+            class="border-2 border-dashed border-[#DBD8D0] rounded-xl px-4 py-3 flex items-center justify-between gap-3 bg-[#fff1e8]/30 hover:bg-[#fff1e8] transition-all cursor-pointer"
             @click="triggerFileInput"
             @dragover.prevent
             @drop.prevent="handleDrop"
           >
-            <div class="w-12 h-12 rounded-full bg-[#F4C07D]/20 flex items-center justify-center text-[#7d571e]">
-              <span class="material-symbols-outlined">upload_file</span>
+            <div class="flex items-center gap-2 text-[#4f4539]">
+              <span class="material-symbols-outlined text-lg">upload_file</span>
+              <span class="text-sm font-medium">Arrastrá o elegí fotos</span>
             </div>
-            <div>
-              <p class="font-bold text-[#281808] text-sm">Arrastrá o elegí tus fotos</p>
-              <p class="text-[#4f4539]/60 text-xs mt-0.5">JPEG o PNG, máx. 5MB cada una</p>
-            </div>
-            <span class="text-xs text-[#4f4539]/50 font-medium">{{ allPhotos.length }}/5 subidas</span>
+            <span class="text-xs text-[#4f4539]/50 font-medium shrink-0"
+              >{{ allPhotos.length }}/5</span
+            >
           </div>
-          <input ref="fileInput" type="file" accept="image/*" multiple class="hidden" @change="handleFileChange" />
+          <input
+            ref="fileInput"
+            type="file"
+            accept="image/*"
+            multiple
+            class="hidden"
+            @change="handleFileChange"
+          />
         </div>
 
         <!-- CTA -->
@@ -217,24 +270,18 @@
             Volver
           </NuxtLink>
         </div>
-
       </div>
     </div>
 
     <!-- ─── Mobile ─── -->
     <div class="md:hidden px-5 space-y-6">
-
       <!-- Photos -->
       <div>
         <p class="text-xs font-bold uppercase tracking-widest text-[#795832] mb-3 font-jakarta">
           Subí fotos (hasta 5)
         </p>
         <div class="grid grid-cols-3 gap-2">
-          <div
-            v-for="i in 5"
-            :key="i"
-            class="aspect-square rounded-xl overflow-hidden relative"
-          >
+          <div v-for="i in 5" :key="i" class="aspect-square rounded-xl overflow-hidden relative">
             <template v-if="allPhotos[i - 1]">
               <img :src="allPhotos[i - 1]" class="w-full h-full object-cover" />
               <button
@@ -254,12 +301,21 @@
             </div>
           </div>
         </div>
-        <input ref="fileInputMobile" type="file" accept="image/*" multiple class="hidden" @change="handleFileChange" />
+        <input
+          ref="fileInputMobile"
+          type="file"
+          accept="image/*"
+          multiple
+          class="hidden"
+          @change="handleFileChange"
+        />
       </div>
 
       <!-- Name -->
       <div class="flex flex-col gap-1.5">
-        <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta">Nombre del perro</label>
+        <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta"
+          >Nombre del can</label
+        >
         <input
           v-model="form.name"
           type="text"
@@ -272,7 +328,9 @@
       <!-- Breed + Age -->
       <div class="grid grid-cols-2 gap-4">
         <div class="flex flex-col gap-1.5">
-          <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta">Raza</label>
+          <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta"
+            >Raza</label
+          >
           <input
             v-model="form.breed"
             type="text"
@@ -282,7 +340,9 @@
           />
         </div>
         <div class="flex flex-col gap-1.5">
-          <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta">Edad (años)</label>
+          <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta"
+            >Edad (años)</label
+          >
           <input
             v-model.number="form.age"
             type="number"
@@ -296,60 +356,84 @@
 
       <!-- Sex -->
       <div class="flex flex-col gap-1.5">
-        <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta">Sexo</label>
+        <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta"
+          >Sexo</label
+        >
         <div class="flex p-1 bg-[#fff1e8] rounded-xl">
           <button
             type="button"
             class="flex-1 h-12 rounded-[10px] font-bold transition-all font-jakarta"
-            :class="form.sex === 'male' ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#4f4539]'"
+            :class="
+              form.sex === 'male' ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#4f4539]'
+            "
             @click="form.sex = 'male'"
-          >Macho</button>
+          >
+            Macho
+          </button>
           <button
             type="button"
             class="flex-1 h-12 rounded-[10px] font-bold transition-all font-jakarta"
-            :class="form.sex === 'female' ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#4f4539]'"
+            :class="
+              form.sex === 'female' ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#4f4539]'
+            "
             @click="form.sex = 'female'"
-          >Hembra</button>
+          >
+            Hembra
+          </button>
         </div>
       </div>
 
       <!-- Size -->
       <div class="flex flex-col gap-1.5">
-        <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta">Tamaño</label>
+        <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta"
+          >Tamaño</label
+        >
         <div class="flex gap-2">
           <button
             v-for="s in sizes"
             :key="s.value"
             type="button"
             class="flex-1 py-2.5 rounded-xl border text-sm font-bold transition-all font-jakarta"
-            :class="form.size === s.value
-              ? 'bg-[#F4C07D] border-[#F4C07D] text-[#382615]'
-              : 'border-[#DBD8D0] bg-white text-[#4f4539]'"
+            :class="
+              form.size === s.value
+                ? 'bg-[#F4C07D] border-[#F4C07D] text-[#382615]'
+                : 'border-[#DBD8D0] bg-white text-[#4f4539]'
+            "
             @click="form.size = s.value"
-          >{{ s.label }}</button>
+          >
+            {{ s.label }}
+          </button>
         </div>
       </div>
 
       <!-- Personality -->
       <div class="flex flex-col gap-2">
-        <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta">Personalidad</label>
+        <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta"
+          >Personalidad</label
+        >
         <div class="flex flex-wrap gap-2">
           <button
             v-for="tag in personalityOptions"
             :key="tag"
             type="button"
             class="px-3 py-1.5 rounded-full text-sm font-medium transition-all border"
-            :class="form.personality_tags.includes(tag)
-              ? 'bg-[#F4C07D] border-[#F4C07D] text-[#382615] font-bold'
-              : 'bg-white border-[#DBD8D0] text-[#4f4539]'"
+            :class="
+              form.personality_tags.includes(tag)
+                ? 'bg-[#F4C07D] border-[#F4C07D] text-[#382615] font-bold'
+                : 'bg-white border-[#DBD8D0] text-[#4f4539]'
+            "
             @click="toggleTag(tag)"
-          >{{ tag }}</button>
+          >
+            {{ tag }}
+          </button>
         </div>
       </div>
 
       <!-- Bio -->
       <div class="flex flex-col gap-1.5">
-        <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta">Bio</label>
+        <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta"
+          >Bio</label
+        >
         <textarea
           v-model="form.bio"
           maxlength="150"
@@ -360,11 +444,12 @@
       </div>
 
       <p v-if="error" class="text-red-500 text-sm text-center">{{ error }}</p>
-
     </div>
 
     <!-- Mobile fixed CTA -->
-    <div class="md:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md px-6 py-5 border-t border-[#DBD8D0]/50 z-50">
+    <div
+      class="md:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md px-6 py-5 border-t border-[#DBD8D0]/50 z-50"
+    >
       <button
         type="button"
         :disabled="saving"
@@ -372,10 +457,14 @@
         @click="handleSubmit"
       >
         <span>{{ saving ? 'Guardando...' : 'Guardar cambios' }}</span>
-        <span v-if="!saving" class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">edit</span>
+        <span
+          v-if="!saving"
+          class="material-symbols-outlined"
+          style="font-variation-settings: 'FILL' 1"
+          >edit</span
+        >
       </button>
     </div>
-
   </div>
 </template>
 
@@ -387,11 +476,15 @@ const dogsStore = useDogsStore()
 const router = useRouter()
 const id = route.params.id as string
 
+interface PhotoItem {
+  url: string
+  file?: File
+}
+
 const fileInput = ref<HTMLInputElement | null>(null)
 const fileInputMobile = ref<HTMLInputElement | null>(null)
-const photoFiles = ref<File[]>([])
-const photoPreviews = ref<string[]>([])
-const existingPhotos = ref<string[]>([])
+const photos = ref<PhotoItem[]>([])
+const dragIndex = ref<number | null>(null)
 const saving = ref(false)
 const error = ref('')
 const loading = ref(true)
@@ -407,10 +500,26 @@ const form = reactive({
 })
 
 const breeds = [
-  'Labrador Retriever', 'Golden Retriever', 'French Bulldog', 'Pastor Alemán',
-  'Bulldog', 'Poodle', 'Beagle', 'Rottweiler', 'Yorkshire Terrier', 'Dachshund',
-  'Boxer', 'Border Collie', 'Shih Tzu', 'Maltés', 'Cocker Spaniel', 'Doberman',
-  'Australian Shepherd', 'Siberian Husky', 'Chihuahua', 'Mestizo',
+  'Labrador Retriever',
+  'Golden Retriever',
+  'French Bulldog',
+  'Pastor Alemán',
+  'Bulldog',
+  'Poodle',
+  'Beagle',
+  'Rottweiler',
+  'Yorkshire Terrier',
+  'Dachshund',
+  'Boxer',
+  'Border Collie',
+  'Shih Tzu',
+  'Maltés',
+  'Cocker Spaniel',
+  'Doberman',
+  'Australian Shepherd',
+  'Siberian Husky',
+  'Chihuahua',
+  'Mestizo',
 ]
 
 const sizes = [
@@ -420,11 +529,17 @@ const sizes = [
 ]
 
 const personalityOptions = [
-  'Juguetón', 'Amigable', 'Tranquilo', 'Enérgico',
-  'Tímido', 'Protector', 'Cariñoso', 'Activo',
+  'Juguetón',
+  'Amigable',
+  'Tranquilo',
+  'Enérgico',
+  'Tímido',
+  'Protector',
+  'Cariñoso',
+  'Activo',
 ]
 
-const allPhotos = computed(() => [...existingPhotos.value, ...photoPreviews.value])
+const allPhotos = computed(() => photos.value.map((p) => p.url))
 
 onMounted(async () => {
   loading.value = true
@@ -439,7 +554,7 @@ onMounted(async () => {
       form.size = dog.size ?? 'medium'
       form.bio = dog.bio ?? ''
       form.personality_tags = dog.personality_tags ?? []
-      existingPhotos.value = dog.photos ?? []
+      photos.value = (dog.photos ?? []).map((url: string) => ({ url }))
     }
   } finally {
     loading.value = false
@@ -470,31 +585,54 @@ function handleDrop(e: DragEvent) {
 function addFiles(files: FileList | null) {
   if (!files) return
   for (const file of Array.from(files)) {
-    if (allPhotos.value.length >= 5) break
-    photoFiles.value.push(file)
-    photoPreviews.value.push(URL.createObjectURL(file))
+    if (photos.value.length >= 5) break
+    photos.value.push({ url: URL.createObjectURL(file), file })
   }
 }
 
 function removePhoto(index: number) {
-  if (index < existingPhotos.value.length) {
-    existingPhotos.value.splice(index, 1)
-  } else {
-    const newIdx = index - existingPhotos.value.length
-    URL.revokeObjectURL(photoPreviews.value[newIdx])
-    photoFiles.value.splice(newIdx, 1)
-    photoPreviews.value.splice(newIdx, 1)
-  }
+  const item = photos.value[index]
+  if (item?.file) URL.revokeObjectURL(item.url)
+  photos.value.splice(index, 1)
+}
+
+function onDragStart(index: number) {
+  dragIndex.value = index
+}
+
+function onDragOver(targetIndex: number) {
+  if (dragIndex.value === null || dragIndex.value === targetIndex) return
+  const moved = photos.value.splice(dragIndex.value, 1)[0]
+  photos.value.splice(targetIndex, 0, moved)
+  dragIndex.value = targetIndex
+}
+
+function onDragEnd() {
+  dragIndex.value = null
 }
 
 async function handleSubmit() {
   error.value = ''
   if (!form.name.trim()) {
-    error.value = 'El nombre del perro es obligatorio.'
+    error.value = 'El nombre del can es obligatorio.'
     return
   }
   saving.value = true
   try {
+    // Subir fotos nuevas primero y capturar sus URLs del servidor
+    const newItems = photos.value.filter((p) => p.file)
+    const uploadedURLs: string[] = []
+    for (const item of newItems) {
+      const dog = await dogsStore.uploadPhoto(id, item.file!)
+      uploadedURLs.push(dog.photos[dog.photos.length - 1])
+    }
+
+    // Construir el orden final reemplazando blob URLs por URLs del servidor
+    let uploadIdx = 0
+    const finalPhotos = photos.value.map((item) =>
+      item.file ? uploadedURLs[uploadIdx++] : item.url
+    )
+
     await dogsStore.updateDog(id, {
       name: form.name.trim(),
       breed: form.breed.trim(),
@@ -503,11 +641,8 @@ async function handleSubmit() {
       size: form.size,
       bio: form.bio.trim(),
       personality_tags: form.personality_tags,
+      photos: finalPhotos,
     })
-
-    for (const file of photoFiles.value) {
-      await dogsStore.uploadPhoto(id, file)
-    }
 
     await router.push('/app/dogs')
   } catch {
@@ -524,7 +659,7 @@ async function handleSubmit() {
   height: 24px;
   width: 24px;
   border-radius: 50%;
-  background: #F4C07D;
+  background: #f4c07d;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(113, 62, 24, 0.2);
 }

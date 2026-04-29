@@ -37,3 +37,10 @@ func (c *Client) UploadImage(ctx context.Context, file multipart.File) (string, 
 	}
 	return resp.SecureURL, nil
 }
+
+func (c *Client) DeleteImage(ctx context.Context, publicID string) error {
+	_, err := c.cld.Upload.Destroy(ctx, uploader.DestroyParams{
+		PublicID: publicID,
+	})
+	return err
+}

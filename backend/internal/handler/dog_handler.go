@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -116,20 +117,29 @@ func (h *DogHandler) Update(c *gin.Context) {
 	}
 
 	var req struct {
-		Name            string   `json:"name" binding:"required"`
-		Breed           string   `json:"breed"`
-		Bio             string   `json:"bio"`
-		Sex             string   `json:"sex"`
-		Size            string   `json:"size"`
-		Age             int      `json:"age"`
-		PersonalityTags []string `json:"personality_tags"`
-		Latitude        float64  `json:"latitude"`
-		Longitude       float64  `json:"longitude"`
+		Name            string    `json:"name" binding:"required"`
+		Breed           string    `json:"breed"`
+		Bio             string    `json:"bio"`
+		Sex             string    `json:"sex"`
+		Size            string    `json:"size"`
+		Age             int       `json:"age"`
+		PersonalityTags []string  `json:"personality_tags"`
+		Latitude        float64   `json:"latitude"`
+		Longitude       float64   `json:"longitude"`
+		Photos          *[]string `json:"photos"`
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+
+	// Capture old photos before update to detect removals
+	var oldPhotos []string
+	if req.Photos != nil && h.cloudinary.IsConfigured() {
+		if oldDog, err := h.dogService.GetByID(uint(dogID)); err == nil {
+			oldPhotos = []string(oldDog.Photos)
+		}
 	}
 
 	dog, err := h.dogService.Update(uint(dogID), userID, service.DogInput{
@@ -142,6 +152,7 @@ func (h *DogHandler) Update(c *gin.Context) {
 		PersonalityTags: req.PersonalityTags,
 		Latitude:        req.Latitude,
 		Longitude:       req.Longitude,
+		Photos:          req.Photos,
 	})
 	if err != nil {
 		if err.Error() == "forbidden" {
@@ -152,7 +163,47 @@ func (h *DogHandler) Update(c *gin.Context) {
 		return
 	}
 
+	// Delete removed photos from Cloudinary
+	if len(oldPhotos) > 0 && req.Photos != nil {
+		kept := make(map[string]bool, len(*req.Photos))
+		for _, u := range *req.Photos {
+			kept[u] = true
+		}
+		for _, u := range oldPhotos {
+			if !kept[u] {
+				if pid := cloudinaryPublicID(u); pid != "" {
+					h.cloudinary.DeleteImage(context.Background(), pid)
+				}
+			}
+		}
+	}
+
 	c.JSON(http.StatusOK, gin.H{"dog": dog})
+}
+
+// cloudinaryPublicID extracts the public ID from a Cloudinary URL.
+// e.g. https://res.cloudinary.com/cloud/image/upload/v123/folder/file.jpg → folder/file
+func cloudinaryPublicID(url string) string {
+	if !strings.Contains(url, "cloudinary.com") {
+		return ""
+	}
+	const marker = "/upload/"
+	idx := strings.Index(url, marker)
+	if idx == -1 {
+		return ""
+	}
+	path := url[idx+len(marker):]
+	// Strip version prefix (v1234567890/)
+	if len(path) > 1 && path[0] == 'v' {
+		if i := strings.Index(path, "/"); i != -1 {
+			path = path[i+1:]
+		}
+	}
+	// Strip extension
+	if i := strings.LastIndex(path, "."); i != -1 {
+		path = path[:i]
+	}
+	return path
 }
 
 func (h *DogHandler) Delete(c *gin.Context) {
