@@ -1,22 +1,18 @@
 <template>
   <div class="bg-[#DBD8D0] min-h-full pb-52 md:pb-16">
-    <!-- ─── Heading ─── -->
     <div class="max-w-[1000px] mx-auto px-6 pt-6 md:pt-10 pb-6 text-center">
       <h1
         class="text-[28px] md:text-[48px] font-extrabold text-[#382615] font-jakarta leading-tight mb-2"
       >
-        ¡Encontremos al amigo de {{ form.name || 'tu perro' }}!
+        ¡Encontremos al amigo de {{ form.name || 'tu can' }}!
       </h1>
       <p class="text-[#4f4539] text-base md:text-lg font-vietnam">
         Cuentanos todo sobre tu compañero peludo.
       </p>
     </div>
 
-    <!-- ─── Desktop grid ─── -->
     <div class="hidden md:grid max-w-[1000px] mx-auto px-6 grid-cols-12 gap-8">
-      <!-- Left col: form cards -->
       <div class="col-span-7 space-y-6">
-        <!-- Vital Statistics -->
         <div class="bg-white rounded-[16px] shadow-[0_4px_20px_rgba(113,62,24,0.08)] p-8 space-y-6">
           <h2
             class="text-2xl font-bold text-primary font-jakarta border-b border-surface-container pb-3"
@@ -24,11 +20,10 @@
             Estadísticas Vitales
           </h2>
 
-          <!-- Name + Breed -->
           <div class="grid grid-cols-2 gap-5">
             <div class="flex flex-col gap-1.5">
               <label class="text-label-md font-jakarta text-on-surface-variant"
-                >Nombre del perro</label
+                >Nombre del can</label
               >
               <input
                 v-model="form.name"
@@ -128,15 +123,13 @@
           </div>
         </div>
 
-        <!-- About card -->
         <div class="bg-white rounded-[16px] shadow-[0_4px_20px_rgba(113,62,24,0.08)] p-8 space-y-6">
           <h2
             class="text-2xl font-bold text-primary font-jakarta border-b border-surface-container pb-3"
           >
-            Sobre {{ form.name || 'tu perro' }}
+            Sobre {{ form.name || 'tu can' }}
           </h2>
 
-          <!-- Personality tags -->
           <div class="flex flex-col gap-2">
             <label class="text-label-md font-jakarta text-on-surface-variant">Personalidad</label>
             <div class="flex flex-wrap gap-2">
@@ -173,7 +166,7 @@
               v-model="form.bio"
               maxlength="150"
               rows="4"
-              placeholder="Cuentanos qué hace especial a tu perro..."
+              placeholder="Cuentanos qué hace especial a tu can..."
               class="w-full bg-white border-[1.5px] border-[#DBD8D0] rounded-[16px] px-4 py-3 focus:border-[#B78F64] focus:ring-0 outline-none transition-all resize-none custom-scrollbar"
             />
           </div>
@@ -201,7 +194,7 @@
                 <img
                   :src="photoPreviews[i - 1]"
                   class="w-full h-full object-cover"
-                  alt="Foto del perro"
+                  alt="Foto del can"
                 />
                 <button
                   type="button"
@@ -289,7 +282,7 @@
               <img
                 :src="photoPreviews[i - 1]"
                 class="w-full h-full object-cover"
-                alt="Foto del perro"
+                alt="Foto del can"
               />
               <button
                 type="button"
@@ -320,10 +313,9 @@
         />
       </div>
 
-      <!-- Name -->
       <div class="flex flex-col gap-1.5">
         <label class="text-xs font-bold uppercase tracking-widest text-secondary font-jakarta"
-          >Nombre del perro</label
+          >Nombre del can</label
         >
         <input
           v-model="form.name"
@@ -334,7 +326,6 @@
         />
       </div>
 
-      <!-- Breed + Age -->
       <div class="grid grid-cols-2 gap-4">
         <div class="flex flex-col gap-1.5">
           <label class="text-xs font-bold uppercase tracking-widest text-secondary font-jakarta"
@@ -453,7 +444,7 @@
           v-model="form.bio"
           maxlength="150"
           rows="3"
-          placeholder="Contanos sobre los juguetes y hobbies favoritos de tu perro..."
+          placeholder="Contanos sobre los juguetes y hobbies favoritos de tu can..."
           class="w-full p-4 bg-white border border-[#DBD8D0] rounded-xl focus:border-[#B78F64] focus:ring-0 outline-none transition-all resize-none shadow-sm"
         />
       </div>
@@ -585,7 +576,7 @@ function removePhoto(index: number) {
 async function handleSubmit() {
   error.value = ''
   if (!form.name.trim()) {
-    error.value = 'El nombre del perro es obligatorio.'
+    error.value = 'El nombre del can es obligatorio.'
     return
   }
   saving.value = true
@@ -605,7 +596,7 @@ async function handleSubmit() {
     }
 
     await router.push('/app/dogs')
-  } catch (e: any) {
+  } catch {
     error.value = 'No se pudo guardar. Intentá de nuevo.'
   } finally {
     saving.value = false

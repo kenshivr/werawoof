@@ -46,18 +46,18 @@ definePageMeta({ layout: false })
             >
             <h2 class="text-h2 font-h2 text-on-surface font-jakarta mb-6">¿Qué es WeraWoof?</h2>
             <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">
-              WeraWoof es una plataforma que conecta a dueños de perros para que sus peludos
+              WeraWoof es una plataforma que conecta a dueños de canes para que sus peludos
               encuentren compañeros de juego, aventura y cariño. Como Tinder, pero para los que ya
               tienen dueño en el corazón.
             </p>
             <p class="text-body-md text-on-surface-variant leading-relaxed">
-              Creemos que cada perro merece tener una red de amigos tan grande como su energía, y
-              que cada dueño merece una comunidad que entiende lo mucho que vale un perro en la vida
-              de una persona.
+              Creemos que cada can merece tener una red de amigos tan grande como su energía, y que
+              cada dueño merece una comunidad que entiende lo mucho que vale un can en la vida de
+              una persona.
             </p>
           </div>
           <div class="relative h-[400px] rounded-3xl overflow-hidden shadow-xl">
-            <img :src="'/images/piso.jpeg'" alt="WeraWoof" class="w-full h-full object-cover" />
+            <img :src="'/images/piso.webp'" alt="WeraWoof" class="w-full h-full object-cover" />
             <div class="absolute inset-0 bg-gradient-to-t from-[#382615]/40 to-transparent" />
             <div class="absolute bottom-6 left-6 right-6">
               <div
@@ -103,19 +103,19 @@ definePageMeta({ layout: false })
           <div class="order-1 md:order-2">
             <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">
               Wera era la perrita de mi novia. Una compañera de 7 años llena de vida, carácter y ese
-              amor incondicional que solo los perros saben dar. Cuando la conocí a ella, conocí
+              amor incondicional que solo los canes saben dar. Cuando la conocí a ella, conocí
               también a Wera y a su hermana Canela.
             </p>
             <p class="text-body-md text-on-surface-variant leading-relaxed mb-6">
-              Debo ser honesto: yo no siempre tuve una buena relación con los perros. Malas
+              Debo ser honesto: yo no siempre tuve una buena relación con los canes. Malas
               experiencias en mi infancia me hicieron mantener distancia. Pero Wera y Canela fueron
               distintas. Pacientes, cariñosas, sin juzgar. Me enseñaron, sin decir una palabra, que
-              los perros no son una amenaza — son una de las cosas más bonitas que le pueden pasar a
+              los canes no son una amenaza — son una de las cosas más bonitas que le pueden pasar a
               una persona.
             </p>
             <p class="text-body-md text-on-surface-variant leading-relaxed">
-              Gracias a ellas y a mi novia, me volví a enamorar de los perros. Y ese amor cambió
-              algo en mí.
+              Gracias a ellas y a mi novia, me volví a enamorar de los canes. Y ese amor cambió algo
+              en mí.
             </p>
           </div>
         </div>
@@ -143,14 +143,14 @@ definePageMeta({ layout: false })
               Wera ya no está,<br />pero su historia sigue.
             </h3>
             <p class="text-body-lg text-white/80 leading-relaxed mb-4">
-              Su partida nos entristeció profundamente. Ese vacío que deja un perro cuando se va es
+              Su partida nos entristeció profundamente. Ese vacío que deja un can cuando se va es
               difícil de explicar si no lo has vivido, pero quien lo ha sentido sabe exactamente de
               qué se habla.
             </p>
             <p class="text-body-md text-white/70 leading-relaxed">
               Fue en ese momento cuando decidí que era hora de hacer algo que la honrara. De crear
               un espacio donde más personas pudieran vivir lo que yo viví con ella — esa conexión
-              única entre humanos y perritos que transforma la vida. WeraWoof lleva su nombre porque
+              única entre humanos y canes que transforma la vida. WeraWoof lleva su nombre porque
               lleva su espíritu.
             </p>
           </div>
@@ -171,10 +171,10 @@ definePageMeta({ layout: false })
               Desarrollador de Software · FES Acatlán, UNAM
             </p>
             <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">
-              Soy desarrollador de software egresado de la FES Acatlán. Con 2 años de experiencia
-              profesional, he trabajado en múltiples proyectos personales y de clientes que me han
-              permitido crecer técnicamente y entender que el mejor código es el que resuelve
-              problemas reales.
+              Soy desarrollador de software egresado de la FES Acatlán. Con más de 2 años de
+              experiencia profesional, he trabajado en múltiples proyectos personales y de clientes
+              que me han permitido crecer técnicamente y entender que el mejor código es el que
+              resuelve problemas reales.
             </p>
             <p class="text-body-md text-on-surface-variant leading-relaxed mb-8">
               WeraWoof es el proyecto más personal que he construido. No nació de una oportunidad de
@@ -196,7 +196,7 @@ definePageMeta({ layout: false })
               >
               <span
                 class="px-4 py-2 bg-white rounded-xl text-on-surface-variant text-sm font-medium shadow-sm"
-                >TypeScript</span
+                >Redis</span
               >
             </div>
           </div>
@@ -216,7 +216,9 @@ definePageMeta({ layout: false })
                 >school</span
               >
               <p class="text-h3 font-h3 text-on-surface font-jakarta">FES Acatlán</p>
-              <p class="text-body-md text-on-surface-variant">UNAM · Ingeniería en Computación</p>
+              <p class="text-body-md text-on-surface-variant">
+                UNAM · Matemáticas Aplicadas y Computación
+              </p>
             </div>
             <div class="bg-white rounded-2xl p-6 shadow-sm flex flex-col gap-2">
               <span

@@ -14,7 +14,7 @@
             <h1
               class="text-[32px] font-bold leading-tight tracking-tight text-[#281808] font-jakarta"
             >
-              {{ currentStep === 1 ? 'Sobre ti' : `¡Agreguemos a ${dogForm.name || 'tu perro'}!` }}
+              {{ currentStep === 1 ? 'Sobre ti' : `¡Agreguemos a ${dogForm.name || 'tu can'}!` }}
             </h1>
           </div>
           <span class="text-2xl font-bold text-[#281808] font-jakarta">
@@ -148,9 +148,7 @@
                   :disabled="saving || dogsStore.loading"
                   class="bg-[#F4C07D] text-[#382615] px-10 py-4 rounded-2xl font-bold text-xl font-jakarta shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 active:scale-95 flex items-center gap-3 disabled:opacity-60"
                 >
-                  {{
-                    saving ? 'Guardando...' : hasDogs ? 'Guardar cambios' : 'Siguiente: Tu perro'
-                  }}
+                  {{ saving ? 'Guardando...' : hasDogs ? 'Guardar cambios' : 'Siguiente: Tu can' }}
                   <span v-if="!saving" class="material-symbols-outlined">{{
                     hasDogs ? 'check' : 'arrow_forward'
                   }}</span>
@@ -189,7 +187,7 @@
                 <div class="flex flex-col gap-1.5">
                   <label
                     class="text-xs font-bold uppercase tracking-widest text-[#4f4539] font-jakarta"
-                    >Nombre del perro</label
+                    >Nombre del can</label
                   >
                   <input
                     v-model="dogForm.name"
@@ -307,7 +305,7 @@
               <h2
                 class="text-2xl font-bold text-[#7d571e] font-jakarta border-b border-[#ffeadb] pb-3"
               >
-                Sobre {{ dogForm.name || 'tu perro' }}
+                Sobre {{ dogForm.name || 'tu can' }}
               </h2>
 
               <!-- Personality tags -->
@@ -347,7 +345,7 @@
                   v-model="dogForm.bio"
                   maxlength="150"
                   rows="4"
-                  placeholder="Contanos qué hace especial a tu perro..."
+                  placeholder="Contanos qué hace especial a tu can..."
                   class="w-full bg-white border border-[#DBD8D0] rounded-xl px-4 py-3 focus:border-[#B78F64] focus:ring-0 outline-none transition-all resize-none"
                 />
               </div>
@@ -474,7 +472,7 @@
             <span class="material-symbols-outlined text-[16px]">{{
               currentStep === 1 ? 'account_circle' : 'pets'
             }}</span>
-            {{ currentStep === 1 ? 'Tu perfil' : 'Tu perro' }}
+            {{ currentStep === 1 ? 'Tu perfil' : 'Tu can' }}
           </span>
         </div>
       </div>
@@ -653,10 +651,9 @@
             />
           </div>
 
-          <!-- Name -->
           <div class="flex flex-col gap-1.5">
             <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta"
-              >Nombre del perro</label
+              >Nombre del can</label
             >
             <input
               v-model="dogForm.name"
@@ -995,7 +992,7 @@ const handleSaveStep1 = async () => {
 const handleSaveStep2 = async () => {
   error.value = ''
   if (!dogForm.name.trim()) {
-    error.value = 'El nombre del perro es obligatorio.'
+    error.value = 'El nombre del can es obligatorio.'
     return
   }
   saving.value = true
@@ -1006,7 +1003,6 @@ const handleSaveStep2 = async () => {
       avatarFile.value ?? undefined
     )
 
-    // Crear perro
     const dog = await dogsStore.createDog({
       name: dogForm.name.trim(),
       breed: dogForm.breed.trim(),

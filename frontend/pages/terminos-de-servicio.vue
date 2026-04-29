@@ -86,7 +86,7 @@ definePageMeta({ layout: false })
             <p class="text-[#5a3e28] leading-relaxed">
               WeraWoof es una plataforma digital
               <strong class="text-[#382615]">completamente gratuita</strong> que permite a dueños de
-              perros crear perfiles para sus mascotas, conectarse con otros dueños y organizar
+              canes crear perfiles para sus mascotas, conectarse con otros dueños y organizar
               encuentros. No cobramos ninguna tarifa por el uso del Servicio y no procesamos pagos
               de ningún tipo.
             </p>

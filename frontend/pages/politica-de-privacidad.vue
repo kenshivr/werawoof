@@ -31,8 +31,8 @@ definePageMeta({ layout: 'public' })
           ¿Quiénes somos?
         </h2>
         <p class="text-[#5a3e28] leading-relaxed">
-          WeraWoof es una plataforma digital gratuita que conecta a dueños de perros para fomentar
-          la socialización y el encuentro entre mascotas. Operamos en México y nuestros servicios no
+          WeraWoof es una plataforma digital gratuita que conecta a dueños de canes para fomentar la
+          socialización y el encuentro entre mascotas. Operamos en México y nuestros servicios no
           tienen ningún costo para el usuario. No procesamos ni almacenamos datos de pago de ningún
           tipo.
         </p>
@@ -65,7 +65,7 @@ definePageMeta({ layout: 'public' })
               >pets</span
             >
             <span
-              ><strong class="text-[#382615]">Datos de tu perro:</strong> nombre, raza, edad,
+              ><strong class="text-[#382615]">Datos de tu can:</strong> nombre, raza, edad,
               fotografías y descripción que tú mismo ingresas.</span
             >
           </li>
@@ -110,13 +110,13 @@ definePageMeta({ layout: 'public' })
             <span class="material-symbols-outlined text-[#F4C07D] text-lg mt-0.5 shrink-0"
               >check_circle</span
             >
-            Crear y gestionar tu cuenta y la de tu perro.
+            Crear y gestionar tu cuenta y la de tu can.
           </li>
           <li class="flex items-start gap-3">
             <span class="material-symbols-outlined text-[#F4C07D] text-lg mt-0.5 shrink-0"
               >check_circle</span
             >
-            Mostrarte perfiles de otros perros y facilitar conexiones entre usuarios.
+            Mostrarte perfiles de otros canes y facilitar conexiones entre usuarios.
           </li>
           <li class="flex items-start gap-3">
             <span class="material-symbols-outlined text-[#F4C07D] text-lg mt-0.5 shrink-0"
@@ -192,8 +192,8 @@ definePageMeta({ layout: 'public' })
               >La información publicada en WeraWoof es generada por los propios usuarios.</strong
             >
             WeraWoof no verifica, valida ni garantiza la exactitud, veracidad o actualidad de los
-            perfiles, fotografías, descripciones de perros u cualquier otro contenido publicado en
-            la plataforma.
+            perfiles, fotografías, descripciones de canes u cualquier otro contenido publicado en la
+            plataforma.
           </p>
           <p>
             WeraWoof actúa únicamente como intermediario tecnológico.

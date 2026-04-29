@@ -1,4 +1,27 @@
+# Env files
 .env
 .env.*
 *.env
 *.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+
+# Frontend build artifacts (handled in frontend/.gitignore too)
+frontend/.output/
+frontend/.nuxt/
+frontend/.nitro/
+frontend/.cache/
+frontend/dist/
+frontend/node_modules/
+
+# Backend binaries
+backend/main
+backend/main.exe
+backend/*.exe

@@ -1,24 +1,26 @@
 <template>
   <div class="min-h-full bg-[#DBD8D0]">
-
     <!-- Header -->
     <div class="max-w-5xl mx-auto px-6 pt-10 pb-6">
-      <h1 class="text-[32px] md:text-[40px] font-extrabold text-[#382615] font-jakarta leading-tight">
+      <h1
+        class="text-[32px] md:text-[40px] font-extrabold text-[#382615] font-jakarta leading-tight"
+      >
         Tus Matches
       </h1>
-      <p class="text-[#4f4539] mt-1">Los perritos que conectaron con el tuyo 🐾</p>
+      <p class="text-[#4f4539] mt-1">Los canes que conectaron con el tuyo 🐾</p>
     </div>
 
-    <!-- Dog selector (si tiene más de 1 perro) -->
     <div v-if="dogsStore.dogs.length > 1" class="max-w-5xl mx-auto px-6 mb-6">
       <div class="flex gap-2 flex-wrap">
         <button
           v-for="dog in dogsStore.dogs"
           :key="dog.id"
           class="flex items-center gap-2 px-4 py-2 rounded-full border-2 text-sm font-bold font-jakarta transition-all"
-          :class="String(selectedDogId) === String(dog.id)
-            ? 'bg-[#382615] border-[#382615] text-[#F4C07D]'
-            : 'bg-white border-[#DBD8D0] text-[#4f4539] hover:border-[#382615]'"
+          :class="
+            String(selectedDogId) === String(dog.id)
+              ? 'bg-[#382615] border-[#382615] text-[#F4C07D]'
+              : 'bg-white border-[#DBD8D0] text-[#4f4539] hover:border-[#382615]'
+          "
           @click="selectDog(String(dog.id))"
         >
           <img
@@ -26,23 +28,22 @@
             :src="dog.photos[0]"
             class="w-6 h-6 rounded-full object-cover"
           />
-          <span class="material-symbols-outlined text-base" v-else>pets</span>
+          <span v-else class="material-symbols-outlined text-base">pets</span>
           {{ dog.name }}
         </button>
       </div>
     </div>
 
     <div class="max-w-5xl mx-auto px-6 pb-24 md:pb-10">
-
-      <!-- Loading -->
       <div v-if="loading" class="flex items-center justify-center py-24">
-        <div class="w-10 h-10 border-4 border-[#F4C07D] border-t-transparent rounded-full animate-spin"></div>
+        <div
+          class="w-10 h-10 border-4 border-[#F4C07D] border-t-transparent rounded-full animate-spin"
+        />
       </div>
 
-      <!-- Sin perros -->
       <div v-else-if="dogsStore.dogs.length === 0" class="text-center py-24">
         <span class="material-symbols-outlined text-6xl text-[#d3c4b4] mb-4 block">pets</span>
-        <p class="text-[#4f4539] font-medium">Primero creá el perfil de tu perro para ver matches.</p>
+        <p class="text-[#4f4539] font-medium">Primero creá el perfil de tu can para ver matches.</p>
         <NuxtLink
           to="/app/profile"
           class="inline-block mt-4 bg-[#F4C07D] text-[#382615] font-bold px-6 py-3 rounded-xl font-jakarta"
@@ -53,10 +54,13 @@
 
       <!-- Sin matches -->
       <div v-else-if="!loading && matches.length === 0" class="text-center py-24">
-        <span class="material-symbols-outlined text-6xl text-[#d3c4b4] mb-4 block"
-          style="font-variation-settings: 'FILL' 1">favorite</span>
+        <span
+          class="material-symbols-outlined text-6xl text-[#d3c4b4] mb-4 block"
+          style="font-variation-settings: 'FILL' 1"
+          >favorite</span
+        >
         <p class="text-[#4f4539] font-semibold text-lg">Todavía no hay matches.</p>
-        <p class="text-[#4f4539]/60 text-sm mt-1">Explorá y dale like a otros perritos.</p>
+        <p class="text-[#4f4539]/60 text-sm mt-1">Explorá y dale like a otros canes.</p>
         <NuxtLink
           to="/app/dogs"
           class="inline-block mt-4 bg-[#F4C07D] text-[#382615] font-bold px-6 py-3 rounded-xl font-jakarta"
@@ -84,9 +88,14 @@
               <span class="material-symbols-outlined text-7xl text-[#d3c4b4]">pets</span>
             </div>
             <!-- Badge match -->
-            <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1 shadow-sm">
-              <span class="material-symbols-outlined text-red-400 text-sm"
-                style="font-variation-settings: 'FILL' 1">favorite</span>
+            <div
+              class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center gap-1 shadow-sm"
+            >
+              <span
+                class="material-symbols-outlined text-red-400 text-sm"
+                style="font-variation-settings: 'FILL' 1"
+                >favorite</span
+              >
               <span class="text-xs font-bold text-[#382615] font-jakarta">Match</span>
             </div>
           </div>
@@ -101,7 +110,9 @@
             </div>
             <p class="text-sm text-[#4f4539] mb-1">
               {{ otherDog(match)?.breed }}
-              <span v-if="otherDog(match)?.age"> · {{ otherDog(match)!.age }} {{ otherDog(match)!.age === 1 ? 'año' : 'años' }}</span>
+              <span v-if="otherDog(match)?.age">
+                · {{ otherDog(match)!.age }} {{ otherDog(match)!.age === 1 ? 'año' : 'años' }}</span
+              >
             </p>
             <p v-if="otherDog(match)?.bio" class="text-xs text-[#4f4539]/70 line-clamp-2 mb-4">
               {{ otherDog(match)!.bio }}
@@ -113,7 +124,8 @@
                 v-for="tag in otherDog(match)!.personality_tags!.slice(0, 3)"
                 :key="tag"
                 class="px-2 py-0.5 bg-[#fff1e8] text-[#7d571e] text-xs rounded-full font-medium"
-              >{{ tag }}</span>
+                >{{ tag }}</span
+              >
             </div>
 
             <NuxtLink
