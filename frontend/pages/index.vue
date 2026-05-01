@@ -1,5 +1,16 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
+
+const authStore = useAuthStore()
+const router = useRouter()
+
+const handleClubClick = () => {
+  if (authStore.isAuthenticated) {
+    router.push('/app/dogs')
+  } else {
+    router.push('/auth/login')
+  }
+}
 </script>
 
 <template>
@@ -186,6 +197,7 @@ definePageMeta({ layout: false })
             </div>
             <div
               class="col-span-12 md:col-span-5 row-span-1 bg-[#382615] rounded-2xl p-8 flex items-center justify-between group cursor-pointer overflow-hidden relative"
+              @click="handleClubClick"
             >
               <div class="z-10">
                 <h3 class="text-h3 font-h3 text-[#F4C07D] mb-2 font-jakarta">Únete al Club</h3>

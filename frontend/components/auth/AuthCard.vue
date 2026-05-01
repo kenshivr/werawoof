@@ -342,17 +342,20 @@ const copy = computed(() =>
               </div>
 
               <!-- Recuérdame + Olvidaste — solo login -->
-              <div v-if="!isRegister" class="flex items-center justify-between px-1">
+              <div
+                v-if="!isRegister"
+                class="flex flex-col items-center gap-2 px-1 md:flex-row md:justify-between"
+              >
                 <label class="flex items-center gap-3 cursor-pointer select-none">
                   <input
                     type="checkbox"
                     class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary-container"
                   />
-                  <span class="text-body-md text-on-surface-variant">Recuérdame</span>
+                  <span class="text-sm text-on-surface-variant md:text-body-md">Recuérdame</span>
                 </label>
                 <NuxtLink
                   to="/auth/forgot-password"
-                  class="text-label-md font-label-md text-primary hover:underline md:hidden"
+                  class="text-sm text-primary hover:underline md:hidden md:text-label-md md:font-label-md"
                   >¿Olvidaste tu contraseña?</NuxtLink
                 >
               </div>

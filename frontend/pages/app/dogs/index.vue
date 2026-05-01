@@ -93,10 +93,62 @@
               <span class="material-symbols-outlined text-base leading-none">edit</span>
               Editar
             </NuxtLink>
+            <button
+              type="button"
+              class="flex items-center gap-1.5 border border-red-200 text-red-500 px-3 py-2 rounded-xl text-sm font-medium hover:bg-red-50 hover:border-red-400 transition-all duration-200 active:scale-95"
+              @click="confirmDelete(dog)"
+            >
+              <span class="material-symbols-outlined text-base leading-none">delete</span>
+              <span class="hidden sm:inline">Eliminar</span>
+            </button>
           </div>
         </div>
       </div>
     </div>
+    <!-- Modal de confirmación de eliminación -->
+    <Teleport to="body">
+      <Transition name="fade">
+        <div
+          v-if="dogToDelete"
+          class="fixed inset-0 z-50 flex items-end sm:items-center justify-center px-4 pb-6 sm:pb-0"
+          @click.self="dogToDelete = null"
+        >
+          <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="dogToDelete = null" />
+          <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6 sm:p-8 z-10">
+            <div class="flex flex-col items-center text-center gap-4">
+              <div class="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-3xl text-red-500">delete</span>
+              </div>
+              <div>
+                <h2 class="text-xl font-extrabold text-[#281808] font-jakarta">
+                  ¿Eliminar a {{ dogToDelete.name }}?
+                </h2>
+                <p class="text-sm text-[#4f4539] mt-1.5">
+                  Esta acción no se puede deshacer. Se borrarán todas sus fotos y matches.
+                </p>
+              </div>
+              <div class="flex gap-3 w-full mt-2">
+                <button
+                  type="button"
+                  class="flex-1 h-12 border border-[#DBD8D0] text-[#4f4539] rounded-xl font-bold text-sm font-jakarta hover:bg-[#ffeadb] transition-colors"
+                  @click="dogToDelete = null"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  :disabled="deleting"
+                  class="flex-1 h-12 bg-red-500 text-white rounded-xl font-bold text-sm font-jakarta hover:bg-red-600 transition-colors disabled:opacity-60 active:scale-95"
+                  @click="executeDelete"
+                >
+                  {{ deleting ? 'Eliminando...' : 'Sí, eliminar' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
@@ -105,4 +157,33 @@ definePageMeta({ layout: 'app', middleware: 'auth' })
 
 const dogsStore = useDogsStore()
 onMounted(() => dogsStore.fetchDogs())
+
+const dogToDelete = ref<{ id: number; name: string } | null>(null)
+const deleting = ref(false)
+
+const confirmDelete = (dog: { id: number; name: string }) => {
+  dogToDelete.value = dog
+}
+
+const executeDelete = async () => {
+  if (!dogToDelete.value) return
+  deleting.value = true
+  try {
+    await dogsStore.deleteDog(String(dogToDelete.value.id))
+    dogToDelete.value = null
+  } finally {
+    deleting.value = false
+  }
+}
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
