@@ -23,7 +23,7 @@ const handleLogout = async () => {
         <img :src="'/images/logo-icon.webp'" alt="WeraWoof" class="md:hidden h-10 w-auto" />
       </NuxtLink>
 
-      <nav class="hidden md:flex items-center gap-8">
+      <nav class="hidden md:flex items-center gap-6">
         <NuxtLink
           to="/app"
           class="text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
@@ -43,6 +43,16 @@ const handleLogout = async () => {
           to="/comunidad"
           class="text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
           >Comunidad</NuxtLink
+        >
+        <NuxtLink
+          to="/quienes-somos"
+          class="text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
+          >Quiénes Somos</NuxtLink
+        >
+        <NuxtLink
+          to="/contacto"
+          class="text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
+          >Contacto</NuxtLink
         >
       </nav>
 
