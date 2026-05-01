@@ -180,41 +180,33 @@
             Fotos (hasta 5)
           </h2>
 
-          <!-- Grid 3 filas × 2 columnas — todas las fotos visibles y arrastrables -->
+          <!-- Grid de fotos arrastrables (desktop) -->
           <div class="grid grid-cols-2 gap-2 mb-4">
-            <!-- Fotos arrastrables -->
-            <div
-              v-for="(photo, i) in photos"
-              :key="photo.url"
-              draggable="true"
-              class="aspect-[4/3] rounded-xl overflow-hidden relative cursor-grab active:cursor-grabbing select-none transition-opacity"
-              :class="dragIndex === i ? 'opacity-40' : 'opacity-100'"
-              @dragstart="onDragStart(i)"
-              @dragover.prevent="onDragOver(i)"
-              @dragend="onDragEnd"
-            >
-              <img :src="photo.url" class="w-full h-full object-cover pointer-events-none" />
-              <!-- Badge de orden -->
-              <span
-                class="absolute top-2 left-2 bg-black/40 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center font-jakarta"
-                >{{ i + 1 }}</span
-              >
-              <!-- Eliminar -->
-              <button
-                type="button"
-                class="absolute top-2 right-2 bg-black/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-500 transition-colors"
-                @click.stop="removePhoto(i)"
-              >
-                <span class="material-symbols-outlined text-sm leading-none">close</span>
-              </button>
-              <!-- Grip hint -->
-              <span
-                class="material-symbols-outlined absolute bottom-1.5 left-1/2 -translate-x-1/2 text-white/50 text-base pointer-events-none"
-                >drag_indicator</span
-              >
-            </div>
+            <draggable v-model="photos" item-key="url" tag="div" class="contents" :animation="150">
+              <template #item="{ element: photo, index: i }">
+                <div
+                  class="aspect-[4/3] rounded-xl overflow-hidden relative cursor-grab active:cursor-grabbing select-none"
+                >
+                  <img :src="photo.url" class="w-full h-full object-cover pointer-events-none" />
+                  <span
+                    class="absolute top-2 left-2 bg-black/40 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center font-jakarta"
+                    >{{ i + 1 }}</span
+                  >
+                  <button
+                    type="button"
+                    class="absolute top-2 right-2 bg-black/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-500 transition-colors"
+                    @click.stop="removePhoto(i)"
+                  >
+                    <span class="material-symbols-outlined text-sm leading-none">close</span>
+                  </button>
+                  <span
+                    class="material-symbols-outlined absolute bottom-1.5 left-1/2 -translate-x-1/2 text-white/50 text-base pointer-events-none"
+                    >drag_indicator</span
+                  >
+                </div>
+              </template>
+            </draggable>
 
-            <!-- Slots vacíos para subir -->
             <div
               v-for="j in 5 - photos.length"
               :key="'slot-' + j"
@@ -281,24 +273,33 @@
           Subí fotos (hasta 5)
         </p>
         <div class="grid grid-cols-3 gap-2">
-          <div v-for="i in 5" :key="i" class="aspect-square rounded-xl overflow-hidden relative">
-            <template v-if="allPhotos[i - 1]">
-              <img :src="allPhotos[i - 1]" class="w-full h-full object-cover" />
-              <button
-                type="button"
-                class="absolute top-1 right-1 bg-black/50 text-white w-5 h-5 rounded-full flex items-center justify-center"
-                @click="removePhoto(i - 1)"
+          <draggable v-model="photos" item-key="url" tag="div" class="contents" :animation="150">
+            <template #item="{ element: photo, index: i }">
+              <div
+                class="aspect-square rounded-xl overflow-hidden relative cursor-grab active:cursor-grabbing select-none"
               >
-                <span class="material-symbols-outlined text-xs leading-none">close</span>
-              </button>
+                <img :src="photo.url" class="w-full h-full object-cover pointer-events-none" />
+                <span
+                  class="absolute top-1 left-1 bg-black/40 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center"
+                  >{{ i + 1 }}</span
+                >
+                <button
+                  type="button"
+                  class="absolute top-1 right-1 bg-black/50 text-white w-5 h-5 rounded-full flex items-center justify-center"
+                  @click.stop="removePhoto(i)"
+                >
+                  <span class="material-symbols-outlined text-xs leading-none">close</span>
+                </button>
+              </div>
             </template>
-            <div
-              v-else
-              class="w-full h-full border-2 border-dashed border-[#DBD8D0] bg-[#fff1e8] flex items-center justify-center cursor-pointer hover:border-[#F4C07D] transition-all"
-              @click="triggerFileInput"
-            >
-              <span class="material-symbols-outlined text-[#4f4539]/40 text-xl">add</span>
-            </div>
+          </draggable>
+          <div
+            v-for="j in 5 - photos.length"
+            :key="'empty-' + j"
+            class="aspect-square rounded-xl border-2 border-dashed border-[#DBD8D0] bg-[#fff1e8] flex items-center justify-center cursor-pointer hover:border-[#F4C07D] transition-all"
+            @click="triggerFileInput"
+          >
+            <span class="material-symbols-outlined text-[#4f4539]/40 text-xl">add</span>
           </div>
         </div>
         <input
@@ -469,6 +470,8 @@
 </template>
 
 <script setup lang="ts">
+import draggable from 'vuedraggable'
+
 definePageMeta({ layout: 'app', middleware: 'auth' })
 
 const route = useRoute()
@@ -484,7 +487,6 @@ interface PhotoItem {
 const fileInput = ref<HTMLInputElement | null>(null)
 const fileInputMobile = ref<HTMLInputElement | null>(null)
 const photos = ref<PhotoItem[]>([])
-const dragIndex = ref<number | null>(null)
 const saving = ref(false)
 const error = ref('')
 const loading = ref(true)
@@ -594,21 +596,6 @@ function removePhoto(index: number) {
   const item = photos.value[index]
   if (item?.file) URL.revokeObjectURL(item.url)
   photos.value.splice(index, 1)
-}
-
-function onDragStart(index: number) {
-  dragIndex.value = index
-}
-
-function onDragOver(targetIndex: number) {
-  if (dragIndex.value === null || dragIndex.value === targetIndex) return
-  const moved = photos.value.splice(dragIndex.value, 1)[0]
-  photos.value.splice(targetIndex, 0, moved)
-  dragIndex.value = targetIndex
-}
-
-function onDragEnd() {
-  dragIndex.value = null
 }
 
 async function handleSubmit() {

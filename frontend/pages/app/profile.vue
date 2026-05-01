@@ -362,53 +362,65 @@
                 Fotos (hasta 5)
               </h2>
 
-              <!-- Grid preview -->
+              <!-- Grid de fotos arrastrables (desktop) -->
               <div class="grid grid-cols-2 gap-2 mb-4">
-                <div
-                  v-for="i in 2"
-                  :key="i"
-                  class="aspect-square rounded-xl overflow-hidden relative"
+                <draggable
+                  v-model="dogPhotos"
+                  item-key="url"
+                  tag="div"
+                  class="contents"
+                  :animation="150"
                 >
-                  <template v-if="dogPhotoPreviews[i - 1]">
-                    <img :src="dogPhotoPreviews[i - 1]" class="w-full h-full object-cover" />
-                    <button
-                      type="button"
-                      class="absolute top-2 right-2 bg-black/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-500 transition-colors"
-                      @click="removeDogPhoto(i - 1)"
+                  <template #item="{ element: photo, index: i }">
+                    <div
+                      class="aspect-[4/3] rounded-xl overflow-hidden relative cursor-grab active:cursor-grabbing select-none"
                     >
-                      <span class="material-symbols-outlined text-sm leading-none">close</span>
-                    </button>
+                      <img
+                        :src="photo.url"
+                        class="w-full h-full object-cover pointer-events-none"
+                      />
+                      <span
+                        class="absolute top-2 left-2 bg-black/40 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center"
+                        >{{ i + 1 }}</span
+                      >
+                      <button
+                        type="button"
+                        class="absolute top-2 right-2 bg-black/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-500 transition-colors"
+                        @click.stop="removeDogPhoto(i)"
+                      >
+                        <span class="material-symbols-outlined text-sm leading-none">close</span>
+                      </button>
+                      <span
+                        class="material-symbols-outlined absolute bottom-1.5 left-1/2 -translate-x-1/2 text-white/50 text-base pointer-events-none"
+                        >drag_indicator</span
+                      >
+                    </div>
                   </template>
-                  <div
-                    v-else
-                    class="w-full h-full border-2 border-dashed border-[#DBD8D0] bg-[#fff1e8] flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-[#F4C07D] transition-all"
-                    @click="triggerDogFileInput"
-                  >
-                    <span class="material-symbols-outlined text-[#4f4539]/50">add_a_photo</span>
-                    <span class="text-[10px] font-bold uppercase text-[#4f4539]/50">Subir</span>
-                  </div>
+                </draggable>
+
+                <div
+                  v-for="j in 5 - dogPhotos.length"
+                  :key="'slot-' + j"
+                  class="aspect-[4/3] rounded-xl border-2 border-dashed border-[#DBD8D0] bg-[#fff1e8] flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-[#F4C07D] transition-all"
+                  @click="triggerDogFileInput"
+                >
+                  <span class="material-symbols-outlined text-[#4f4539]/50">add_a_photo</span>
+                  <span class="text-[10px] font-bold uppercase text-[#4f4539]/50">Subir</span>
                 </div>
               </div>
 
-              <!-- Drop zone -->
+              <!-- Drop zone compacto -->
               <div
-                class="border-2 border-dashed border-[#DBD8D0] rounded-xl p-8 flex flex-col items-center text-center gap-3 bg-[#fff1e8]/30 hover:bg-[#fff1e8] transition-all cursor-pointer"
+                class="border-2 border-dashed border-[#DBD8D0] rounded-xl px-4 py-3 flex items-center justify-between gap-3 bg-[#fff1e8]/30 hover:bg-[#fff1e8] transition-all cursor-pointer"
                 @click="triggerDogFileInput"
                 @dragover.prevent
                 @drop.prevent="handleDogDrop"
               >
-                <div
-                  class="w-12 h-12 rounded-full bg-[#F4C07D]/20 flex items-center justify-center text-[#7d571e]"
-                >
+                <div class="flex items-center gap-2 text-[#7d571e]">
                   <span class="material-symbols-outlined">upload_file</span>
+                  <span class="text-sm font-medium text-[#281808]">Arrastrá o elegí fotos</span>
                 </div>
-                <div>
-                  <p class="font-bold text-[#281808] text-sm">Arrastrá o elegí tus fotos</p>
-                  <p class="text-[#4f4539]/60 text-xs mt-0.5">JPEG o PNG, máx. 5MB cada una</p>
-                </div>
-                <span class="text-xs text-[#4f4539]/50 font-medium"
-                  >{{ dogPhotoPreviews.length }}/5 subidas</span
-                >
+                <span class="text-xs text-[#4f4539]/50 font-medium">{{ dogPhotos.length }}/5</span>
               </div>
               <input
                 ref="dogFileInput"
@@ -610,35 +622,46 @@
 
       <!-- STEP 2: Dog Profile Mobile -->
       <template v-if="currentStep === 2">
-        <div class="px-5 space-y-6">
+        <div class="px-5 space-y-6 pb-64">
           <!-- Photos -->
           <div>
             <p class="text-xs font-bold uppercase tracking-widest text-[#795832] mb-3 font-jakarta">
               Subí fotos (hasta 5)
             </p>
             <div class="grid grid-cols-3 gap-2">
-              <div
-                v-for="i in 5"
-                :key="i"
-                class="aspect-square rounded-xl overflow-hidden relative"
+              <draggable
+                v-model="dogPhotos"
+                item-key="url"
+                tag="div"
+                class="contents"
+                :animation="150"
               >
-                <template v-if="dogPhotoPreviews[i - 1]">
-                  <img :src="dogPhotoPreviews[i - 1]" class="w-full h-full object-cover" />
-                  <button
-                    type="button"
-                    class="absolute top-1 right-1 bg-black/50 text-white w-5 h-5 rounded-full flex items-center justify-center"
-                    @click="removeDogPhoto(i - 1)"
+                <template #item="{ element: photo, index: i }">
+                  <div
+                    class="aspect-square rounded-xl overflow-hidden relative cursor-grab active:cursor-grabbing select-none"
                   >
-                    <span class="material-symbols-outlined text-xs leading-none">close</span>
-                  </button>
+                    <img :src="photo.url" class="w-full h-full object-cover pointer-events-none" />
+                    <span
+                      class="absolute top-1 left-1 bg-black/40 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center"
+                      >{{ i + 1 }}</span
+                    >
+                    <button
+                      type="button"
+                      class="absolute top-1 right-1 bg-black/50 text-white w-5 h-5 rounded-full flex items-center justify-center"
+                      @click.stop="removeDogPhoto(i)"
+                    >
+                      <span class="material-symbols-outlined text-xs leading-none">close</span>
+                    </button>
+                  </div>
                 </template>
-                <div
-                  v-else
-                  class="w-full h-full border-2 border-dashed border-[#DBD8D0] bg-[#fff1e8] flex items-center justify-center cursor-pointer hover:border-[#F4C07D] transition-all"
-                  @click="triggerDogFileInput"
-                >
-                  <span class="material-symbols-outlined text-[#4f4539]/40 text-xl">add</span>
-                </div>
+              </draggable>
+              <div
+                v-for="j in 5 - dogPhotos.length"
+                :key="'empty-' + j"
+                class="aspect-square rounded-xl border-2 border-dashed border-[#DBD8D0] bg-[#fff1e8] flex items-center justify-center cursor-pointer hover:border-[#F4C07D] transition-all"
+                @click="triggerDogFileInput"
+              >
+                <span class="material-symbols-outlined text-[#4f4539]/40 text-xl">add</span>
               </div>
             </div>
             <input
@@ -791,7 +814,7 @@
 
         <!-- Fixed bottom CTA Step 2 -->
         <div
-          class="fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md px-6 py-5 border-t border-[#DBD8D0]/50 z-50"
+          class="fixed bottom-[72px] left-0 w-full bg-white/90 backdrop-blur-md px-6 py-5 border-t border-[#DBD8D0]/50 z-[60]"
         >
           <div class="max-w-md mx-auto space-y-3">
             <button
@@ -823,6 +846,8 @@
 </template>
 
 <script setup lang="ts">
+import draggable from 'vuedraggable'
+
 definePageMeta({ layout: 'app', middleware: 'auth' })
 
 const authStore = useAuthStore()
@@ -854,8 +879,11 @@ const dogForm = reactive({
   personality_tags: [] as string[],
 })
 
-const dogPhotoFiles = ref<File[]>([])
-const dogPhotoPreviews = ref<string[]>([])
+interface DogPhotoItem {
+  url: string
+  file: File
+}
+const dogPhotos = ref<DogPhotoItem[]>([])
 
 const breeds = [
   'Labrador Retriever',
@@ -943,16 +971,14 @@ const handleDogDrop = (e: DragEvent) => {
 const addDogFiles = (files: FileList | null) => {
   if (!files) return
   for (const file of Array.from(files)) {
-    if (dogPhotoFiles.value.length >= 5) break
-    dogPhotoFiles.value.push(file)
-    dogPhotoPreviews.value.push(URL.createObjectURL(file))
+    if (dogPhotos.value.length >= 5) break
+    dogPhotos.value.push({ url: URL.createObjectURL(file), file })
   }
 }
 
 const removeDogPhoto = (index: number) => {
-  URL.revokeObjectURL(dogPhotoPreviews.value[index])
-  dogPhotoFiles.value.splice(index, 1)
-  dogPhotoPreviews.value.splice(index, 1)
+  URL.revokeObjectURL(dogPhotos.value[index].url)
+  dogPhotos.value.splice(index, 1)
 }
 
 const toggleTag = (tag: string) => {
@@ -1013,8 +1039,8 @@ const handleSaveStep2 = async () => {
       personality_tags: dogForm.personality_tags,
     })
 
-    for (const file of dogPhotoFiles.value) {
-      await dogsStore.uploadPhoto(String(dog.id), file)
+    for (const item of dogPhotos.value) {
+      await dogsStore.uploadPhoto(String(dog.id), item.file)
     }
 
     await router.push('/app/dogs')
