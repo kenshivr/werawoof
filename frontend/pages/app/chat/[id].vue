@@ -79,7 +79,7 @@ const loadAllMatches = async () => {
     try {
       const dogMatches = await dogsStore.fetchMatches(String(dog.id))
       for (const m of dogMatches) matchMap.set(m.id, m)
-    } catch (_) {
+    } catch {
       // dog has no matches yet
     }
   }
@@ -100,7 +100,7 @@ const connectWS = () => {
         messages.value.push(msg)
         scrollToBottom()
       }
-    } catch (_) {
+    } catch {
       // ignore malformed WS messages
     }
   }
@@ -186,15 +186,18 @@ watch(matchId, async (id) => {
 
 <template>
   <div class="flex overflow-hidden" style="height: calc(100vh - 80px)">
-
     <!-- SIDEBAR — oculto en mobile, visible en md+ -->
-    <aside class="hidden md:flex w-[300px] lg:w-[340px] flex-col border-r border-[#d3c4b4] bg-white shrink-0">
-
+    <aside
+      class="hidden md:flex w-[300px] lg:w-[340px] flex-col border-r border-[#d3c4b4] bg-white shrink-0"
+    >
       <!-- Header -->
       <div class="p-5 border-b border-[#d3c4b4]">
         <h2 class="text-2xl font-extrabold text-[#281808] font-jakarta mb-4">Mensajes</h2>
         <div class="relative">
-          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#817568] text-lg select-none">search</span>
+          <span
+            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#817568] text-lg select-none"
+            >search</span
+          >
           <input
             v-model="searchQuery"
             type="text"
@@ -210,9 +213,11 @@ watch(matchId, async (id) => {
           v-for="match in filteredMatches"
           :key="match.id"
           class="flex items-center gap-3 px-4 py-3.5 cursor-pointer transition-all border-l-4"
-          :class="match.id === matchId
-            ? 'bg-[#ffe3cd] border-[#7d571e]'
-            : 'hover:bg-[#fff1e8] border-transparent'"
+          :class="
+            match.id === matchId
+              ? 'bg-[#ffe3cd] border-[#7d571e]'
+              : 'hover:bg-[#fff1e8] border-transparent'
+          "
           @click="selectMatch(match)"
         >
           <div class="relative shrink-0">
@@ -230,8 +235,12 @@ watch(matchId, async (id) => {
           </div>
           <div class="flex-1 min-w-0">
             <div class="flex justify-between items-baseline mb-0.5">
-              <span class="font-bold text-[#281808] text-sm font-jakarta truncate">{{ otherDog(match)?.name }}</span>
-              <span class="text-[10px] text-[#817568] font-bold uppercase tracking-tighter shrink-0 ml-2">
+              <span class="font-bold text-[#281808] text-sm font-jakarta truncate">{{
+                otherDog(match)?.name
+              }}</span>
+              <span
+                class="text-[10px] text-[#817568] font-bold uppercase tracking-tighter shrink-0 ml-2"
+              >
                 {{ formatSidebarTime(match.created_at) }}
               </span>
             </div>
@@ -240,7 +249,9 @@ watch(matchId, async (id) => {
         </div>
 
         <div v-if="filteredMatches.length === 0 && !loading" class="px-6 py-10 text-center">
-          <span class="material-symbols-outlined text-4xl text-[#d3c4b4] block mb-2">chat_bubble</span>
+          <span class="material-symbols-outlined text-4xl text-[#d3c4b4] block mb-2"
+            >chat_bubble</span
+          >
           <p class="text-sm text-[#4f4539]/60">No hay matches aún</p>
         </div>
       </div>
@@ -248,29 +259,44 @@ watch(matchId, async (id) => {
 
     <!-- CHAT PANEL -->
     <section class="flex-1 flex flex-col overflow-hidden relative">
-
       <!-- Loading -->
       <div v-if="loading" class="flex-1 flex items-center justify-center">
-        <div class="w-10 h-10 border-4 border-[#F4C07D] border-t-transparent rounded-full animate-spin" />
+        <div
+          class="w-10 h-10 border-4 border-[#F4C07D] border-t-transparent rounded-full animate-spin"
+        />
       </div>
 
       <!-- No match -->
-      <div v-else-if="!activeMatch" class="flex-1 flex flex-col items-center justify-center gap-4 text-center px-6">
-        <span class="material-symbols-outlined text-6xl text-[#d3c4b4]" style="font-variation-settings: 'FILL' 1">favorite</span>
+      <div
+        v-else-if="!activeMatch"
+        class="flex-1 flex flex-col items-center justify-center gap-4 text-center px-6"
+      >
+        <span
+          class="material-symbols-outlined text-6xl text-[#d3c4b4]"
+          style="font-variation-settings: 'FILL' 1"
+          >favorite</span
+        >
         <p class="text-[#4f4539] font-semibold">Seleccioná un chat para comenzar</p>
-        <NuxtLink to="/app/matches" class="text-sm text-[#7d571e] hover:text-[#382615] transition-colors flex items-center gap-1">
+        <NuxtLink
+          to="/app/matches"
+          class="text-sm text-[#7d571e] hover:text-[#382615] transition-colors flex items-center gap-1"
+        >
           <span class="material-symbols-outlined text-base">arrow_back</span>
           Ver matches
         </NuxtLink>
       </div>
 
       <template v-else>
-
         <!-- Chat header -->
-        <div class="flex items-center justify-between px-4 md:px-6 py-3.5 bg-white border-b border-[#d3c4b4] shadow-sm shrink-0">
+        <div
+          class="flex items-center justify-between px-4 md:px-6 py-3.5 bg-white border-b border-[#d3c4b4] shadow-sm shrink-0"
+        >
           <div class="flex items-center gap-3">
             <!-- Back (mobile) -->
-            <NuxtLink to="/app/matches" class="md:hidden w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#fff1e8] transition-colors">
+            <NuxtLink
+              to="/app/matches"
+              class="md:hidden w-9 h-9 rounded-full flex items-center justify-center hover:bg-[#fff1e8] transition-colors"
+            >
               <span class="material-symbols-outlined text-[#382615]">arrow_back</span>
             </NuxtLink>
 
@@ -287,11 +313,12 @@ watch(matchId, async (id) => {
             </div>
 
             <div>
-              <h3 class="font-bold text-[#281808] font-jakarta leading-tight">{{ otherDog(activeMatch)?.name }}</h3>
+              <h3 class="font-bold text-[#281808] font-jakarta leading-tight">
+                {{ otherDog(activeMatch)?.name }}
+              </h3>
               <span class="text-xs text-[#4f4539]/70">{{ otherDog(activeMatch)?.breed }}</span>
             </div>
           </div>
-
         </div>
 
         <!-- Messages -->
@@ -300,8 +327,13 @@ watch(matchId, async (id) => {
           class="flex-1 overflow-y-auto px-4 md:px-8 py-6 bg-[#fff8f5]/50"
         >
           <!-- Empty -->
-          <div v-if="messages.length === 0" class="flex flex-col items-center justify-center h-full gap-3 opacity-60">
-            <span class="material-symbols-outlined text-5xl text-[#d3c4b4]">chat_bubble_outline</span>
+          <div
+            v-if="messages.length === 0"
+            class="flex flex-col items-center justify-center h-full gap-3 opacity-60"
+          >
+            <span class="material-symbols-outlined text-5xl text-[#d3c4b4]"
+              >chat_bubble_outline</span
+            >
             <p class="text-sm text-[#4f4539]">¡Saludá a {{ otherDog(activeMatch)?.name }}! 🐾</p>
           </div>
 
@@ -313,13 +345,25 @@ watch(matchId, async (id) => {
               :class="isMyMessage(msg) ? 'flex-row-reverse ml-auto' : ''"
             >
               <!-- Avatar -->
-              <div class="w-8 h-8 rounded-full overflow-hidden shrink-0 mt-1 bg-[#fdddc3] flex items-center justify-center">
+              <div
+                class="w-8 h-8 rounded-full overflow-hidden shrink-0 mt-1 bg-[#fdddc3] flex items-center justify-center"
+              >
                 <template v-if="isMyMessage(msg)">
-                  <img v-if="authStore.user?.avatar" :src="authStore.user.avatar" class="w-full h-full object-cover" />
-                  <span v-else class="material-symbols-outlined text-[#B78F64] text-sm">person</span>
+                  <img
+                    v-if="authStore.user?.avatar"
+                    :src="authStore.user.avatar"
+                    class="w-full h-full object-cover"
+                  />
+                  <span v-else class="material-symbols-outlined text-[#B78F64] text-sm"
+                    >person</span
+                  >
                 </template>
                 <template v-else>
-                  <img v-if="otherDog(activeMatch)?.photos?.[0]" :src="otherDog(activeMatch)!.photos[0]" class="w-full h-full object-cover" />
+                  <img
+                    v-if="otherDog(activeMatch)?.photos?.[0]"
+                    :src="otherDog(activeMatch)!.photos[0]"
+                    class="w-full h-full object-cover"
+                  />
                   <span v-else class="material-symbols-outlined text-[#B78F64] text-sm">pets</span>
                 </template>
               </div>
@@ -327,12 +371,16 @@ watch(matchId, async (id) => {
               <!-- Bubble -->
               <div
                 class="px-4 py-3 rounded-2xl shadow-sm"
-                :class="isMyMessage(msg)
-                  ? 'bg-[#F4C07D] text-[#382615] rounded-tr-none'
-                  : 'bg-[#DBD8D0] text-[#713E18] rounded-tl-none'"
+                :class="
+                  isMyMessage(msg)
+                    ? 'bg-[#F4C07D] text-[#382615] rounded-tr-none'
+                    : 'bg-[#DBD8D0] text-[#713E18] rounded-tl-none'
+                "
               >
                 <p class="text-sm leading-relaxed whitespace-pre-wrap">{{ msg.content }}</p>
-                <span class="text-[10px] opacity-60 mt-1 block font-bold tracking-tight">{{ formatTime(msg.created_at) }}</span>
+                <span class="text-[10px] opacity-60 mt-1 block font-bold tracking-tight">{{
+                  formatTime(msg.created_at)
+                }}</span>
               </div>
             </div>
           </div>
@@ -341,7 +389,11 @@ watch(matchId, async (id) => {
         <!-- Input -->
         <div class="shrink-0 px-4 md:px-6 py-4 bg-white border-t border-[#d3c4b4]">
           <!-- Emoji picker -->
-          <div v-if="showEmojiPicker" ref="emojiPickerRef" class="absolute bottom-[76px] right-4 md:right-8 z-50 shadow-xl rounded-2xl overflow-hidden">
+          <div
+            v-if="showEmojiPicker"
+            ref="emojiPickerRef"
+            class="absolute bottom-[76px] right-4 md:right-8 z-50 shadow-xl rounded-2xl overflow-hidden"
+          >
             <EmojiPicker @select="addEmoji" />
           </div>
 
@@ -371,9 +423,7 @@ watch(matchId, async (id) => {
             </button>
           </form>
         </div>
-
       </template>
     </section>
-
   </div>
 </template>

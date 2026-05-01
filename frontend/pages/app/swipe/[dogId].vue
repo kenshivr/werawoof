@@ -496,8 +496,10 @@ onMounted(async () => {
             <button
               class="flex-1 h-16 bg-white border-2 border-stone-200 rounded-[20px] flex items-center justify-center text-stone-400 hover:border-red-400 hover:text-red-400 transition-all duration-200 shadow-lg active:scale-95"
               @click="
-                closeProfile()
-                performSwipe('dislike')
+                () => {
+                  closeProfile()
+                  performSwipe('dislike')
+                }
               "
             >
               <span class="material-symbols-outlined text-[32px]">close</span>
@@ -505,8 +507,10 @@ onMounted(async () => {
             <button
               class="flex-[2] h-16 bg-[#F4C07D] text-[#382615] rounded-[20px] flex items-center justify-center gap-2 font-jakarta font-bold text-lg shadow-xl active:scale-95 transition-all duration-200"
               @click="
-                closeProfile()
-                performSwipe('like')
+                () => {
+                  closeProfile()
+                  performSwipe('like')
+                }
               "
             >
               <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"
@@ -595,8 +599,10 @@ onMounted(async () => {
                 <button
                   class="flex-1 flex items-center justify-center gap-2 border-2 border-[#ba1a1a] text-[#ba1a1a] py-4 px-6 rounded-[16px] font-bold hover:bg-red-50 transition-all duration-200 active:scale-95"
                   @click="
-                    closeProfile()
-                    performSwipe('dislike')
+                    () => {
+                      closeProfile()
+                      performSwipe('dislike')
+                    }
                   "
                 >
                   <span class="material-symbols-outlined">close</span>
@@ -605,8 +611,10 @@ onMounted(async () => {
                 <button
                   class="flex-1 flex items-center justify-center gap-2 bg-[#F4C07D] text-[#382615] py-4 px-6 rounded-[16px] font-bold shadow-md hover:opacity-90 active:scale-95 transition-all duration-200"
                   @click="
-                    closeProfile()
-                    performSwipe('like')
+                    () => {
+                      closeProfile()
+                      performSwipe('like')
+                    }
                   "
                 >
                   <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"
