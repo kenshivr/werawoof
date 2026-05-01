@@ -362,39 +362,42 @@
                 Fotos (hasta 5)
               </h2>
 
-              <!-- Grid de fotos arrastrables -->
+              <!-- Grid de fotos arrastrables (desktop) -->
               <div class="grid grid-cols-2 gap-2 mb-4">
-                <div
-                  v-for="(photo, i) in dogPhotos"
-                  :key="photo.url"
-                  draggable="true"
-                  class="aspect-[4/3] rounded-xl overflow-hidden relative cursor-grab active:cursor-grabbing"
-                  :class="dragIndex === i ? 'opacity-40' : 'opacity-100'"
-                  @dragstart="onDogDragStart(i)"
-                  @dragover.prevent="onDogDragOver(i)"
-                  @dragend="onDogDragEnd"
+                <draggable
+                  v-model="dogPhotos"
+                  item-key="url"
+                  tag="div"
+                  class="contents"
+                  :animation="150"
                 >
-                  <img :src="photo.url" class="w-full h-full object-cover pointer-events-none" />
-                  <span
-                    class="absolute top-2 left-2 bg-black/40 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center"
-                  >
-                    {{ i + 1 }}
-                  </span>
-                  <button
-                    type="button"
-                    class="absolute top-2 right-2 bg-black/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-500 transition-colors"
-                    @click.stop="removeDogPhoto(i)"
-                  >
-                    <span class="material-symbols-outlined text-sm leading-none">close</span>
-                  </button>
-                  <span
-                    class="material-symbols-outlined absolute bottom-1.5 left-1/2 -translate-x-1/2 text-white/50 text-base"
-                  >
-                    drag_indicator
-                  </span>
-                </div>
+                  <template #item="{ element: photo, index: i }">
+                    <div
+                      class="aspect-[4/3] rounded-xl overflow-hidden relative cursor-grab active:cursor-grabbing select-none"
+                    >
+                      <img
+                        :src="photo.url"
+                        class="w-full h-full object-cover pointer-events-none"
+                      />
+                      <span
+                        class="absolute top-2 left-2 bg-black/40 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center"
+                        >{{ i + 1 }}</span
+                      >
+                      <button
+                        type="button"
+                        class="absolute top-2 right-2 bg-black/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-500 transition-colors"
+                        @click.stop="removeDogPhoto(i)"
+                      >
+                        <span class="material-symbols-outlined text-sm leading-none">close</span>
+                      </button>
+                      <span
+                        class="material-symbols-outlined absolute bottom-1.5 left-1/2 -translate-x-1/2 text-white/50 text-base pointer-events-none"
+                        >drag_indicator</span
+                      >
+                    </div>
+                  </template>
+                </draggable>
 
-                <!-- Slots vacíos -->
                 <div
                   v-for="j in 5 - dogPhotos.length"
                   :key="'slot-' + j"
@@ -626,30 +629,32 @@
               Subí fotos (hasta 5)
             </p>
             <div class="grid grid-cols-3 gap-2">
-              <div
-                v-for="(photo, i) in dogPhotos"
-                :key="photo.url"
-                draggable="true"
-                class="aspect-square rounded-xl overflow-hidden relative cursor-grab active:cursor-grabbing"
-                :class="dragIndex === i ? 'opacity-40' : 'opacity-100'"
-                @dragstart="onDogDragStart(i)"
-                @dragover.prevent="onDogDragOver(i)"
-                @dragend="onDogDragEnd"
+              <draggable
+                v-model="dogPhotos"
+                item-key="url"
+                tag="div"
+                class="contents"
+                :animation="150"
               >
-                <img :src="photo.url" class="w-full h-full object-cover pointer-events-none" />
-                <span
-                  class="absolute top-1 left-1 bg-black/40 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center"
-                >
-                  {{ i + 1 }}
-                </span>
-                <button
-                  type="button"
-                  class="absolute top-1 right-1 bg-black/50 text-white w-5 h-5 rounded-full flex items-center justify-center"
-                  @click.stop="removeDogPhoto(i)"
-                >
-                  <span class="material-symbols-outlined text-xs leading-none">close</span>
-                </button>
-              </div>
+                <template #item="{ element: photo, index: i }">
+                  <div
+                    class="aspect-square rounded-xl overflow-hidden relative cursor-grab active:cursor-grabbing select-none"
+                  >
+                    <img :src="photo.url" class="w-full h-full object-cover pointer-events-none" />
+                    <span
+                      class="absolute top-1 left-1 bg-black/40 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center"
+                      >{{ i + 1 }}</span
+                    >
+                    <button
+                      type="button"
+                      class="absolute top-1 right-1 bg-black/50 text-white w-5 h-5 rounded-full flex items-center justify-center"
+                      @click.stop="removeDogPhoto(i)"
+                    >
+                      <span class="material-symbols-outlined text-xs leading-none">close</span>
+                    </button>
+                  </div>
+                </template>
+              </draggable>
               <div
                 v-for="j in 5 - dogPhotos.length"
                 :key="'empty-' + j"
@@ -841,6 +846,8 @@
 </template>
 
 <script setup lang="ts">
+import draggable from 'vuedraggable'
+
 definePageMeta({ layout: 'app', middleware: 'auth' })
 
 const authStore = useAuthStore()
@@ -877,7 +884,6 @@ interface DogPhotoItem {
   file: File
 }
 const dogPhotos = ref<DogPhotoItem[]>([])
-const dragIndex = ref<number | null>(null)
 
 const breeds = [
   'Labrador Retriever',
@@ -973,21 +979,6 @@ const addDogFiles = (files: FileList | null) => {
 const removeDogPhoto = (index: number) => {
   URL.revokeObjectURL(dogPhotos.value[index].url)
   dogPhotos.value.splice(index, 1)
-}
-
-const onDogDragStart = (index: number) => {
-  dragIndex.value = index
-}
-
-const onDogDragOver = (targetIndex: number) => {
-  if (dragIndex.value === null || dragIndex.value === targetIndex) return
-  const moved = dogPhotos.value.splice(dragIndex.value, 1)[0]
-  dogPhotos.value.splice(targetIndex, 0, moved)
-  dragIndex.value = targetIndex
-}
-
-const onDogDragEnd = () => {
-  dragIndex.value = null
 }
 
 const toggleTag = (tag: string) => {
