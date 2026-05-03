@@ -183,41 +183,51 @@
             Fotos (hasta 6)
           </h2>
 
-          <!-- photo preview grid: 3 per row -->
-          <div class="grid grid-cols-3 gap-2 mb-4">
-            <div
-              v-for="i in 6"
-              :key="i"
-              class="aspect-square rounded-[12px] overflow-hidden relative"
-            >
-              <template v-if="photoPreviews[i - 1]">
-                <img
-                  :src="photoPreviews[i - 1]"
-                  class="w-full h-full object-cover"
-                  alt="Foto del can"
-                />
-                <button
-                  type="button"
-                  class="absolute top-2 right-2 bg-on-surface/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-error transition-colors"
-                  @click="removePhoto(i - 1)"
+          <!-- photo preview grid: draggable 2 per row -->
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <draggable v-model="photos" item-key="url" tag="div" class="contents" :animation="150">
+              <template #item="{ element: photo, index: i }">
+                <div
+                  class="aspect-[4/3] rounded-[12px] overflow-hidden relative cursor-grab active:cursor-grabbing select-none"
                 >
-                  <span class="material-symbols-outlined text-sm leading-none">close</span>
-                </button>
+                  <img
+                    :src="photo.url"
+                    class="w-full h-full object-cover pointer-events-none"
+                    alt="Foto del can"
+                  />
+                  <span
+                    class="absolute top-2 left-2 bg-black/40 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center font-jakarta"
+                    >{{ i + 1 }}</span
+                  >
+                  <button
+                    type="button"
+                    class="absolute top-2 right-2 bg-on-surface/50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-error transition-colors"
+                    @click.stop="removePhoto(i)"
+                  >
+                    <span class="material-symbols-outlined text-sm leading-none">close</span>
+                  </button>
+                  <span
+                    class="material-symbols-outlined absolute bottom-1.5 left-1/2 -translate-x-1/2 text-white/50 text-base pointer-events-none"
+                    >drag_indicator</span
+                  >
+                </div>
               </template>
-              <div
-                v-else
-                class="w-full h-full border-2 border-dashed border-[#DBD8D0] bg-surface-container-low flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-[#F4C07D] transition-all group"
-                @click="triggerFileInput"
+            </draggable>
+
+            <div
+              v-for="j in 6 - photos.length"
+              :key="'slot-' + j"
+              class="aspect-[4/3] rounded-[12px] border-2 border-dashed border-[#DBD8D0] bg-surface-container-low flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-[#F4C07D] transition-all group"
+              @click="triggerFileInput"
+            >
+              <span
+                class="material-symbols-outlined text-on-surface-variant group-hover:text-[#B78F64] transition-colors"
+                >add_a_photo</span
               >
-                <span
-                  class="material-symbols-outlined text-on-surface-variant group-hover:text-[#B78F64] transition-colors"
-                  >add_a_photo</span
-                >
-                <span
-                  class="text-[10px] uppercase font-bold text-on-surface-variant group-hover:text-[#B78F64]"
-                  >Subir</span
-                >
-              </div>
+              <span
+                class="text-[10px] uppercase font-bold text-on-surface-variant group-hover:text-[#B78F64]"
+                >Subir</span
+              >
             </div>
           </div>
 
@@ -277,30 +287,39 @@
           Subí fotos (hasta 6)
         </p>
         <div class="grid grid-cols-3 gap-2">
-          <div v-for="i in 6" :key="i" class="aspect-square rounded-xl overflow-hidden relative">
-            <template v-if="photoPreviews[i - 1]">
-              <img
-                :src="photoPreviews[i - 1]"
-                class="w-full h-full object-cover"
-                alt="Foto del can"
-              />
-              <button
-                type="button"
-                class="absolute top-1 right-1 bg-black/50 text-white w-5 h-5 rounded-full flex items-center justify-center"
-                @click="removePhoto(i - 1)"
+          <draggable v-model="photos" item-key="url" tag="div" class="contents" :animation="150">
+            <template #item="{ element: photo, index: i }">
+              <div
+                class="aspect-square rounded-xl overflow-hidden relative cursor-grab active:cursor-grabbing select-none"
               >
-                <span class="material-symbols-outlined" style="font-size: 12px; line-height: 1"
-                  >close</span
+                <img
+                  :src="photo.url"
+                  class="w-full h-full object-cover pointer-events-none"
+                  alt="Foto del can"
+                />
+                <span
+                  class="absolute top-1 left-1 bg-black/40 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center"
+                  >{{ i + 1 }}</span
                 >
-              </button>
+                <button
+                  type="button"
+                  class="absolute top-1 right-1 bg-black/50 text-white w-5 h-5 rounded-full flex items-center justify-center"
+                  @click.stop="removePhoto(i)"
+                >
+                  <span class="material-symbols-outlined" style="font-size: 12px; line-height: 1"
+                    >close</span
+                  >
+                </button>
+              </div>
             </template>
-            <div
-              v-else
-              class="w-full h-full border-2 border-dashed border-[#DBD8D0] bg-[#fff1e8] flex items-center justify-center cursor-pointer hover:border-[#F4C07D] transition-all"
-              @click="triggerFileInput"
-            >
-              <span class="material-symbols-outlined text-[#4f4539]/40 text-xl">add</span>
-            </div>
+          </draggable>
+          <div
+            v-for="j in 6 - photos.length"
+            :key="'empty-' + j"
+            class="aspect-square rounded-xl border-2 border-dashed border-[#DBD8D0] bg-[#fff1e8] flex items-center justify-center cursor-pointer hover:border-[#F4C07D] transition-all"
+            @click="triggerFileInput"
+          >
+            <span class="material-symbols-outlined text-[#4f4539]/40 text-xl">add</span>
           </div>
         </div>
         <input
@@ -475,15 +494,21 @@
 </template>
 
 <script setup lang="ts">
+import draggable from 'vuedraggable'
+
 definePageMeta({ layout: 'app', middleware: 'auth' })
 
 const dogsStore = useDogsStore()
 const router = useRouter()
 
+interface PhotoItem {
+  url: string
+  file?: File
+}
+
 const fileInput = ref<HTMLInputElement | null>(null)
 const fileInputMobile = ref<HTMLInputElement | null>(null)
-const photoFiles = ref<File[]>([])
-const photoPreviews = ref<string[]>([])
+const photos = ref<PhotoItem[]>([])
 const saving = ref(false)
 const error = ref('')
 
@@ -561,16 +586,15 @@ function handleDrop(e: DragEvent) {
 function addFiles(files: FileList | null) {
   if (!files) return
   for (const file of Array.from(files)) {
-    if (photoFiles.value.length >= 6) break
-    photoFiles.value.push(file)
-    photoPreviews.value.push(URL.createObjectURL(file))
+    if (photos.value.length >= 6) break
+    photos.value.push({ url: URL.createObjectURL(file), file })
   }
 }
 
 function removePhoto(index: number) {
-  URL.revokeObjectURL(photoPreviews.value[index])
-  photoFiles.value.splice(index, 1)
-  photoPreviews.value.splice(index, 1)
+  const item = photos.value[index]
+  if (item?.file) URL.revokeObjectURL(item.url)
+  photos.value.splice(index, 1)
 }
 
 async function handleSubmit() {
@@ -591,8 +615,8 @@ async function handleSubmit() {
       personality_tags: form.personality_tags,
     })
 
-    for (const file of photoFiles.value) {
-      await dogsStore.uploadPhoto(String(dog.id), file)
+    for (const item of photos.value) {
+      await dogsStore.uploadPhoto(String(dog.id), item.file!)
     }
 
     await router.push('/app/dogs')
