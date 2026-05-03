@@ -10,7 +10,7 @@ type Config struct {
 	Redis      RedisConfig
 	JWT        JWTConfig
 	Google     GoogleConfig
-	Gmail      GmailConfig
+	Resend     ResendConfig
 	Cloudinary CloudinaryConfig
 }
 
@@ -21,10 +21,9 @@ type CloudinaryConfig struct {
 	Folder    string `mapstructure:"CLOUDINARY_FOLDER"`
 }
 
-type GmailConfig struct {
-	User     string `mapstructure:"GMAIL_USER"`
-	Password string `mapstructure:"GMAIL_APP_PASSWORD"`
-	From     string `mapstructure:"GMAIL_FROM"`
+type ResendConfig struct {
+	APIKey string `mapstructure:"RESEND_API_KEY"`
+	From   string `mapstructure:"RESEND_FROM"`
 }
 
 type GoogleConfig struct {
@@ -86,10 +85,9 @@ func Load() (*Config, error) {
 			ClientSecret: viper.GetString("GOOGLE_CLIENT_SECRET"),
 			RedirectURL:  viper.GetString("GOOGLE_REDIRECT_URL"),
 		},
-		Gmail: GmailConfig{
-			User:     viper.GetString("GMAIL_USER"),
-			Password: viper.GetString("GMAIL_APP_PASSWORD"),
-			From:     viper.GetString("GMAIL_FROM"),
+		Resend: ResendConfig{
+			APIKey: viper.GetString("RESEND_API_KEY"),
+			From:   viper.GetString("RESEND_FROM"),
 		},
 		Cloudinary: CloudinaryConfig{
 			CloudName: viper.GetString("CLOUDINARY_CLOUD_NAME"),

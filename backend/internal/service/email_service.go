@@ -1,39 +1,67 @@
 package service
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
-
-	"gopkg.in/gomail.v2"
+	"io"
+	"net/http"
 )
 
 type EmailService struct {
-	user      string
-	password  string
+	apiKey    string
 	fromEmail string
 	appURL    string
 }
 
-func NewEmailService(user, password, fromEmail, appURL string) *EmailService {
+func NewEmailService(apiKey, fromEmail, appURL string) *EmailService {
 	return &EmailService{
-		user:      user,
-		password:  password,
+		apiKey:    apiKey,
 		fromEmail: fromEmail,
 		appURL:    appURL,
 	}
 }
 
-func (s *EmailService) send(to, replyTo, subject, html string) error {
-	m := gomail.NewMessage()
-	m.SetHeader("From", s.fromEmail)
-	m.SetHeader("To", to)
-	if replyTo != "" {
-		m.SetHeader("Reply-To", replyTo)
-	}
-	m.SetHeader("Subject", subject)
-	m.SetBody("text/html", html)
+type resendPayload struct {
+	From    string   `json:"from"`
+	To      []string `json:"to"`
+	Subject string   `json:"subject"`
+	Html    string   `json:"html"`
+	ReplyTo string   `json:"reply_to,omitempty"`
+}
 
-	d := gomail.NewDialer("smtp.gmail.com", 587, s.user, s.password)
-	return d.DialAndSend(m)
+func (s *EmailService) send(to, replyTo, subject, html string) error {
+	payload := resendPayload{
+		From:    s.fromEmail,
+		To:      []string{to},
+		Subject: subject,
+		Html:    html,
+		ReplyTo: replyTo,
+	}
+
+	body, err := json.Marshal(payload)
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, "https://api.resend.com/emails", bytes.NewReader(body))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Authorization", "Bearer "+s.apiKey)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 400 {
+		respBody, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("resend API error %d: %s", resp.StatusCode, respBody)
+	}
+	return nil
 }
 
 func (s *EmailService) SendVerification(toEmail, name, token string) error {
@@ -134,13 +162,11 @@ func (s *EmailService) SendMatch(data MatchEmailData) error {
 <body style="margin:0;padding:0;background:#f0ebe4;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">
 <div style="max-width:560px;margin:0 auto;padding:28px 16px">
 
-  <!-- Header -->
   <div style="background:#382615;border-radius:16px 16px 0 0;padding:22px 32px;text-align:center">
     <span style="font-size:26px">🐾</span>
     <span style="color:#F4C07D;font-size:20px;font-weight:800;letter-spacing:-0.3px;margin-left:8px;vertical-align:middle">WeraWoof</span>
   </div>
 
-  <!-- Body -->
   <div style="background:#ffffff;padding:36px 32px;border-left:1px solid #e5ddd4;border-right:1px solid #e5ddd4">
 
     <p style="margin:0 0 4px;color:#B78F64;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">¡Es oficial!</p>
@@ -154,7 +180,6 @@ func (s *EmailService) SendMatch(data MatchEmailData) error {
 
     %s
 
-    <!-- Card del otro perro -->
     <div style="background:#fdf8f2;border:1px solid #e8d8c0;border-radius:14px;padding:22px 24px;margin:24px 0 0">
       <p style="margin:0 0 16px;color:#382615;font-size:15px;font-weight:700;line-height:1.3">
         %s
@@ -175,7 +200,6 @@ func (s *EmailService) SendMatch(data MatchEmailData) error {
       %s
     </div>
 
-    <!-- CTA -->
     <div style="text-align:center;margin:32px 0 4px">
       <a href="%s"
         style="display:inline-block;background:#F4C07D;color:#382615;text-decoration:none;font-weight:700;font-size:15px;padding:14px 40px;border-radius:12px;letter-spacing:0.2px;box-shadow:0 4px 12px rgba(244,192,125,0.4)">
@@ -185,7 +209,6 @@ func (s *EmailService) SendMatch(data MatchEmailData) error {
 
   </div>
 
-  <!-- Footer -->
   <div style="background:#382615;border-radius:0 0 16px 16px;padding:18px 32px;text-align:center">
     <p style="margin:0;color:#B78F64;font-size:12px;font-style:italic">Conectá patitas, creá recuerdos. 🐾</p>
     <p style="margin:6px 0 0;color:#6b4a2a;font-size:11px">WeraWoof · este correo fue enviado automáticamente</p>

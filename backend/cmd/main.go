@@ -63,7 +63,7 @@ func main() {
 	subscriberRepo := repository.NewSubscriberRepository(db)
 	authService := service.NewAuthService(userRepo, redisClient, cfg.JWT.Secret, cfg.JWT.ExpirationHours)
 	oauthService := service.NewOAuthService(userRepo, authService, cfg.Google.ClientID, cfg.Google.ClientSecret, cfg.Google.RedirectURL)
-	emailService := service.NewEmailService(cfg.Gmail.User, cfg.Gmail.Password, cfg.Gmail.From, cfg.App.FrontendURL)
+	emailService := service.NewEmailService(cfg.Resend.APIKey, cfg.Resend.From, cfg.App.FrontendURL)
 	verificationService := service.NewVerificationService(userRepo, redisClient, emailService, cfg.App.FrontendURL)
 	authService.SetVerificationService(verificationService)
 
