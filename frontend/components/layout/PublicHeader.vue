@@ -58,6 +58,13 @@ const handleLogout = async () => {
 
       <!-- Logueado -->
       <div v-if="authStore.isAuthenticated" class="flex items-center gap-3">
+        <button
+          class="flex items-center justify-center text-white/50 hover:text-white/90 transition-colors"
+          title="Cerrar sesión"
+          @click="handleLogout"
+        >
+          <span class="material-symbols-outlined text-xl">logout</span>
+        </button>
         <NuxtLink to="/app/profile" class="flex items-center gap-2.5 group">
           <span
             class="hidden md:block text-sm font-medium text-white/90 group-hover:text-white transition-colors font-jakarta truncate max-w-[120px]"
@@ -76,13 +83,6 @@ const handleLogout = async () => {
             <span v-else class="material-symbols-outlined text-[#F4C07D] text-lg">person</span>
           </div>
         </NuxtLink>
-        <button
-          class="flex items-center justify-center text-white/50 hover:text-white/90 transition-colors"
-          title="Cerrar sesión"
-          @click="handleLogout"
-        >
-          <span class="material-symbols-outlined text-xl">logout</span>
-        </button>
       </div>
 
       <!-- No logueado -->

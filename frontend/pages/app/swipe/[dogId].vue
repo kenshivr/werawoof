@@ -181,11 +181,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-4 py-8">
+  <div
+    class="flex flex-col items-center justify-start md:justify-center min-h-[calc(100vh-80px)] px-4 pt-16 pb-8 md:py-8 overflow-y-auto"
+  >
     <!-- Active dog banner -->
     <div
       v-if="activeDog && !loadingDog"
-      class="fixed top-[92px] left-0 right-0 z-40 flex justify-center pointer-events-none"
+      class="fixed top-[83px] left-0 right-0 z-40 flex justify-center pointer-events-none"
     >
       <div
         class="flex items-center gap-2 bg-white/90 backdrop-blur-md border border-[#fdddc3] px-4 py-2 rounded-full shadow-sm text-sm font-medium text-[#382615] font-jakarta pointer-events-auto"
@@ -320,6 +322,7 @@ onMounted(async () => {
                       >verified</span
                     >
                   </div>
+
                   <div class="flex flex-wrap gap-2 mb-3">
                     <span
                       class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-white/20"
@@ -333,6 +336,7 @@ onMounted(async () => {
                       {{ topCandidate.distance.toFixed(1) }} km
                     </span>
                   </div>
+
                   <p v-if="topCandidate.bio" class="text-white/90 text-sm line-clamp-2">
                     {{ topCandidate.bio }}
                   </p>

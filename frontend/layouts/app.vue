@@ -72,10 +72,11 @@ const handleLogout = async () => {
 
         <div class="flex items-center gap-3">
           <button
-            class="hidden md:block text-xs text-white/50 hover:text-white/80 transition-colors"
+            class="flex items-center gap-1.5 text-white/50 hover:text-white/80 transition-colors"
             @click="handleLogout"
           >
-            Salir
+            <span class="material-symbols-outlined text-xl leading-none">logout</span>
+            <span class="hidden md:inline text-xs">Salir</span>
           </button>
           <NuxtLink
             to="/app/profile"

@@ -444,27 +444,31 @@
         />
       </div>
 
-      <p v-if="error" class="text-red-500 text-sm text-center">{{ error }}</p>
-    </div>
-
-    <!-- Mobile fixed CTA -->
-    <div
-      class="md:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md px-6 py-5 border-t border-[#DBD8D0]/50 z-50"
-    >
-      <button
-        type="button"
-        :disabled="saving"
-        class="w-full h-14 bg-[#F4C07D] text-[#382615] rounded-xl font-bold text-lg font-jakarta flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(244,192,125,0.4)] active:scale-95 transition-all disabled:opacity-60"
-        @click="handleSubmit"
-      >
-        <span>{{ saving ? 'Guardando...' : 'Guardar cambios' }}</span>
-        <span
-          v-if="!saving"
-          class="material-symbols-outlined"
-          style="font-variation-settings: 'FILL' 1"
-          >edit</span
+      <!-- CTA -->
+      <div class="flex flex-col gap-6">
+        <p v-if="error" class="text-red-500 text-sm text-center">{{ error }}</p>
+        <button
+          type="button"
+          :disabled="saving"
+          class="w-full h-14 bg-[#F4C07D] text-[#382615] rounded-xl font-bold text-lg font-jakarta flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(244,192,125,0.4)] active:scale-95 transition-all disabled:opacity-60"
+          @click="handleSubmit"
         >
-      </button>
+          <span>{{ saving ? 'Guardando...' : 'Guardar cambios' }}</span>
+          <span
+            v-if="!saving"
+            class="material-symbols-outlined"
+            style="font-variation-settings: 'FILL' 1"
+            >edit</span
+          >
+        </button>
+        <NuxtLink
+          to="/app/dogs"
+          class="w-full py-3 text-[#4f4539] font-medium hover:text-[#382615] transition-colors flex items-center justify-center gap-2 text-sm"
+        >
+          <span class="material-symbols-outlined text-sm">arrow_back</span>
+          Volver
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>

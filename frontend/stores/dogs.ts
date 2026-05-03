@@ -35,7 +35,7 @@ export const useDogsStore = defineStore('dogs', () => {
   const deleteDog = async (id: string) => {
     const api = useApi()
     await api.del(`/api/dogs/${id}`)
-    dogs.value = dogs.value.filter((d) => String(d.id) !== id)
+    dogs.value = dogs.value.filter((d) => String(d.id) !== String(id))
   }
 
   const uploadPhoto = async (dogId: string, file: File) => {

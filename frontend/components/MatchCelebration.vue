@@ -59,7 +59,7 @@ const otherPhoto = computed(() => props.otherDog.photos?.[0] ?? '')
       <!-- Contenido principal -->
       <div class="relative z-10 flex flex-col items-center text-center px-8 max-w-2xl w-full">
         <!-- Fotos solapadas -->
-        <div class="flex items-center justify-center mb-10 relative">
+        <div class="flex items-center justify-center mt-6 mb-6 md:my-10 relative">
           <!-- Mi perro (izquierda) -->
           <div
             class="relative w-40 h-40 md:w-56 md:h-56 rounded-full border-4 border-[#F4C07D] shadow-2xl overflow-hidden z-20 -mr-10 md:-mr-14 dog-card-left"
@@ -105,16 +105,15 @@ const otherPhoto = computed(() => props.otherDog.photos?.[0] ?? '')
 
         <!-- Título -->
         <h1
-          class="text-4xl md:text-6xl font-extrabold text-[#F4C07D] font-jakarta mb-4 drop-shadow-md title-pop"
+          class="text-3xl md:text-6xl font-extrabold text-[#F4C07D] font-jakarta mb-3 drop-shadow-md title-pop"
         >
           ¡Es un Match! <span class="inline-block">🐾</span>
         </h1>
 
         <!-- Subtítulo -->
-        <p class="text-white/80 text-base md:text-lg mb-10 max-w-sm leading-relaxed">
-          <strong class="text-white">{{ myDog.name }}</strong> y
-          <strong class="text-white">{{ otherDog.name }}</strong>
-          encontraron un nuevo amigo de juego. ¡Organicen una cita en el parque!
+        <p class="text-white/80 text-base md:text-lg mb-6 md:mb-10 max-w-sm leading-relaxed">
+          <strong class="text-white">{{ myDog.name }}</strong>
+          encontró un nuevo amigo de juego. ¡Organizá una cita en el parque!
         </p>
 
         <!-- Botones -->
