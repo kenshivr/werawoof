@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 	"strings"
 
@@ -34,6 +35,7 @@ func (h *ContactHandler) Send(c *gin.Context) {
 	req.Message = strings.TrimSpace(req.Message)
 
 	if err := h.emailService.SendContact(req.Name, req.Phone, req.Email, req.Message); err != nil {
+		log.Printf("[contact] SMTP error: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "No se pudo enviar el mensaje. Intenta más tarde."})
 		return
 	}
