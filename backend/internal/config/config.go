@@ -10,7 +10,7 @@ type Config struct {
 	Redis      RedisConfig
 	JWT        JWTConfig
 	Google     GoogleConfig
-	Resend     ResendConfig
+	Brevo      BrevoConfig
 	Cloudinary CloudinaryConfig
 }
 
@@ -21,9 +21,9 @@ type CloudinaryConfig struct {
 	Folder    string `mapstructure:"CLOUDINARY_FOLDER"`
 }
 
-type ResendConfig struct {
-	APIKey string `mapstructure:"RESEND_API_KEY"`
-	From   string `mapstructure:"RESEND_FROM"`
+type BrevoConfig struct {
+	APIKey string `mapstructure:"BREVO_API_KEY"`
+	From   string `mapstructure:"BREVO_FROM"`
 }
 
 type GoogleConfig struct {
@@ -85,9 +85,9 @@ func Load() (*Config, error) {
 			ClientSecret: viper.GetString("GOOGLE_CLIENT_SECRET"),
 			RedirectURL:  viper.GetString("GOOGLE_REDIRECT_URL"),
 		},
-		Resend: ResendConfig{
-			APIKey: viper.GetString("RESEND_API_KEY"),
-			From:   viper.GetString("RESEND_FROM"),
+		Brevo: BrevoConfig{
+			APIKey: viper.GetString("BREVO_API_KEY"),
+			From:   viper.GetString("BREVO_FROM"),
 		},
 		Cloudinary: CloudinaryConfig{
 			CloudName: viper.GetString("CLOUDINARY_CLOUD_NAME"),

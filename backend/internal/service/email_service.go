@@ -22,21 +22,32 @@ func NewEmailService(apiKey, fromEmail, appURL string) *EmailService {
 	}
 }
 
-type resendPayload struct {
-	From    string   `json:"from"`
-	To      []string `json:"to"`
-	Subject string   `json:"subject"`
-	Html    string   `json:"html"`
-	ReplyTo string   `json:"reply_to,omitempty"`
+type brevoSender struct {
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
+
+type brevoRecipient struct {
+	Email string `json:"email"`
+}
+
+type brevoPayload struct {
+	Sender      brevoSender      `json:"sender"`
+	To          []brevoRecipient `json:"to"`
+	ReplyTo     *brevoSender     `json:"replyTo,omitempty"`
+	Subject     string           `json:"subject"`
+	HTMLContent string           `json:"htmlContent"`
 }
 
 func (s *EmailService) send(to, replyTo, subject, html string) error {
-	payload := resendPayload{
-		From:    s.fromEmail,
-		To:      []string{to},
-		Subject: subject,
-		Html:    html,
-		ReplyTo: replyTo,
+	payload := brevoPayload{
+		Sender:      brevoSender{Name: "WeraWoof", Email: s.fromEmail},
+		To:          []brevoRecipient{{Email: to}},
+		Subject:     subject,
+		HTMLContent: html,
+	}
+	if replyTo != "" {
+		payload.ReplyTo = &brevoSender{Email: replyTo}
 	}
 
 	body, err := json.Marshal(payload)
@@ -44,12 +55,13 @@ func (s *EmailService) send(to, replyTo, subject, html string) error {
 		return err
 	}
 
-	req, err := http.NewRequest(http.MethodPost, "https://api.resend.com/emails", bytes.NewReader(body))
+	req, err := http.NewRequest(http.MethodPost, "https://api.brevo.com/v3/smtp/email", bytes.NewReader(body))
 	if err != nil {
 		return err
 	}
-	req.Header.Set("Authorization", "Bearer "+s.apiKey)
+	req.Header.Set("api-key", s.apiKey)
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -59,7 +71,7 @@ func (s *EmailService) send(to, replyTo, subject, html string) error {
 
 	if resp.StatusCode >= 400 {
 		respBody, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("resend API error %d: %s", resp.StatusCode, respBody)
+		return fmt.Errorf("brevo API error %d: %s", resp.StatusCode, respBody)
 	}
 	return nil
 }
@@ -185,7 +197,6 @@ func (s *EmailService) SendMatch(data MatchEmailData) error {
         %s
         <span style="display:block;color:#B78F64;font-size:13px;font-weight:400;margin-top:2px">Dueño/a: %s</span>
       </p>
-
       <div style="display:grid;gap:8px">
         <div style="display:flex;gap:8px;align-items:baseline">
           <span style="color:#8a6a50;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.6px;min-width:52px">Raza</span>
@@ -196,7 +207,6 @@ func (s *EmailService) SendMatch(data MatchEmailData) error {
           <span style="color:#382615;font-size:14px;font-weight:600">%s</span>
         </div>
       </div>
-
       %s
     </div>
 
