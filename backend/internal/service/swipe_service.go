@@ -9,13 +9,15 @@ import (
 )
 
 type SwipeService struct {
-	swipeRepo *repository.SwipeRepository
-	dogRepo   *repository.DogRepository
-	broker    *sse.Broker
+	swipeRepo    *repository.SwipeRepository
+	dogRepo      *repository.DogRepository
+	userRepo     *repository.UserRepository
+	emailService *EmailService
+	broker       *sse.Broker
 }
 
-func NewSwipeService(swipeRepo *repository.SwipeRepository, dogRepo *repository.DogRepository, broker *sse.Broker) *SwipeService {
-	return &SwipeService{swipeRepo: swipeRepo, dogRepo: dogRepo, broker: broker}
+func NewSwipeService(swipeRepo *repository.SwipeRepository, dogRepo *repository.DogRepository, userRepo *repository.UserRepository, emailService *EmailService, broker *sse.Broker) *SwipeService {
+	return &SwipeService{swipeRepo: swipeRepo, dogRepo: dogRepo, userRepo: userRepo, emailService: emailService, broker: broker}
 }
 
 type SwipeResult struct {
@@ -68,10 +70,53 @@ func (s *SwipeService) Swipe(swiperDogID, swipedDogID, userID uint, direction do
 				}
 				result.Match = match
 
-				// Notify the other dog's owner
 				swipedDog, err := s.dogRepo.FindByID(swipedDogID)
 				if err == nil {
+					// SSE: notificar en tiempo real al dueño del otro perro
 					s.broker.Send(swipedDog.UserID, sse.Event{Type: "new_match", Data: match})
+
+					// Email: notificar a ambos dueños de forma asíncrona
+					swiperCopy := swiper
+					swipedCopy := swipedDog
+					go func() {
+						owner1, err1 := s.userRepo.FindByID(swiperCopy.UserID)
+						owner2, err2 := s.userRepo.FindByID(swipedCopy.UserID)
+						if err1 != nil || err2 != nil {
+							return
+						}
+
+						photo1 := ""
+						if len(swiperCopy.Photos) > 0 {
+							photo1 = swiperCopy.Photos[0]
+						}
+						photo2 := ""
+						if len(swipedCopy.Photos) > 0 {
+							photo2 = swipedCopy.Photos[0]
+						}
+
+						_ = s.emailService.SendMatch(MatchEmailData{
+							RecipientEmail: owner1.Email,
+							MyDogName:      swiperCopy.Name,
+							MyOwnerName:    owner1.Name,
+							OtherDogName:   swipedCopy.Name,
+							OtherDogBreed:  swipedCopy.Breed,
+							OtherDogAge:    swipedCopy.Age,
+							OtherDogPhoto:  photo2,
+							OtherDogTags:   []string(swipedCopy.PersonalityTags),
+							OtherOwnerName: owner2.Name,
+						})
+						_ = s.emailService.SendMatch(MatchEmailData{
+							RecipientEmail: owner2.Email,
+							MyDogName:      swipedCopy.Name,
+							MyOwnerName:    owner2.Name,
+							OtherDogName:   swiperCopy.Name,
+							OtherDogBreed:  swiperCopy.Breed,
+							OtherDogAge:    swiperCopy.Age,
+							OtherDogPhoto:  photo1,
+							OtherDogTags:   []string(swiperCopy.PersonalityTags),
+							OtherOwnerName: owner1.Name,
+						})
+					}()
 				}
 			}
 		}
