@@ -6,7 +6,7 @@ definePageMeta({ layout: false })
   <div
     class="bg-[#DBD8D0] text-on-background font-vietnam overflow-x-hidden min-h-screen flex flex-col"
   >
-    <LayoutSimpleHeader />
+    <LayoutPublicHeader />
 
     <!-- Paw decorations -->
     <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
@@ -341,7 +341,7 @@ definePageMeta({ layout: false })
     </main>
 
     <!-- Footer -->
-    <LayoutSimpleFooter />
+    <LayoutPublicFooter />
     <LayoutPublicBottomNav />
   </div>
 </template>
