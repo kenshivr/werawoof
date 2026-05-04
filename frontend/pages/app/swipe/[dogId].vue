@@ -200,7 +200,7 @@ onMounted(async () => {
     <!-- Active dog banner -->
     <div
       v-if="activeDog && !loadingDog"
-      class="fixed top-[83px] left-0 right-0 z-40 flex justify-center pointer-events-none"
+      class="fixed top-[74px] md:top-[96px] left-0 right-0 z-40 flex justify-center pointer-events-none"
     >
       <div
         class="flex items-center gap-2 bg-white/90 backdrop-blur-md border border-[#fdddc3] px-4 py-2 rounded-full shadow-sm text-sm font-medium text-[#382615] font-jakarta pointer-events-auto"
@@ -274,7 +274,7 @@ onMounted(async () => {
       <!-- Swipe deck -->
       <template v-else-if="candidates.length > 0 || !noMoreCandidates">
         <!-- Card stack -->
-        <div class="relative w-full max-w-[380px]" style="height: 460px">
+        <div class="relative w-full max-w-[342px]" style="height: 414px">
           <div
             v-if="candidates.length >= 3"
             class="absolute inset-0 bg-white rounded-[16px] shadow-[0_4px_20px_rgba(113,62,24,0.08)] opacity-60"
@@ -563,14 +563,22 @@ onMounted(async () => {
               />
               <button
                 v-if="(topCandidate.photos?.length ?? 0) > 1"
-                class="absolute inset-y-0 left-0 w-1/2 z-10"
+                class="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200"
                 @click="prevPhoto"
-              />
+              >
+                <span class="material-symbols-outlined text-white text-xl leading-none"
+                  >chevron_left</span
+                >
+              </button>
               <button
                 v-if="(topCandidate.photos?.length ?? 0) > 1"
-                class="absolute inset-y-0 right-0 w-1/2 z-10"
+                class="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200"
                 @click="nextPhoto"
-              />
+              >
+                <span class="material-symbols-outlined text-white text-xl leading-none"
+                  >chevron_right</span
+                >
+              </button>
               <div
                 v-if="(topCandidate.photos?.length ?? 0) > 1"
                 class="absolute bottom-6 left-0 right-0 z-20 flex justify-center gap-2"
