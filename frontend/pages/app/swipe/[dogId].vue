@@ -159,6 +159,19 @@ function nextPhoto() {
   if (len > 1) profilePhotoIdx.value = (profilePhotoIdx.value + 1) % len
 }
 
+const profileTouchStartX = ref(0)
+
+function onProfileTouchStart(e: TouchEvent) {
+  profileTouchStartX.value = e.touches[0].clientX
+}
+
+function onProfileTouchEnd(e: TouchEvent) {
+  const delta = e.changedTouches[0].clientX - profileTouchStartX.value
+  if (Math.abs(delta) < 40) return
+  if (delta < 0) nextPhoto()
+  else prevPhoto()
+}
+
 onMounted(async () => {
   loadingDog.value = true
   try {
@@ -391,7 +404,11 @@ onMounted(async () => {
               <span class="material-symbols-outlined">arrow_back</span>
             </button>
           </nav>
-          <section class="relative h-[530px] w-full bg-stone-200">
+          <section
+            class="relative h-[530px] w-full bg-stone-200"
+            @touchstart.passive="onProfileTouchStart"
+            @touchend.passive="onProfileTouchEnd"
+          >
             <img
               :src="topCandidate.photos?.[profilePhotoIdx] ?? dogPhoto(topCandidate)"
               :alt="topCandidate.name"
