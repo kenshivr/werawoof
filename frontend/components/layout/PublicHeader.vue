@@ -9,6 +9,8 @@ const handleLogout = async () => {
   authStore.logout()
   await navigateTo('/auth/login')
 }
+
+const firstName = computed(() => authStore.user?.name?.split(' ')[0] ?? '')
 </script>
 
 <template>
@@ -18,7 +20,7 @@ const handleLogout = async () => {
         <img
           :src="'/images/logo-horizontal.webp'"
           alt="WeraWoof"
-          class="hidden md:block h-12 w-auto"
+          class="hidden md:block md:h-8 lg:h-12 w-auto"
         />
         <img :src="'/images/logo-icon.webp'" alt="WeraWoof" class="md:hidden h-10 w-auto" />
       </NuxtLink>
@@ -26,53 +28,46 @@ const handleLogout = async () => {
       <nav class="hidden md:flex items-center gap-6">
         <NuxtLink
           to="/app"
-          class="text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
+          class="text-xs xl:text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
           >Swipe</NuxtLink
         >
         <NuxtLink
           to="/app/matches"
-          class="text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
+          class="text-xs xl:text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
           >Matches</NuxtLink
         >
         <NuxtLink
           to="/app/dogs"
-          class="text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
+          class="text-xs xl:text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
           >Mis Canes</NuxtLink
         >
         <NuxtLink
           to="/comunidad"
-          class="text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
+          class="text-xs xl:text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
           >Comunidad</NuxtLink
         >
         <NuxtLink
           to="/quienes-somos"
-          class="text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
+          class="text-xs xl:text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
           >Quiénes Somos</NuxtLink
         >
         <NuxtLink
           to="/contacto"
-          class="text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
+          class="text-xs xl:text-sm font-medium tracking-wide text-white/80 hover:text-white transition-all duration-200 font-jakarta"
           >Contacto</NuxtLink
         >
       </nav>
 
       <!-- Logueado -->
       <div v-if="authStore.isAuthenticated" class="flex items-center gap-3">
-        <button
-          class="flex items-center justify-center text-white/50 hover:text-white/90 transition-colors"
-          title="Cerrar sesión"
-          @click="handleLogout"
-        >
-          <span class="material-symbols-outlined text-xl">logout</span>
-        </button>
         <NuxtLink to="/app/profile" class="flex items-center gap-2.5 group">
           <span
-            class="hidden md:block text-sm font-medium text-white/90 group-hover:text-white transition-colors font-jakarta truncate max-w-[120px]"
+            class="hidden md:block md:text-xs lg:text-sm font-medium text-white/90 group-hover:text-white transition-colors font-jakarta truncate max-w-[120px]"
           >
-            {{ authStore.user?.name }}
+            {{ firstName }}
           </span>
           <div
-            class="w-9 h-9 rounded-full overflow-hidden border-2 border-[#F4C07D]/60 bg-white/10 flex items-center justify-center shrink-0"
+            class="w-9 h-9 md:w-7 md:h-7 lg:w-9 lg:h-9 rounded-full overflow-hidden border-2 border-[#F4C07D]/60 bg-white/10 flex items-center justify-center shrink-0"
           >
             <img
               v-if="authStore.user?.avatar"
@@ -83,6 +78,13 @@ const handleLogout = async () => {
             <span v-else class="material-symbols-outlined text-[#F4C07D] text-lg">person</span>
           </div>
         </NuxtLink>
+        <button
+          class="flex items-center justify-center text-white/50 hover:text-white/90 transition-colors"
+          title="Cerrar sesión"
+          @click="handleLogout"
+        >
+          <span class="material-symbols-outlined md:text-base lg:text-xl">logout</span>
+        </button>
       </div>
 
       <!-- No logueado -->
