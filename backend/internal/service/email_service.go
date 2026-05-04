@@ -47,7 +47,7 @@ func (s *EmailService) send(to, replyTo, subject, html string) error {
 		HTMLContent: html,
 	}
 	if replyTo != "" {
-		payload.ReplyTo = &brevoSender{Email: replyTo}
+		payload.ReplyTo = &brevoSender{Name: replyTo, Email: replyTo}
 	}
 
 	body, err := json.Marshal(payload)
@@ -241,6 +241,49 @@ func (s *EmailService) SendMatch(data MatchEmailData) error {
 
 	subject := fmt.Sprintf("🐾 ¡%s y %s hicieron match en WeraWoof!", data.MyDogName, data.OtherDogName)
 	return s.send(data.RecipientEmail, "", subject, html)
+}
+
+func (s *EmailService) SendNewMessage(toEmail, recipientName, senderOwnerName, senderDogName string) error {
+	matchesURL := fmt.Sprintf("%s/app/matches", s.appURL)
+	html := fmt.Sprintf(`<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f0ebe4;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif">
+<div style="max-width:560px;margin:0 auto;padding:28px 16px">
+
+  <div style="background:#382615;border-radius:16px 16px 0 0;padding:22px 32px;text-align:center">
+    <span style="font-size:26px">🐾</span>
+    <span style="color:#F4C07D;font-size:20px;font-weight:800;letter-spacing:-0.3px;margin-left:8px;vertical-align:middle">WeraWoof</span>
+  </div>
+
+  <div style="background:#ffffff;padding:36px 32px;border-left:1px solid #e5ddd4;border-right:1px solid #e5ddd4">
+    <p style="margin:0 0 4px;color:#B78F64;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px">Nuevo mensaje</p>
+    <h1 style="margin:0 0 16px;color:#382615;font-size:24px;font-weight:800;line-height:1.2">
+      ¡Hola %s! 💬
+    </h1>
+    <p style="margin:0 0 24px;color:#5a4030;font-size:15px;line-height:1.6">
+      <strong>%s</strong> te envió un mensaje sobre <strong>%s</strong>.<br>
+      Entrá a WeraWoof para responderle.
+    </p>
+    <div style="text-align:center">
+      <a href="%s"
+        style="display:inline-block;background:#F4C07D;color:#382615;text-decoration:none;font-weight:700;font-size:15px;padding:14px 40px;border-radius:12px;letter-spacing:0.2px;box-shadow:0 4px 12px rgba(244,192,125,0.4)">
+        Ver mensaje →
+      </a>
+    </div>
+  </div>
+
+  <div style="background:#382615;border-radius:0 0 16px 16px;padding:18px 32px;text-align:center">
+    <p style="margin:0;color:#B78F64;font-size:12px;font-style:italic">Conectá patitas, creá recuerdos. 🐾</p>
+    <p style="margin:6px 0 0;color:#6b4a2a;font-size:11px">WeraWoof · este correo fue enviado automáticamente</p>
+  </div>
+
+</div>
+</body>
+</html>`, recipientName, senderOwnerName, senderDogName, matchesURL)
+
+	subject := fmt.Sprintf("💬 %s te escribió en WeraWoof", senderOwnerName)
+	return s.send(toEmail, "", subject, html)
 }
 
 func (s *EmailService) SendPasswordReset(toEmail, name, token string) error {

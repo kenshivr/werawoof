@@ -78,7 +78,7 @@ func main() {
 	dogService := service.NewDogService(dogRepo)
 	reviewService := service.NewReviewService(reviewRepo)
 	swipeService := service.NewSwipeService(swipeRepo, dogRepo, userRepo, emailService, sseBroker)
-	chatService := service.NewChatService(msgRepo, swipeRepo, dogRepo, wsHub, sseBroker)
+	chatService := service.NewChatService(msgRepo, swipeRepo, dogRepo, userRepo, wsHub, sseBroker, redisClient, emailService)
 
 	authHandler := handler.NewAuthHandler(authService)
 	oauthHandler := handler.NewOAuthHandler(oauthService, cfg.App.FrontendURL)
