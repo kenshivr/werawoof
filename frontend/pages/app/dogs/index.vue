@@ -3,10 +3,14 @@
     <!-- Header -->
     <div class="flex items-center justify-between mb-8">
       <div>
-        <h1 class="text-[28px] font-extrabold text-[#281808] font-jakarta leading-tight">
+        <h1
+          class="text-[clamp(18px,5vw,28px)] font-extrabold text-[#281808] font-jakarta leading-tight"
+        >
           Mis Canes
         </h1>
-        <p class="text-sm text-[#4f4539] mt-0.5">Elige con quién quieres explorar hoy</p>
+        <p class="text-[clamp(11px,3vw,14px)] text-[#4f4539] mt-0.5">
+          Elige con quién quieres explorar hoy
+        </p>
       </div>
       <NuxtLink
         to="/app/dogs/new"
