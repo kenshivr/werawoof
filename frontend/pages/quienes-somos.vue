@@ -202,10 +202,12 @@ definePageMeta({ layout: false })
           </div>
 
           <!-- Stats / highlight cards -->
-          <div class="grid grid-cols-2 gap-6">
-            <div class="bg-white rounded-2xl p-6 shadow-sm flex flex-col gap-2">
+          <div class="grid grid-cols-2 gap-3 md:gap-6">
+            <div
+              class="bg-white rounded-2xl p-3 sm:p-5 md:p-6 shadow-sm flex flex-col gap-1 md:gap-2"
+            >
               <span
-                class="material-symbols-outlined text-primary text-3xl"
+                class="material-symbols-outlined text-primary text-xl md:text-3xl"
                 style="
                   font-variation-settings:
                     'FILL' 1,
@@ -215,14 +217,20 @@ definePageMeta({ layout: false })
                 "
                 >school</span
               >
-              <p class="text-h3 font-h3 text-on-surface font-jakarta">FES Acatlán</p>
-              <p class="text-body-md text-on-surface-variant">
+              <p
+                class="text-[clamp(13px,3.8vw,24px)] font-bold leading-tight text-on-surface font-jakarta"
+              >
+                FES Acatlán
+              </p>
+              <p class="text-[clamp(10px,2.6vw,16px)] leading-snug text-on-surface-variant">
                 UNAM · Matemáticas Aplicadas y Computación
               </p>
             </div>
-            <div class="bg-white rounded-2xl p-6 shadow-sm flex flex-col gap-2">
+            <div
+              class="bg-white rounded-2xl p-3 sm:p-5 md:p-6 shadow-sm flex flex-col gap-1 md:gap-2"
+            >
               <span
-                class="material-symbols-outlined text-primary text-3xl"
+                class="material-symbols-outlined text-primary text-xl md:text-3xl"
                 style="
                   font-variation-settings:
                     'FILL' 1,
@@ -232,12 +240,20 @@ definePageMeta({ layout: false })
                 "
                 >work</span
               >
-              <p class="text-h3 font-h3 text-on-surface font-jakarta">2 años</p>
-              <p class="text-body-md text-on-surface-variant">Experiencia profesional</p>
+              <p
+                class="text-[clamp(13px,3.8vw,24px)] font-bold leading-tight text-on-surface font-jakarta"
+              >
+                2 años
+              </p>
+              <p class="text-[clamp(10px,2.6vw,16px)] leading-snug text-on-surface-variant">
+                Experiencia profesional
+              </p>
             </div>
-            <div class="bg-white rounded-2xl p-6 shadow-sm flex flex-col gap-2">
+            <div
+              class="bg-white rounded-2xl p-3 sm:p-5 md:p-6 shadow-sm flex flex-col gap-1 md:gap-2"
+            >
               <span
-                class="material-symbols-outlined text-primary text-3xl"
+                class="material-symbols-outlined text-primary text-xl md:text-3xl"
                 style="
                   font-variation-settings:
                     'FILL' 1,
@@ -247,12 +263,20 @@ definePageMeta({ layout: false })
                 "
                 >folder_special</span
               >
-              <p class="text-h3 font-h3 text-on-surface font-jakarta">Proyectos</p>
-              <p class="text-body-md text-on-surface-variant">Personales y profesionales</p>
+              <p
+                class="text-[clamp(13px,3.8vw,24px)] font-bold leading-tight text-on-surface font-jakarta"
+              >
+                Proyectos
+              </p>
+              <p class="text-[clamp(10px,2.6vw,16px)] leading-snug text-on-surface-variant">
+                Personales y profesionales
+              </p>
             </div>
-            <div class="bg-[#382615] rounded-2xl p-6 shadow-sm flex flex-col gap-2">
+            <div
+              class="bg-[#382615] rounded-2xl p-3 sm:p-5 md:p-6 shadow-sm flex flex-col gap-1 md:gap-2"
+            >
               <span
-                class="material-symbols-outlined text-[#F4C07D] text-3xl"
+                class="material-symbols-outlined text-[#F4C07D] text-xl md:text-3xl"
                 style="
                   font-variation-settings:
                     'FILL' 1,
@@ -262,8 +286,12 @@ definePageMeta({ layout: false })
                 "
                 >favorite</span
               >
-              <p class="text-h3 font-h3 text-white font-jakarta">Hecho con</p>
-              <p class="text-white/70 text-body-md">amor por Wera</p>
+              <p
+                class="text-[clamp(13px,3.8vw,24px)] font-bold leading-tight text-white font-jakarta"
+              >
+                Hecho con
+              </p>
+              <p class="text-[clamp(10px,2.6vw,16px)] leading-snug text-white/70">amor por Wera</p>
             </div>
           </div>
         </div>
