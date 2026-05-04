@@ -52,12 +52,14 @@
             class="w-full sm:w-auto bg-[#F4C07D] text-[#382615] px-10 py-4 rounded-2xl font-bold font-jakarta flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 active:scale-95"
             @click="clearError({ redirect: '/' })"
           >
+            <span class="material-symbols-outlined">home</span>
             Volver al inicio
           </button>
           <button
             class="w-full sm:w-auto border-2 border-[#7d571e] text-[#7d571e] px-10 py-4 rounded-2xl font-bold font-jakarta flex items-center justify-center gap-2 hover:bg-[#7d571e]/5 hover:-translate-y-0.5 transition-all duration-200 active:scale-95"
             @click="clearError({ redirect: '/app/dogs' })"
           >
+            <span class="material-symbols-outlined">pets</span>
             Ver mis Canes
           </button>
         </div>
@@ -103,4 +105,24 @@
 
 <script setup lang="ts">
 defineProps<{ error: { statusCode: number; message: string } }>()
+
+useHead({
+  link: [
+    { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+    { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,800&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap',
+    },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap',
+    },
+  ],
+  style: [
+    {
+      innerHTML: `.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; font-family: 'Material Symbols Outlined'; }`,
+    },
+  ],
+})
 </script>
