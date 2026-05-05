@@ -7,6 +7,7 @@ export interface User {
   bio?: string
   emailVerified: boolean
   createdAt: string
+  role?: string
 }
 
 export interface LoginPayload {
