@@ -36,6 +36,7 @@ type AppConfig struct {
 	Env         string `mapstructure:"APP_ENV"`
 	Port        string `mapstructure:"APP_PORT"`
 	FrontendURL string `mapstructure:"FRONTEND_URL"`
+	AdminEmail  string `mapstructure:"ADMIN_EMAIL"`
 }
 
 type DatabaseConfig struct {
@@ -69,6 +70,7 @@ func Load() (*Config, error) {
 			Env:         viper.GetString("APP_ENV"),
 			Port:        viper.GetString("APP_PORT"),
 			FrontendURL: viper.GetString("FRONTEND_URL"),
+			AdminEmail:  viper.GetString("ADMIN_EMAIL"),
 		},
 		Database: DatabaseConfig{
 			URL: viper.GetString("DATABASE_URL"),

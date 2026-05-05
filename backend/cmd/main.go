@@ -42,6 +42,13 @@ func main() {
 		log.Fatalf("failed to run migrations: %v", err)
 	}
 
+	// Bootstrap: fijar role='user' a los existentes sin role, y promover admin
+	db.Exec("UPDATE users SET role = 'user' WHERE role IS NULL OR role = ''")
+	if cfg.App.AdminEmail != "" {
+		db.Exec("UPDATE users SET role = 'admin' WHERE email = ?", cfg.App.AdminEmail)
+		log.Printf("admin bootstrapped: %s", cfg.App.AdminEmail)
+	}
+
 	redisClient, err := redis.Connect(cfg.Redis.URL)
 	if err != nil {
 		log.Fatalf("failed to connect to redis: %v", err)
@@ -80,6 +87,9 @@ func main() {
 	swipeService := service.NewSwipeService(swipeRepo, dogRepo, userRepo, emailService, sseBroker)
 	chatService := service.NewChatService(msgRepo, swipeRepo, dogRepo, userRepo, wsHub, sseBroker, redisClient, emailService)
 
+	adminRepo := repository.NewAdminRepository(db)
+	adminHandler := handler.NewAdminHandler(adminRepo)
+
 	authHandler := handler.NewAuthHandler(authService)
 	oauthHandler := handler.NewOAuthHandler(oauthService, cfg.App.FrontendURL)
 	verificationHandler := handler.NewVerificationHandler(verificationService)
@@ -111,6 +121,7 @@ func main() {
 	r.POST("/contact", contactHandler.Send)
 	r.POST("/newsletter", newsletterHandler.Subscribe)
 	r.GET("/reviews", reviewHandler.GetAll)
+	r.POST("/track", adminHandler.Track)
 
 	auth := r.Group("/auth")
 	{
@@ -149,6 +160,11 @@ func main() {
 		api.GET("/notifications", sseHandler.Stream)
 
 		api.POST("/reviews", reviewHandler.Upsert)
+	}
+
+	adminGroup := r.Group("/admin", authMiddleware, middleware.Admin(userRepo))
+	{
+		adminGroup.GET("/dashboard", adminHandler.GetDashboard)
 	}
 
 	log.Printf("server running on port %s", cfg.App.Port)
