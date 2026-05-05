@@ -34,7 +34,7 @@
     </div>
 
     <!-- Page content -->
-    <main class="flex-1 pt-28 pb-16 px-6 relative z-10">
+    <main class="flex-1 flex justify-center pt-28 pb-16 px-6 relative z-10">
       <slot />
     </main>
 

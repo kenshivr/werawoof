@@ -114,8 +114,10 @@ const copy = computed(() =>
 <template>
   <div class="w-full flex flex-col items-center">
     <!-- Mobile branding -->
-    <div class="md:hidden w-full max-w-[400px] text-center mb-5 flex flex-col justify-center gap-4">
-      <img src="/images/logo-horizontal.webp" alt="WeraWoof" class="w-1/2 mx-auto" />
+    <div
+      class="md:hidden mx-auto w-full max-w-[400px] text-center mb-5 flex flex-col justify-center gap-4"
+    >
+      <img :src="'/images/logo-horizontal.webp'" alt="WeraWoof" class="w-1/2 mx-auto" />
       <p class="text-body-md text-on-surface-variant mt-1">
         Encontrá al compañero perfecto para tu can
       </p>
@@ -123,12 +125,12 @@ const copy = computed(() =>
 
     <!-- Main card -->
     <main
-      class="w-full max-w-[400px] md:max-w-5xl bg-white rounded-2xl md:rounded-[32px] overflow-hidden shadow-[0_12px_40px_rgba(113,62,24,0.12)] flex flex-col md:flex-row md:min-h-[720px]"
+      class="mx-auto w-full max-w-[400px] md:max-w-5xl bg-white rounded-2xl md:rounded-[32px] overflow-hidden shadow-[0_12px_40px_rgba(113,62,24,0.12)] flex flex-col md:flex-row md:min-h-[720px]"
     >
       <!-- Left: photo panel — desktop only -->
       <section class="hidden md:block relative w-1/2 overflow-hidden">
         <img
-          src="/images/vertical.webp"
+          :src="'/images/vertical.webp'"
           alt="Wera the dog"
           class="absolute inset-0 w-full h-full object-cover"
         />
@@ -154,7 +156,7 @@ const copy = computed(() =>
       <section class="w-full md:w-1/2 flex flex-col bg-white">
         <!-- Mobile: image banner -->
         <div class="md:hidden h-40 w-full overflow-hidden">
-          <img src="/images/horizontal.webp" alt="Wera" class="w-full h-full object-cover" />
+          <img :src="'/images/horizontal.webp'" alt="Wera" class="w-full h-full object-cover" />
         </div>
 
         <!-- Form area -->
@@ -436,7 +438,7 @@ const copy = computed(() =>
     </main>
 
     <!-- Footer — mobile -->
-    <footer class="md:hidden w-full max-w-[400px] mt-8 text-center space-y-2">
+    <footer class="md:hidden mx-auto w-full max-w-[400px] mt-8 text-center space-y-2">
       <div class="flex justify-center gap-6">
         <NuxtLink
           to="/politica-de-privacidad"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-definePageMeta({ layout: 'public', middleware: 'guest', ssr: false })
+definePageMeta({ layout: 'public', middleware: 'guest' })
 </script>
 
 <template>
