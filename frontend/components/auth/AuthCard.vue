@@ -57,10 +57,11 @@ const handleSubmit = async () => {
   try {
     if (isRegister.value) {
       await authStore.register({ name: form.name, email: form.email, password: form.password })
+      await navigateTo('/auth/check-email')
     } else {
       await authStore.login({ email: form.email, password: form.password })
+      await navigateTo('/app')
     }
-    await navigateTo('/app')
   } catch (e: unknown) {
     error.value = isRegister.value
       ? ((e as Error).message ?? 'Ocurrió un error al crear tu cuenta. Intenta de nuevo.')

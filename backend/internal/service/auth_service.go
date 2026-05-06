@@ -110,6 +110,10 @@ func (s *AuthService) ValidateToken(ctx context.Context, tokenStr string) (*jwt.
 	return claims, nil
 }
 
+func (s *AuthService) GenerateToken(userID uint) (string, error) {
+	return s.generateToken(userID)
+}
+
 func (s *AuthService) generateToken(userID uint) (string, error) {
 	claims := jwt.RegisteredClaims{
 		Subject:   fmt.Sprintf("%d", userID),

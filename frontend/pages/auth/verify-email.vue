@@ -30,7 +30,7 @@ const success = ref(false)
 
 onMounted(async () => {
   try {
-    await api.get(`/auth/verify-email?token=${route.query.token}`)
+    await api.get(`/auth/verify?token=${route.query.token}`)
     success.value = true
   } catch {
     success.value = false

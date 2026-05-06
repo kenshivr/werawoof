@@ -77,7 +77,7 @@ func (s *EmailService) send(to, replyTo, subject, html string) error {
 }
 
 func (s *EmailService) SendVerification(toEmail, name, token string) error {
-	link := fmt.Sprintf("%s/verify?token=%s", s.appURL, token)
+	link := fmt.Sprintf("%s/auth/verify-email?token=%s", s.appURL, token)
 	html := fmt.Sprintf(`
 		<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:24px">
 			<h2 style="color:#382615">¡Hola %s!</h2>
