@@ -3,8 +3,12 @@ export default defineNuxtRouteMiddleware(async () => {
 
   const authStore = useAuthStore()
 
-  if (authStore.isAuthenticated && !authStore.user) {
-    await authStore.fetchProfile().catch(() => {})
+  if (!authStore.user) {
+    try {
+      await authStore.fetchProfile()
+    } catch {
+      return navigateTo('/auth/login')
+    }
   }
 
   if (authStore.user?.role !== 'admin') {
