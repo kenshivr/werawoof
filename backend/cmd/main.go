@@ -91,12 +91,16 @@ func main() {
 	adminHandler := handler.NewAdminHandler(adminRepo)
 
 	authHandler := handler.NewAuthHandler(authService)
-	oauthHandler := handler.NewOAuthHandler(oauthService, cfg.App.FrontendURL)
+	oauthHandler := handler.NewOAuthHandler(oauthService, cfg.App.FrontendURL, cfg.App.Env == "production")
 	verificationHandler := handler.NewVerificationHandler(verificationService)
 	userHandler := handler.NewUserHandler(userService, cloudinaryClient)
 	dogHandler := handler.NewDogHandler(dogService, cloudinaryClient)
 	swipeHandler := handler.NewSwipeHandler(swipeService)
-	chatHandler := handler.NewChatHandler(chatService, wsHub)
+	allowedOrigins := []string{cfg.App.FrontendURL}
+	if cfg.App.Env == "development" {
+		allowedOrigins = append(allowedOrigins, "http://localhost:3003", "http://localhost:3000")
+	}
+	chatHandler := handler.NewChatHandler(chatService, wsHub, allowedOrigins)
 	sseHandler := handler.NewSSEHandler(sseBroker)
 	contactHandler := handler.NewContactHandler(emailService)
 	reviewHandler := handler.NewReviewHandler(reviewService)
@@ -154,12 +158,17 @@ func main() {
 		api.GET("/dogs/:id/candidates", swipeHandler.GetCandidates)
 		api.GET("/dogs/:id/matches", swipeHandler.GetMatches)
 
-		api.GET("/ws", chatHandler.Connect)
 		api.GET("/matches/:match_id/messages", chatHandler.GetHistory)
 
-		api.GET("/notifications", sseHandler.Stream)
-
 		api.POST("/reviews", reviewHandler.Upsert)
+	}
+
+	// WS y SSE usan WSAuth (token por query param) porque el browser
+	// no puede enviar headers en estas conexiones.
+	wsGroup := r.Group("/api", middleware.WSAuth(authService))
+	{
+		wsGroup.GET("/ws", chatHandler.Connect)
+		wsGroup.GET("/notifications", sseHandler.Stream)
 	}
 
 	adminGroup := r.Group("/admin", authMiddleware, middleware.Admin(userRepo))

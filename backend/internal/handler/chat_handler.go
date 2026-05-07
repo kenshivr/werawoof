@@ -11,24 +11,39 @@ import (
 	"github.com/kenshivr/werawoof/pkg/hub"
 )
 
-var upgrader = websocket.Upgrader{
-	CheckOrigin: func(r *http.Request) bool { return true },
-}
-
 type ChatHandler struct {
-	chatService *service.ChatService
-	hub         *hub.Hub
+	chatService    *service.ChatService
+	hub            *hub.Hub
+	upgrader       websocket.Upgrader
 }
 
-func NewChatHandler(chatService *service.ChatService, h *hub.Hub) *ChatHandler {
-	return &ChatHandler{chatService: chatService, hub: h}
+func NewChatHandler(chatService *service.ChatService, h *hub.Hub, allowedOrigins []string) *ChatHandler {
+	originSet := make(map[string]struct{}, len(allowedOrigins))
+	for _, o := range allowedOrigins {
+		originSet[o] = struct{}{}
+	}
+
+	upgrader := websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			origin := r.Header.Get("Origin")
+			_, ok := originSet[origin]
+			return ok
+		},
+	}
+
+	return &ChatHandler{
+		chatService: chatService,
+		hub:         h,
+		upgrader:    upgrader,
+	}
 }
 
 func (h *ChatHandler) Connect(c *gin.Context) {
 	userID := mustGetUserID(c)
 
-	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
+	conn, err := h.upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "websocket upgrade failed"})
 		return
 	}
 
