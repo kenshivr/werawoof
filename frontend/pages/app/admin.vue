@@ -596,9 +596,7 @@
                 </div>
                 <p class="text-[11px] text-[#4f4539] font-jakarta">
                   {{ data.community.google_users.toLocaleString() }} Google ·
-                  {{
-                    (data.stats.total_users - data.community.google_users).toLocaleString()
-                  }}
+                  {{ (data.stats.total_users - data.community.google_users).toLocaleString() }}
                   Email
                 </p>
               </div>
