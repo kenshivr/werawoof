@@ -1,8 +1,8 @@
-export default defineNuxtRouteMiddleware(() => {
+export default defineNuxtRouteMiddleware(async () => {
   if (import.meta.server) return
 
   const authStore = useAuthStore()
-  authStore.restoreSession()
+  await authStore.restoreSession()
 
   if (authStore.isAuthenticated) {
     return navigateTo('/app')

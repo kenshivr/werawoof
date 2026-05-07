@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const authStore = useAuthStore()
 
-onMounted(() => {
-  authStore.restoreSession()
+onMounted(async () => {
+  await authStore.restoreSession()
 })
 
 const handleLogout = async () => {

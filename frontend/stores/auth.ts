@@ -7,6 +7,15 @@ import type {
   UpdateProfilePayload,
 } from '~/types/auth'
 
+const isTokenExpired = (t: string): boolean => {
+  try {
+    const payload = JSON.parse(atob(t.split('.')[1]))
+    return Date.now() >= payload.exp * 1000
+  } catch {
+    return true
+  }
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
   const token = ref<string | null>(null)
@@ -29,11 +38,16 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const restoreSession = () => {
-    if (import.meta.client) {
-      const saved = localStorage.getItem('token')
-      if (saved) token.value = saved
+  const restoreSession = async () => {
+    if (!import.meta.client) return
+    const saved = localStorage.getItem('token')
+    if (!saved) return
+    if (isTokenExpired(saved)) {
+      logout()
+      return
     }
+    token.value = saved
+    await fetchProfile()
   }
 
   const login = async (payload: LoginPayload) => {
