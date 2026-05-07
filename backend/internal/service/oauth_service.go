@@ -70,6 +70,10 @@ func (s *OAuthService) HandleCallback(ctx context.Context, code string) (string,
 		}
 	} else if err != nil {
 		return "", err
+	} else if user.GoogleID != userInfo.ID {
+		// El email existe pero se registró con contraseña u otro proveedor.
+		// Rechazar para evitar account takeover — el user debe ingresar con su método original.
+		return "", errors.New("email_registered_with_password")
 	}
 
 	return s.authService.generateToken(user.ID)

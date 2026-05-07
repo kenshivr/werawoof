@@ -6,9 +6,15 @@ const isRegister = computed(() => props.mode === 'register')
 const authStore = useAuthStore()
 const config = useRuntimeConfig()
 
+const route = useRoute()
 const form = reactive({ name: '', email: '', password: '', confirmPassword: '' })
 const loading = ref(false)
-const error = ref('')
+
+const oauthErrors: Record<string, string> = {
+  oauth_failed: 'Ocurrió un error al iniciar sesión con Google. Intentá de nuevo.',
+  use_password: 'Este email ya tiene una cuenta. Ingresá con tu contraseña.',
+}
+const error = ref(oauthErrors[route.query.error as string] ?? '')
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 const touchedEmail = ref(false)
