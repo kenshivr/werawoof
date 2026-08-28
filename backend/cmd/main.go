@@ -146,6 +146,7 @@ func main() {
 		api.GET("/me", userHandler.GetProfile)
 		api.PUT("/me", userHandler.UpdateProfile)
 		api.POST("/me/avatar", userHandler.UploadAvatar)
+		api.DELETE("/me", userHandler.DeleteAccount)
 
 		api.POST("/dogs", dogHandler.Create)
 		api.GET("/dogs", dogHandler.GetMyDogs)

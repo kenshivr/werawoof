@@ -94,11 +94,12 @@ const handleClubClick = () => {
                 <span> Comenzar </span>
                 <span class="material-symbols-outlined">arrow_forward</span>
               </NuxtLink>
-              <button
+              <NuxtLink
+                to="/comunidad"
                 class="hidden sm:flex border-2 border-white/30 bg-white/10 backdrop-blur-md text-white font-medium text-lg px-10 py-5 rounded-2xl hover:bg-white/20 transition-all duration-200 items-center justify-center"
               >
                 Ver comunidad
-              </button>
+              </NuxtLink>
             </div>
           </div>
         </div>

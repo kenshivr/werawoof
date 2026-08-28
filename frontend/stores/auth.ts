@@ -88,6 +88,12 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const deleteAccount = async () => {
+    const api = useApi()
+    await api.del('/api/me')
+    logout()
+  }
+
   const loginWithToken = async (tokenValue: string) => {
     token.value = tokenValue
     if (import.meta.client) {
@@ -107,5 +113,6 @@ export const useAuthStore = defineStore('auth', () => {
     fetchProfile,
     updateProfile,
     loginWithToken,
+    deleteAccount,
   }
 })

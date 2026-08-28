@@ -108,6 +108,15 @@ func (h *UserHandler) UploadAvatar(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
+func (h *UserHandler) DeleteAccount(c *gin.Context) {
+	userID := mustGetUserID(c)
+	if err := h.userService.DeleteAccount(userID); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not delete account"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "account deleted"})
+}
+
 func mustGetUserID(c *gin.Context) uint {
 	id, _ := strconv.ParseUint(c.GetString("userID"), 10, 64)
 	return uint(id)

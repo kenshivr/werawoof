@@ -41,6 +41,10 @@ func (s *UserService) UpdateProfile(userID uint, input UpdateProfileInput) (*dom
 	return user, nil
 }
 
+func (s *UserService) DeleteAccount(userID uint) error {
+	return s.userRepo.Delete(userID)
+}
+
 func (s *UserService) UpdateAvatar(userID uint, avatarURL string) (*domain.User, error) {
 	user, err := s.userRepo.FindByID(userID)
 	if err != nil {

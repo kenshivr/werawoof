@@ -46,3 +46,7 @@ func (r *UserRepository) MarkVerified(id uint) error {
 func (r *UserRepository) UpdatePassword(id uint, passwordHash string) error {
 	return r.db.Model(&domain.User{}).Where("id = ?", id).Update("password_hash", passwordHash).Error
 }
+
+func (r *UserRepository) Delete(id uint) error {
+	return r.db.Delete(&domain.User{}, id).Error
+}

@@ -165,6 +165,26 @@
             cuando quieras desde la configuración."
           </p>
         </div>
+
+        <!-- Danger zone -->
+        <div
+          class="mt-10 w-full max-w-2xl mx-auto border border-red-200 rounded-2xl p-6 bg-red-50/40"
+        >
+          <p class="text-xs font-bold uppercase tracking-widest text-red-400 mb-1 font-jakarta">
+            Zona de peligro
+          </p>
+          <p class="text-sm text-[#4f4539] mb-4">
+            Esta acción es permanente e irreversible. Se eliminarán tu cuenta, tus canes y todos tus
+            datos.
+          </p>
+          <button
+            type="button"
+            class="px-6 py-2.5 rounded-xl border border-red-300 text-red-500 text-sm font-bold hover:bg-red-500 hover:text-white transition-all duration-200 font-jakarta"
+            @click="showDeleteModal = true"
+          >
+            Eliminar mi cuenta
+          </button>
+        </div>
       </template>
 
       <!-- STEP 2: Dog Profile -->
@@ -616,6 +636,13 @@
             <p class="text-center mt-3 text-xs text-[#795832]/60 font-jakarta">
               Podés cambiar estos datos cuando quieras
             </p>
+            <button
+              type="button"
+              class="w-full mt-2 py-3 text-red-400 text-sm font-bold rounded-xl hover:bg-red-50 transition-colors font-jakarta"
+              @click="showDeleteModal = true"
+            >
+              Eliminar mi cuenta
+            </button>
           </div>
         </div>
       </template>
@@ -842,6 +869,51 @@
         </div>
       </template>
     </div>
+
+    <!-- Modal: confirmar eliminación de cuenta -->
+    <Teleport to="body">
+      <Transition name="fade">
+        <div
+          v-if="showDeleteModal"
+          class="fixed inset-0 z-[200] flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
+          @click.self="showDeleteModal = false"
+        >
+          <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-8 flex flex-col gap-5">
+            <div class="flex flex-col items-center gap-3 text-center">
+              <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center">
+                <span class="material-symbols-outlined text-red-500 text-3xl">warning</span>
+              </div>
+              <h2 class="text-xl font-bold text-[#281808] font-jakarta">¿Eliminar tu cuenta?</h2>
+              <p class="text-sm text-[#4f4539]">
+                Esta acción es <strong>permanente e irreversible</strong>. Se eliminarán tu perfil,
+                tus canes, tus matches y todos tus datos.
+              </p>
+            </div>
+
+            <p v-if="deleteError" class="text-red-500 text-sm text-center">{{ deleteError }}</p>
+
+            <div class="flex flex-col gap-3">
+              <button
+                type="button"
+                :disabled="deleting"
+                class="w-full py-3.5 bg-red-500 text-white rounded-xl font-bold text-base font-jakarta hover:bg-red-600 active:scale-95 transition-all disabled:opacity-60"
+                @click="confirmDeleteAccount"
+              >
+                {{ deleting ? 'Eliminando...' : 'Sí, eliminar mi cuenta' }}
+              </button>
+              <button
+                type="button"
+                :disabled="deleting"
+                class="w-full py-3.5 border border-[#DBD8D0] text-[#4f4539] rounded-xl font-bold text-base font-jakarta hover:bg-[#ffeadb] transition-all disabled:opacity-60"
+                @click="showDeleteModal = false"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
@@ -862,6 +934,21 @@ const dogFileInputMobile = ref<HTMLInputElement | null>(null)
 const avatarPreview = ref<string | null>(null)
 const saving = ref(false)
 const error = ref('')
+const showDeleteModal = ref(false)
+const deleting = ref(false)
+const deleteError = ref('')
+
+const confirmDeleteAccount = async () => {
+  deleting.value = true
+  deleteError.value = ''
+  try {
+    await authStore.deleteAccount()
+    await router.push('/')
+  } catch {
+    deleteError.value = 'No se pudo eliminar la cuenta. Intentá de nuevo.'
+    deleting.value = false
+  }
+}
 
 const form = reactive({
   name: authStore.user?.name ?? '',
@@ -1053,6 +1140,15 @@ const handleSaveStep2 = async () => {
 </script>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .age-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   height: 24px;
