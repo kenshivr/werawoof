@@ -39,8 +39,13 @@ export default defineNuxtConfig({
             'Conecta a tu perro: perfiles, swipe, matches y chat en tiempo real para organizar playdates o cruzas.',
         },
         { name: 'twitter:image', content: 'https://werawoof.vercel.app/og-werawoof.png' },
+        { name: 'theme-color', content: '#fff8f5' },
       ],
-      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'manifest', href: '/manifest.webmanifest' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+      ],
     },
   },
 

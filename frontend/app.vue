@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Analytics } from '@vercel/analytics/nuxt'
+
 useHead({
   link: [
     // fuentes self-hosted (assets/css/fonts.css); preload de las críticas del primer render
@@ -30,6 +32,7 @@ useHead({
 <template>
   <div>
     <NuxtRouteAnnouncer />
+    <Analytics />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

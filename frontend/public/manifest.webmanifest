@@ -1,0 +1,20 @@
+{
+  "name": "WeraWoof",
+  "short_name": "WeraWoof",
+  "description": "Matches, playdates y chat para dueños de perros",
+  "id": "/",
+  "lang": "es",
+  "start_url": "/app/dogs",
+  "display": "standalone",
+  "background_color": "#fff8f5",
+  "theme_color": "#fff8f5",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Mis perros", "url": "/app/dogs", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Matches", "url": "/app/matches", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
