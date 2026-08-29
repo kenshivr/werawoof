@@ -1,18 +1,6 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 
-const isLoading = ref(true)
-const shownAt = Date.now()
-const MIN_MS = 700
-
-const nuxtApp = useNuxtApp()
-nuxtApp.hook('page:finish', () => {
-  const wait = Math.max(0, MIN_MS - (Date.now() - shownAt))
-  setTimeout(() => {
-    isLoading.value = false
-  }, wait)
-})
-
 const authStore = useAuthStore()
 const router = useRouter()
 
@@ -27,11 +15,6 @@ const handleClubClick = () => {
 
 <template>
   <div class="bg-background text-on-background font-vietnam overflow-x-hidden">
-    <ClientOnly>
-      <Transition name="splash">
-        <AppLoadingScreen v-if="isLoading" />
-      </Transition>
-    </ClientOnly>
     <LayoutPublicHeader />
 
     <!-- Paw decorations -->
@@ -255,15 +238,3 @@ const handleClubClick = () => {
     <LayoutPublicBottomNav />
   </div>
 </template>
-
-<style>
-.splash-leave-active {
-  transition:
-    transform 0.7s cubic-bezier(0.76, 0, 0.24, 1),
-    opacity 0.5s ease;
-}
-.splash-leave-to {
-  transform: translateY(-100%);
-  opacity: 0;
-}
-</style>
