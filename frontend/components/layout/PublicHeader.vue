@@ -21,8 +21,16 @@ const firstName = computed(() => authStore.user?.name?.split(' ')[0] ?? '')
           :src="'/images/logo-horizontal.webp'"
           alt="WeraWoof"
           class="hidden md:block md:h-8 lg:h-12 w-auto"
+          width="490"
+          height="140"
         />
-        <img :src="'/images/logo-icon.webp'" alt="WeraWoof" class="md:hidden h-10 w-auto" />
+        <img
+          :src="'/images/logo-icon.webp'"
+          alt="WeraWoof"
+          class="md:hidden h-10 w-auto"
+          width="223"
+          height="160"
+        />
       </NuxtLink>
 
       <nav class="hidden md:flex items-center gap-6">

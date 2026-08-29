@@ -160,6 +160,8 @@ const handleClubClick = () => {
                 alt="Wera playing with a playful expression."
                 class="w-full h-full object-cover"
                 loading="lazy"
+                width="800"
+                height="800"
               />
               <div
                 class="absolute bottom-0 left-0 right-0 p-10 bg-gradient-to-t from-on-surface to-transparent text-white"

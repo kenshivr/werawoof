@@ -45,7 +45,13 @@ async function subscribeNewsletter() {
         <!-- Col 1: Brand -->
         <div class="flex-1">
           <NuxtLink to="/">
-            <img :src="'/images/logo-horizontal.webp'" alt="WeraWoof" class="h-10 w-auto mb-6" />
+            <img
+              :src="'/images/logo-horizontal.webp'"
+              alt="WeraWoof"
+              class="h-10 w-auto mb-6"
+              width="490"
+              height="140"
+            />
           </NuxtLink>
           <p class="text-white/60 text-body-md mb-6 leading-relaxed">
             Construyendo la comunidad más chida de amantes de los canes, enfocada en una convivencia

@@ -6,8 +6,16 @@
           :src="'/images/logo-horizontal.webp'"
           alt="WeraWoof"
           class="hidden md:block h-12 w-auto"
+          width="490"
+          height="140"
         />
-        <img :src="'/images/logo-icon.webp'" alt="WeraWoof" class="md:hidden h-10 w-auto" />
+        <img
+          :src="'/images/logo-icon.webp'"
+          alt="WeraWoof"
+          class="md:hidden h-10 w-auto"
+          width="223"
+          height="160"
+        />
       </NuxtLink>
       <NuxtLink
         to="/"

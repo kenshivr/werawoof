@@ -44,6 +44,8 @@ export default defineNuxtConfig({
     },
   },
 
+  css: ['~/assets/css/fonts.css'],
+
   routeRules: {
     '/app': { redirect: '/app/dogs' },
   },

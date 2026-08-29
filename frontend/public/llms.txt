@@ -1,0 +1,16 @@
+# WeraWoof
+
+> App web para dueños de perros: perfiles de canes, swipe, matches y chat en tiempo real para organizar paseos, playdates o cruzas. El contenido del usuario vive detrás de un login: solo estas páginas son públicas.
+
+## Páginas públicas
+
+- [Inicio](https://werawoof.vercel.app/): landing con el funcionamiento de la app
+- [Comunidad](https://werawoof.vercel.app/comunidad): la comunidad WeraWoof
+- [Quiénes somos](https://werawoof.vercel.app/quienes-somos): historia y equipo del proyecto
+- [Contacto](https://werawoof.vercel.app/contacto): formulario de contacto
+- [Iniciar sesión](https://werawoof.vercel.app/auth/login): entrada a la app
+- [Crear cuenta](https://werawoof.vercel.app/auth/register): registro de usuario
+
+## Código
+
+- [Repositorio en GitHub](https://github.com/kenshivr/werawoof): código fuente del proyecto (Nuxt 3 + Go/Gin)
