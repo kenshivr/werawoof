@@ -12,6 +12,7 @@ export default defineNuxtConfig({
           content:
             'Conecta a tu perro: perfiles, swipe, matches y chat en tiempo real para organizar playdates o cruzas.',
         },
+        { name: 'author', content: 'Brayan Vidal Romero' },
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'WeraWoof' },
         {

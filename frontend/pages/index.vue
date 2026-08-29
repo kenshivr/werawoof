@@ -71,6 +71,7 @@ const handleClubClick = () => {
             :src="'/images/horizontal.webp'"
             alt="Wera, a golden-colored dog, sitting happily in a sunny park."
             class="w-full h-full object-cover"
+            fetchpriority="high"
           />
           <div
             class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#382615]/90 via-[#382615]/40 to-transparent"
@@ -175,6 +176,7 @@ const handleClubClick = () => {
                 :src="'/images/hand.webp'"
                 alt="Wera playing with a playful expression."
                 class="w-full h-full object-cover"
+                loading="lazy"
               />
               <div
                 class="absolute bottom-0 left-0 right-0 p-10 bg-gradient-to-t from-on-surface to-transparent text-white"
