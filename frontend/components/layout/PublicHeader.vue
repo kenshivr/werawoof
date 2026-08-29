@@ -17,20 +17,21 @@ const firstName = computed(() => authStore.user?.name?.split(' ')[0] ?? '')
   <header class="fixed top-0 z-50 w-full bg-[#382615] shadow-xl">
     <div class="flex items-center justify-between w-full px-8 py-4">
       <NuxtLink to="/">
-        <img
-          :src="'/images/logo-horizontal.webp'"
-          alt="WeraWoof"
-          class="hidden md:block md:h-8 lg:h-12 w-auto"
-          width="490"
-          height="140"
-        />
-        <img
-          :src="'/images/logo-icon.webp'"
-          alt="WeraWoof"
-          class="md:hidden h-10 w-auto"
-          width="223"
-          height="160"
-        />
+        <picture>
+          <source
+            media="(min-width: 768px)"
+            srcset="/images/logo-horizontal.webp"
+            width="490"
+            height="140"
+          />
+          <img
+            :src="'/images/logo-icon.webp'"
+            alt="WeraWoof"
+            class="h-10 md:h-8 lg:h-12 w-auto"
+            width="112"
+            height="80"
+          />
+        </picture>
       </NuxtLink>
 
       <nav class="hidden md:flex items-center gap-6">

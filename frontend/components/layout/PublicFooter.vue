@@ -46,11 +46,11 @@ async function subscribeNewsletter() {
         <div class="flex-1">
           <NuxtLink to="/">
             <img
-              :src="'/images/logo-horizontal.webp'"
+              :src="'/images/logo-horizontal-sm.webp'"
               alt="WeraWoof"
               class="h-10 w-auto mb-6"
-              width="490"
-              height="140"
+              width="280"
+              height="80"
             />
           </NuxtLink>
           <p class="text-white/60 text-body-md mb-6 leading-relaxed">
