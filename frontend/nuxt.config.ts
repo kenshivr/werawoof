@@ -59,7 +59,7 @@ export default defineNuxtConfig({
     port: 3003,
   },
 
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxt/eslint'],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxt/eslint', '@vercel/analytics/nuxt'],
 
   runtimeConfig: {
     public: {
