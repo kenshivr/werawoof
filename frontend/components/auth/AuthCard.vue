@@ -124,7 +124,13 @@ const copy = computed(() =>
     <div
       class="md:hidden mx-auto w-full max-w-[400px] text-center mb-5 flex flex-col justify-center gap-4"
     >
-      <img :src="'/images/logo-horizontal.webp'" alt="WeraWoof" class="w-1/2 mx-auto" />
+      <img
+        :src="'/images/logo-horizontal.webp'"
+        alt="WeraWoof"
+        width="490"
+        height="140"
+        class="w-1/2 mx-auto"
+      />
       <p class="text-body-md text-on-surface-variant mt-1">
         Encontrá al compañero perfecto para tu can
       </p>
@@ -136,11 +142,19 @@ const copy = computed(() =>
     >
       <!-- Left: photo panel — desktop only -->
       <section class="hidden md:block relative w-1/2 overflow-hidden">
-        <img
-          :src="'/images/vertical.webp'"
-          alt="Wera the dog"
-          class="absolute inset-0 w-full h-full object-cover"
-        />
+        <picture>
+          <source
+            media="(max-width: 767px)"
+            srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+          />
+          <img
+            :src="'/images/vertical.webp'"
+            alt="Wera the dog"
+            width="1066"
+            height="1600"
+            class="absolute inset-0 w-full h-full object-cover"
+          />
+        </picture>
         <div
           class="absolute inset-0 bg-gradient-to-t from-[#382615]/80 via-[#382615]/20 to-transparent"
         />
@@ -163,7 +177,22 @@ const copy = computed(() =>
       <section class="w-full md:w-1/2 flex flex-col bg-white">
         <!-- Mobile: image banner -->
         <div class="md:hidden h-40 w-full overflow-hidden">
-          <img :src="'/images/horizontal.webp'" alt="Wera" class="w-full h-full object-cover" />
+          <picture>
+            <source
+              media="(min-width: 768px)"
+              srcset="
+                data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7
+              "
+            />
+            <img
+              :src="'/images/horizontal-banner.webp'"
+              alt="Wera"
+              width="700"
+              height="280"
+              fetchpriority="high"
+              class="w-full h-full object-cover"
+            />
+          </picture>
         </div>
 
         <!-- Form area -->
@@ -449,16 +478,16 @@ const copy = computed(() =>
       <div class="flex justify-center gap-6">
         <NuxtLink
           to="/politica-de-privacidad"
-          class="text-label-md font-label-md text-on-surface-variant/60 hover:text-on-surface-variant transition-colors"
+          class="text-label-md font-label-md text-on-surface-variant/90 hover:text-on-surface-variant transition-colors"
           >Política de Privacidad</NuxtLink
         >
         <NuxtLink
           to="/terminos-de-servicio"
-          class="text-label-md font-label-md text-on-surface-variant/60 hover:text-on-surface-variant transition-colors"
+          class="text-label-md font-label-md text-on-surface-variant/90 hover:text-on-surface-variant transition-colors"
           >Términos de Servicio</NuxtLink
         >
       </div>
-      <p class="text-label-md font-label-md text-on-surface-variant/40">© 2026 WeraWoof Inc.</p>
+      <p class="text-label-md font-label-md text-on-surface-variant/85">© 2026 WeraWoof Inc.</p>
     </footer>
   </div>
 </template>

@@ -20,7 +20,7 @@ const firstName = computed(() => authStore.user?.name?.split(' ')[0] ?? '')
         <picture>
           <source
             media="(min-width: 768px)"
-            srcset="/images/logo-horizontal.webp"
+            :srcset="'/images/logo-horizontal.webp'"
             width="490"
             height="140"
           />

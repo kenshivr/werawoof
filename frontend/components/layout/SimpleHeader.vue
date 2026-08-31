@@ -5,7 +5,7 @@
         <picture>
           <source
             media="(min-width: 768px)"
-            srcset="/images/logo-horizontal.webp"
+            :srcset="'/images/logo-horizontal.webp'"
             width="490"
             height="140"
           />

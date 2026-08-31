@@ -18,7 +18,7 @@ const isActive = (path: string) =>
         to="/app/dogs"
         class="flex flex-col items-center justify-center px-4 py-2 rounded-2xl transition-all duration-200"
         :class="
-          isActive('/app/dogs') ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#713E18]/50'
+          isActive('/app/dogs') ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#713E18]/80'
         "
       >
         <span
@@ -35,7 +35,7 @@ const isActive = (path: string) =>
         to="/app/matches"
         class="flex flex-col items-center justify-center px-4 py-2 rounded-2xl transition-all duration-200"
         :class="
-          isActive('/app/matches') ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#713E18]/50'
+          isActive('/app/matches') ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#713E18]/80'
         "
       >
         <span
@@ -52,7 +52,7 @@ const isActive = (path: string) =>
         to="/app/dogs"
         class="flex flex-col items-center justify-center px-4 py-2 rounded-2xl transition-all duration-200"
         :class="
-          isActive('/app/dogs') ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#713E18]/50'
+          isActive('/app/dogs') ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#713E18]/80'
         "
       >
         <span class="material-symbols-outlined">house</span>
@@ -65,7 +65,7 @@ const isActive = (path: string) =>
         to="/app/profile"
         class="flex flex-col items-center justify-center px-4 py-2 rounded-2xl transition-all duration-200"
         :class="
-          isActive('/app/profile') ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#713E18]/50'
+          isActive('/app/profile') ? 'bg-[#F4C07D] text-[#382615] shadow-sm' : 'text-[#713E18]/80'
         "
       >
         <span class="material-symbols-outlined">person</span>
@@ -79,7 +79,7 @@ const isActive = (path: string) =>
     <template v-else>
       <NuxtLink
         to="/"
-        class="flex flex-col items-center justify-center text-[#713E18]/50 hover:text-[#713E18] transition-colors"
+        class="flex flex-col items-center justify-center text-[#713E18]/80 hover:text-[#713E18] transition-colors"
         active-class="!text-[#713E18]"
       >
         <span class="material-symbols-outlined text-2xl">home</span>
@@ -90,7 +90,7 @@ const isActive = (path: string) =>
 
       <NuxtLink
         to="/quienes-somos"
-        class="flex flex-col items-center justify-center text-[#713E18]/50 hover:text-[#713E18] transition-colors"
+        class="flex flex-col items-center justify-center text-[#713E18]/80 hover:text-[#713E18] transition-colors"
         active-class="!text-[#713E18]"
       >
         <span class="material-symbols-outlined text-2xl">info</span>
@@ -101,7 +101,7 @@ const isActive = (path: string) =>
 
       <NuxtLink
         to="/contacto"
-        class="flex flex-col items-center justify-center text-[#713E18]/50 hover:text-[#713E18] transition-colors"
+        class="flex flex-col items-center justify-center text-[#713E18]/80 hover:text-[#713E18] transition-colors"
         active-class="!text-[#713E18]"
       >
         <span class="material-symbols-outlined text-2xl">mail</span>
@@ -112,7 +112,7 @@ const isActive = (path: string) =>
 
       <NuxtLink
         to="/auth/login"
-        class="flex flex-col items-center justify-center text-[#713E18]/50 hover:text-[#713E18] transition-colors"
+        class="flex flex-col items-center justify-center text-[#713E18]/80 hover:text-[#713E18] transition-colors"
         active-class="!text-[#713E18]"
       >
         <span class="material-symbols-outlined text-2xl">login</span>

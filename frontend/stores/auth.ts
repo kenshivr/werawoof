@@ -16,6 +16,25 @@ const isTokenExpired = (t: string): boolean => {
   }
 }
 
+/* Espejo del token en una cookie: localStorage no viaja al server, la cookie sí.
+   El middleware de auth la lee en SSR para redirigir sin esperar la hidratación. */
+const setAuthCookie = (t: string | null) => {
+  if (!import.meta.client) return
+  const secure = location.protocol === 'https:' ? '; Secure' : ''
+  if (t) {
+    let expires = ''
+    try {
+      const payload = JSON.parse(atob(t.split('.')[1]))
+      expires = `; expires=${new Date(payload.exp * 1000).toUTCString()}`
+    } catch {
+      // sin exp legible: queda como cookie de sesión
+    }
+    document.cookie = `auth_token=${t}; path=/; SameSite=Lax${secure}${expires}`
+  } else {
+    document.cookie = `auth_token=; path=/; Max-Age=0; SameSite=Lax${secure}`
+  }
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
   const token = ref<string | null>(null)
@@ -27,6 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = data.user
     if (import.meta.client) {
       localStorage.setItem('token', data.token)
+      setAuthCookie(data.token)
     }
   }
 
@@ -35,6 +55,7 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = null
     if (import.meta.client) {
       localStorage.removeItem('token')
+      setAuthCookie(null)
     }
   }
 
@@ -47,7 +68,14 @@ export const useAuthStore = defineStore('auth', () => {
       return
     }
     token.value = saved
-    await fetchProfile()
+    setAuthCookie(saved)
+    try {
+      await fetchProfile()
+    } catch (e: unknown) {
+      const status = (e as { statusCode?: number }).statusCode
+      // token rechazado por el server: sesión inválida; error de red: mantenemos la sesión local
+      if (status === 401 || status === 403) logout()
+    }
   }
 
   const login = async (payload: LoginPayload) => {
@@ -98,6 +126,7 @@ export const useAuthStore = defineStore('auth', () => {
     token.value = tokenValue
     if (import.meta.client) {
       localStorage.setItem('token', tokenValue)
+      setAuthCookie(tokenValue)
     }
     await fetchProfile()
   }

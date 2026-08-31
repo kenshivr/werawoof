@@ -110,7 +110,7 @@ async function subscribeNewsletter() {
         <!-- Col 2: Empresa -->
         <div class="flex-1 flex justify-center">
           <div class="w-full md:w-auto">
-            <h4 class="hidden md:block text-lg font-bold mb-6 font-jakarta">Empresa</h4>
+            <h3 class="hidden md:block text-lg font-bold mb-6 font-jakarta">Empresa</h3>
             <ul
               class="flex md:flex-col justify-around md:justify-start md:space-y-3 text-white/60 text-body-md md:mb-8"
             >
@@ -135,7 +135,7 @@ async function subscribeNewsletter() {
 
         <!-- Col 3: Newsletter -->
         <div class="flex-1">
-          <h4 class="text-lg font-bold mb-6 font-jakarta">Newsletter</h4>
+          <h3 class="text-lg font-bold mb-6 font-jakarta">Newsletter</h3>
           <p class="text-white/60 text-body-md mb-4">Mantente al día con eventos y tips.</p>
           <div class="flex">
             <input
@@ -164,7 +164,7 @@ async function subscribeNewsletter() {
       </div>
 
       <div
-        class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-white/40 text-sm"
+        class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-white/60 text-sm"
       >
         <div class="flex gap-8">
           <NuxtLink to="/politica-de-privacidad" class="hover:text-white transition-colors"

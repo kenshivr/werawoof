@@ -14,6 +14,8 @@ export const useReviewsStore = defineStore('reviews', () => {
         baseURL: config.public.apiBase as string,
       })
       reviews.value = res.reviews ?? []
+    } catch {
+      // API inaccesible: la página muestra el empty state sin ensuciar la consola
     } finally {
       loading.value = false
     }
