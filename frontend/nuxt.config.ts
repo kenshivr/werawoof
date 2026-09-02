@@ -59,7 +59,19 @@ export default defineNuxtConfig({
     port: 3003,
   },
 
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxt/eslint', '@vercel/analytics/nuxt'],
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@pinia/nuxt',
+    '@nuxt/eslint',
+    '@vercel/analytics/nuxt',
+    '@nuxtjs/supabase',
+  ],
+
+  supabase: {
+    /* Sin redirect global: la protección de rutas vive en los middlewares
+       auth/guest/admin, igual que antes de la migración. */
+    redirect: false,
+  },
 
   runtimeConfig: {
     public: {

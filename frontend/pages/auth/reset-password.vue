@@ -27,9 +27,7 @@
 
     <div v-else class="text-center text-green-600 font-medium">
       ✅ Contraseña actualizada.
-      <NuxtLink to="/auth/login" class="block mt-2 text-orange-500 hover:underline"
-        >Ir al login</NuxtLink
-      >
+      <NuxtLink to="/app" class="block mt-2 text-orange-500 hover:underline">Ir a la app</NuxtLink>
     </div>
   </div>
 </template>
@@ -37,8 +35,10 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'default' })
 
-const route = useRoute()
-const api = useApi()
+/* El link de recuperación llega con un code que el módulo de Supabase
+   intercambia solo: al aterrizar acá ya hay sesión temporal activa. */
+const authStore = useAuthStore()
+const user = useSupabaseUser()
 
 const password = ref('')
 const loading = ref(false)
@@ -49,10 +49,10 @@ const handleSubmit = async () => {
   error.value = ''
   loading.value = true
   try {
-    await api.post('/auth/reset-password', {
-      token: route.query.token,
-      password: password.value,
-    })
+    if (!user.value) {
+      throw new Error('El link es inválido o expiró. Pedí uno nuevo desde "Recuperar contraseña".')
+    }
+    await authStore.resetPassword(password.value)
     done.value = true
   } catch (e: unknown) {
     error.value = (e as Error).message ?? 'Error al resetear la contraseña'

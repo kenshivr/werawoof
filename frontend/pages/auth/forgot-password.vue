@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'public', middleware: 'guest', ssr: false })
 
-const api = useApi()
+const authStore = useAuthStore()
 const email = ref('')
 const loading = ref(false)
 const error = ref('')
@@ -11,7 +11,7 @@ const handleSubmit = async () => {
   error.value = ''
   loading.value = true
   try {
-    await api.post('/auth/forgot-password', { email: email.value })
+    await authStore.forgotPassword(email.value)
     sent.value = true
   } catch (e: unknown) {
     error.value = (e as Error).message ?? 'Error al enviar el email'

@@ -1,3 +1,17 @@
+/* Fila de public.profiles en Supabase */
+export interface Profile {
+  id: string
+  name: string
+  location: string
+  bio: string
+  avatar_url: string
+  role: 'user' | 'admin'
+  created_at: string
+  updated_at: string
+}
+
+/* Vista unificada auth.users + profiles, con la misma forma que
+   devolvía el backend Go — así las páginas no cambian. */
 export interface User {
   id: string
   email: string
@@ -19,20 +33,6 @@ export interface RegisterPayload {
   email: string
   password: string
   name: string
-}
-
-export interface AuthResponse {
-  token: string
-  user: User
-}
-
-export interface ForgotPasswordPayload {
-  email: string
-}
-
-export interface ResetPasswordPayload {
-  token: string
-  password: string
 }
 
 export interface UpdateProfilePayload {

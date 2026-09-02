@@ -4,7 +4,6 @@ const props = defineProps<{ mode: 'login' | 'register' }>()
 const isRegister = computed(() => props.mode === 'register')
 
 const authStore = useAuthStore()
-const config = useRuntimeConfig()
 
 const route = useRoute()
 const form = reactive({ name: '', email: '', password: '', confirmPassword: '' })
@@ -20,8 +19,12 @@ const showConfirmPassword = ref(false)
 const touchedEmail = ref(false)
 const touchedConfirm = ref(false)
 
-const withGoogle = () => {
-  window.location.href = `${config.public.apiBase}/auth/google`
+const withGoogle = async () => {
+  try {
+    await authStore.loginWithGoogle()
+  } catch (e: unknown) {
+    error.value = (e as Error).message ?? oauthErrors.oauth_failed
+  }
 }
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/

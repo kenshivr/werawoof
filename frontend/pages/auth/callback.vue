@@ -1,23 +1,29 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 
-const route = useRoute()
-const authStore = useAuthStore()
+/* Aterrizan acá el OAuth de Google y el link de confirmación de email.
+   El módulo de Supabase intercambia el code (PKCE) solo al cargar la página;
+   nosotros únicamente esperamos a que aparezca la sesión. */
+const user = useSupabaseUser()
 
-onMounted(async () => {
-  const token = route.query.token as string | undefined
-
-  if (!token) {
-    await navigateTo('/auth/login?error=oauth_failed')
+onMounted(() => {
+  if (user.value) {
+    navigateTo('/app')
     return
   }
 
-  try {
-    await authStore.loginWithToken(token)
-    await navigateTo('/app')
-  } catch {
-    await navigateTo('/auth/login?error=oauth_failed')
-  }
+  const stop = watch(user, async (u) => {
+    if (u) {
+      stop()
+      await navigateTo('/app')
+    }
+  })
+
+  setTimeout(async () => {
+    if (!user.value) {
+      await navigateTo('/auth/login?error=oauth_failed')
+    }
+  }, 8000)
 })
 </script>
 

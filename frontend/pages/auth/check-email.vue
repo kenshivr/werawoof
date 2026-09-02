@@ -15,15 +15,15 @@
     </div>
 
     <div class="border-t border-[#ffeadb] pt-4 space-y-3">
+      <p class="text-xs text-[#4f4539] font-jakarta">
+        Al hacer click en el link entrás a la app automáticamente.
+      </p>
       <NuxtLink
-        to="/app"
+        to="/auth/login"
         class="block w-full bg-[#F4C07D] text-[#382615] py-3 px-6 rounded-2xl font-bold font-jakarta text-sm hover:bg-[#e8b06a] transition-all"
       >
-        Entrar a la app igual
+        Ir al login
       </NuxtLink>
-      <p class="text-xs text-[#4f4539] font-jakarta">
-        Podés usar WeraWoof sin verificar, pero algunas funciones pueden estar limitadas.
-      </p>
     </div>
   </div>
 </template>

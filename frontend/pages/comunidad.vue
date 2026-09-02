@@ -11,7 +11,6 @@ const error = ref('')
 const success = ref(false)
 
 onMounted(async () => {
-  authStore.restoreSession()
   await reviewsStore.fetchReviews()
 })
 

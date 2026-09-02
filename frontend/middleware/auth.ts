@@ -1,17 +1,8 @@
-export default defineNuxtRouteMiddleware(async () => {
-  /* En SSR el server no ve localStorage, pero sí la cookie espejo del token.
-     Sin cookie => redirect 302 real, sin renderizar la página protegida. */
-  if (import.meta.server) {
-    const token = useCookie<string | null>('auth_token')
-    if (!token.value) {
-      return navigateTo('/auth/login')
-    }
-    return
-  }
-
-  const authStore = useAuthStore()
-  await authStore.restoreSession()
-  if (!authStore.isAuthenticated) {
+export default defineNuxtRouteMiddleware(() => {
+  /* La sesión de Supabase viaja en cookies (@nuxtjs/supabase), así que
+     en SSR esto redirige con 302 real, sin renderizar la página protegida. */
+  const user = useSupabaseUser()
+  if (!user.value) {
     return navigateTo('/auth/login')
   }
 })

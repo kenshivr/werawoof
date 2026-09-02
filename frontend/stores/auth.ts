@@ -1,147 +1,173 @@
 import { defineStore } from 'pinia'
 import type {
   User,
+  Profile,
   LoginPayload,
   RegisterPayload,
-  AuthResponse,
   UpdateProfilePayload,
 } from '~/types/auth'
 
-const isTokenExpired = (t: string): boolean => {
-  try {
-    const payload = JSON.parse(atob(t.split('.')[1]))
-    return Date.now() >= payload.exp * 1000
-  } catch {
-    return true
+/* Supabase Auth responde en inglés; mapeamos a los mismos mensajes
+   en español que usaba el normalizeError del backend viejo. */
+const translateAuthError = (message: string): string => {
+  const map: [RegExp, string][] = [
+    [/invalid login credentials/i, 'Correo o contraseña incorrectos.'],
+    [/email not confirmed/i, 'Tu correo todavía no está verificado. Revisá tu bandeja.'],
+    [/already registered/i, 'Este email ya tiene una cuenta. Iniciá sesión.'],
+    [/password should be at least/i, 'La contraseña debe tener al menos 6 caracteres.'],
+    [
+      /same as the old password|different from the old/i,
+      'La nueva contraseña tiene que ser distinta a la anterior.',
+    ],
+    [
+      /rate limit|too many requests|security purposes/i,
+      'Demasiados intentos. Esperá unos minutos y probá de nuevo.',
+    ],
+    [
+      /failed to fetch|network/i,
+      'No pudimos conectarnos al servidor. Verificá tu conexión a internet.',
+    ],
+  ]
+  for (const [pattern, translation] of map) {
+    if (pattern.test(message)) return translation
   }
-}
-
-/* Espejo del token en una cookie: localStorage no viaja al server, la cookie sí.
-   El middleware de auth la lee en SSR para redirigir sin esperar la hidratación. */
-const setAuthCookie = (t: string | null) => {
-  if (!import.meta.client) return
-  const secure = location.protocol === 'https:' ? '; Secure' : ''
-  if (t) {
-    let expires = ''
-    try {
-      const payload = JSON.parse(atob(t.split('.')[1]))
-      expires = `; expires=${new Date(payload.exp * 1000).toUTCString()}`
-    } catch {
-      // sin exp legible: queda como cookie de sesión
-    }
-    document.cookie = `auth_token=${t}; path=/; SameSite=Lax${secure}${expires}`
-  } else {
-    document.cookie = `auth_token=; path=/; Max-Age=0; SameSite=Lax${secure}`
-  }
+  return 'Algo salió mal. Intentá de nuevo.'
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<User | null>(null)
-  const token = ref<string | null>(null)
+  const supabase = useSupabaseClient()
+  const supabaseUser = useSupabaseUser()
+  const session = useSupabaseSession()
 
-  const isAuthenticated = computed(() => !!token.value)
+  const profile = ref<Profile | null>(null)
 
-  const setAuth = (data: AuthResponse) => {
-    token.value = data.token
-    user.value = data.user
-    if (import.meta.client) {
-      localStorage.setItem('token', data.token)
-      setAuthCookie(data.token)
-    }
-  }
+  const isAuthenticated = computed(() => !!supabaseUser.value)
 
-  const logout = () => {
-    user.value = null
-    token.value = null
-    if (import.meta.client) {
-      localStorage.removeItem('token')
-      setAuthCookie(null)
-    }
-  }
+  /* Compat transitoria: dogs/admin/chat todavía mandan Bearer al backend
+     viejo; muere cuando esas pantallas migren a supabase-js. */
+  const token = computed(() => session.value?.access_token ?? null)
 
-  const restoreSession = async () => {
-    if (!import.meta.client) return
-    const saved = localStorage.getItem('token')
-    if (!saved) return
-    if (isTokenExpired(saved)) {
-      logout()
-      return
+  /* Vista con la forma del viejo User del backend Go */
+  const user = computed<User | null>(() => {
+    const u = supabaseUser.value
+    if (!u) return null
+    return {
+      id: u.id,
+      email: u.email ?? '',
+      name: profile.value?.name || ((u.user_metadata?.name as string) ?? ''),
+      avatar: profile.value?.avatar_url || undefined,
+      location: profile.value?.location || undefined,
+      bio: profile.value?.bio || undefined,
+      emailVerified: !!u.email_confirmed_at,
+      createdAt: u.created_at,
+      role: profile.value?.role,
     }
-    token.value = saved
-    setAuthCookie(saved)
-    try {
-      await fetchProfile()
-    } catch (e: unknown) {
-      const status = (e as { statusCode?: number }).statusCode
-      // token rechazado por el server: sesión inválida; error de red: mantenemos la sesión local
-      if (status === 401 || status === 403) logout()
-    }
+  })
+
+  const fetchProfile = async () => {
+    const u = supabaseUser.value
+    if (!u) return
+    const { data, error } = await supabase.from('profiles').select('*').eq('id', u.id).single()
+    if (error) throw new Error(translateAuthError(error.message))
+    profile.value = data as Profile
   }
 
   const login = async (payload: LoginPayload) => {
-    const api = useApi()
-    const data = await api.post<AuthResponse>('/auth/login', payload)
-    setAuth(data)
-    await fetchProfile()
+    const { error } = await supabase.auth.signInWithPassword(payload)
+    if (error) throw new Error(translateAuthError(error.message))
+    await fetchProfile().catch(() => {})
   }
 
   const register = async (payload: RegisterPayload) => {
-    const api = useApi()
-    const data = await api.post<AuthResponse>('/auth/register', payload)
-    setAuth(data)
+    const { data, error } = await supabase.auth.signUp({
+      email: payload.email,
+      password: payload.password,
+      options: {
+        data: { name: payload.name },
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      },
+    })
+    if (error) throw new Error(translateAuthError(error.message))
+    /* signUp con un email ya registrado no falla: devuelve un user sin identities */
+    if (data.user && data.user.identities?.length === 0) {
+      throw new Error('Este email ya tiene una cuenta. Iniciá sesión.')
+    }
   }
 
-  const fetchProfile = async () => {
-    const api = useApi()
-    const data = await api.get<{ user: User }>('/api/me')
-    user.value = data.user
+  const loginWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    })
+    if (error) throw new Error(translateAuthError(error.message))
+  }
+
+  const logout = async () => {
+    await supabase.auth.signOut()
+    profile.value = null
+  }
+
+  const forgotPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/reset-password`,
+    })
+    if (error) throw new Error(translateAuthError(error.message))
+  }
+
+  const resetPassword = async (password: string) => {
+    const { error } = await supabase.auth.updateUser({ password })
+    if (error) throw new Error(translateAuthError(error.message))
   }
 
   const updateProfile = async (payload: UpdateProfilePayload, avatarFile?: File) => {
-    const api = useApi()
-    const data = await api.put<{ user: User }>('/api/me', payload)
-    user.value = data.user
+    const u = supabaseUser.value
+    if (!u) throw new Error('No hay sesión activa.')
 
+    let avatarUrl: string | undefined
     if (avatarFile) {
-      const config = useRuntimeConfig()
-      const formData = new FormData()
-      formData.append('avatar', avatarFile)
-      const res = await $fetch<{ user: User }>('/api/me/avatar', {
-        method: 'POST',
-        baseURL: config.public.apiBase as string,
-        body: formData,
-        headers: { Authorization: `Bearer ${token.value}` },
-      })
-      user.value = res.user
+      const ext = avatarFile.name.split('.').pop() || 'jpg'
+      const path = `${u.id}/avatar-${Date.now()}.${ext}`
+      const { error: uploadError } = await supabase.storage.from('photos').upload(path, avatarFile)
+      if (uploadError) throw new Error('No pudimos subir tu avatar. Intentá de nuevo.')
+      avatarUrl = supabase.storage.from('photos').getPublicUrl(path).data.publicUrl
     }
+
+    const { data, error } = await supabase
+      .from('profiles')
+      .update({
+        name: payload.name,
+        location: payload.location ?? '',
+        bio: payload.bio ?? '',
+        ...(avatarUrl ? { avatar_url: avatarUrl } : {}),
+      })
+      .eq('id', u.id)
+      .select()
+      .single()
+    if (error) throw new Error(translateAuthError(error.message))
+    profile.value = data as Profile
   }
 
   const deleteAccount = async () => {
-    const api = useApi()
-    await api.del('/api/me')
-    logout()
-  }
-
-  const loginWithToken = async (tokenValue: string) => {
-    token.value = tokenValue
-    if (import.meta.client) {
-      localStorage.setItem('token', tokenValue)
-      setAuthCookie(tokenValue)
-    }
-    await fetchProfile()
+    /* El borrado necesita service role: lo hace el server route,
+       autenticado por las cookies de la sesión. */
+    await $fetch('/api/account', { method: 'DELETE' })
+    await supabase.auth.signOut()
+    profile.value = null
   }
 
   return {
     user,
+    profile,
     token,
     isAuthenticated,
     login,
     register,
+    loginWithGoogle,
     logout,
-    restoreSession,
     fetchProfile,
     updateProfile,
-    loginWithToken,
+    forgotPassword,
+    resetPassword,
     deleteAccount,
   }
 })
