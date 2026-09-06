@@ -10,8 +10,9 @@ export interface Profile {
   updated_at: string
 }
 
-/* Vista unificada auth.users + profiles, con la misma forma que
-   devolvía el backend Go — así las páginas no cambian. */
+/* Vista unificada claims del JWT + profiles, con la misma forma que
+   devolvía el backend Go — así las páginas no cambian. (emailVerified y
+   createdAt murieron: los claims no los traen y ninguna página los usaba.) */
 export interface User {
   id: string
   email: string
@@ -19,8 +20,6 @@ export interface User {
   avatar?: string
   location?: string
   bio?: string
-  emailVerified: boolean
-  createdAt: string
   role?: string
 }
 

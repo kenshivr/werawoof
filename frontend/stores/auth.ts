@@ -36,38 +36,45 @@ const translateAuthError = (message: string): string => {
 
 export const useAuthStore = defineStore('auth', () => {
   const supabase = useSupabaseClient()
-  const supabaseUser = useSupabaseUser()
+  /* OJO: en @nuxtjs/supabase 2.x useSupabaseUser() NO devuelve el User de
+     auth sino los CLAIMS del JWT (auth.getClaims). El id vive en `sub`; no
+     existen `id`, `created_at` ni `email_confirmed_at`, y el tipo JwtPayload
+     tiene `[key: string]: any`, así que TypeScript no avisa. El User
+     completo viene en session.user. Este store es el ÚNICO lugar que sabe
+     esto: el resto de la app usa `uid` y `user` de acá. */
+  const claims = useSupabaseUser()
   const session = useSupabaseSession()
 
   const profile = ref<Profile | null>(null)
 
-  const isAuthenticated = computed(() => !!supabaseUser.value)
+  const isAuthenticated = computed(() => !!claims.value)
 
-  /* Compat transitoria: dogs/admin/chat todavía mandan Bearer al backend
+  /* id del usuario logueado (claims.sub === profiles.id) */
+  const uid = computed(() => claims.value?.sub ?? null)
+
+  /* Compat transitoria: admin/chat todavía mandan Bearer al backend
      viejo; muere cuando esas pantallas migren a supabase-js. */
   const token = computed(() => session.value?.access_token ?? null)
 
   /* Vista con la forma del viejo User del backend Go */
   const user = computed<User | null>(() => {
-    const u = supabaseUser.value
-    if (!u) return null
+    const c = claims.value
+    if (!c?.sub) return null
     return {
-      id: u.id,
-      email: u.email ?? '',
-      name: profile.value?.name || ((u.user_metadata?.name as string) ?? ''),
+      id: c.sub,
+      email: c.email ?? '',
+      name: profile.value?.name || ((c.user_metadata?.name as string) ?? ''),
       avatar: profile.value?.avatar_url || undefined,
       location: profile.value?.location || undefined,
       bio: profile.value?.bio || undefined,
-      emailVerified: !!u.email_confirmed_at,
-      createdAt: u.created_at,
       role: profile.value?.role,
     }
   })
 
   const fetchProfile = async () => {
-    const u = supabaseUser.value
-    if (!u) return
-    const { data, error } = await supabase.from('profiles').select('*').eq('id', u.id).single()
+    const id = uid.value
+    if (!id) return
+    const { data, error } = await supabase.from('profiles').select('*').eq('id', id).single()
     if (error) throw new Error(translateAuthError(error.message))
     profile.value = data as Profile
   }
@@ -120,13 +127,13 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const updateProfile = async (payload: UpdateProfilePayload, avatarFile?: File) => {
-    const u = supabaseUser.value
-    if (!u) throw new Error('No hay sesión activa.')
+    const id = uid.value
+    if (!id) throw new Error('No hay sesión activa.')
 
     let avatarUrl: string | undefined
     if (avatarFile) {
       const ext = avatarFile.name.split('.').pop() || 'jpg'
-      const path = `${u.id}/avatar-${Date.now()}.${ext}`
+      const path = `${id}/avatar-${Date.now()}.${ext}`
       const { error: uploadError } = await supabase.storage.from('photos').upload(path, avatarFile)
       if (uploadError) throw new Error('No pudimos subir tu avatar. Intentá de nuevo.')
       avatarUrl = supabase.storage.from('photos').getPublicUrl(path).data.publicUrl
@@ -140,7 +147,7 @@ export const useAuthStore = defineStore('auth', () => {
         bio: payload.bio ?? '',
         ...(avatarUrl ? { avatar_url: avatarUrl } : {}),
       })
-      .eq('id', u.id)
+      .eq('id', id)
       .select()
       .single()
     if (error) throw new Error(translateAuthError(error.message))
@@ -157,6 +164,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     user,
+    uid,
     profile,
     token,
     isAuthenticated,
