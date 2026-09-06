@@ -1,15 +1,19 @@
+/* Fila de public.dogs en Supabase */
 export interface Dog {
-  id: string
+  id: number
+  user_id: string
   name: string
   breed: string
   age: number
-  sex?: string
-  size?: string
-  bio?: string
-  personality_tags?: string[]
+  sex: string
+  size: string
+  bio: string
+  personality_tags: string[]
   photos: string[]
-  ownerId: string
-  createdAt: string
+  latitude: number
+  longitude: number
+  created_at: string
+  updated_at: string
 }
 
 export interface CreateDogPayload {

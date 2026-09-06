@@ -10,7 +10,7 @@ interface Candidate extends Dog {
 const route = useRoute()
 const dogId = computed(() => route.params.dogId as string)
 
-const api = useApi()
+const supabase = useSupabaseClient()
 const dogsStore = useDogsStore()
 
 const activeDog = ref<Dog | null>(null)
@@ -69,10 +69,11 @@ async function loadCandidates() {
   if (!activeDog.value) return
   loadingCandidates.value = true
   try {
-    const res = await api.get<{ candidates: Candidate[] }>(
-      `/api/dogs/${activeDog.value.id}/candidates`
-    )
-    candidates.value = res.candidates ?? []
+    const { data, error } = await supabase.rpc('get_candidates', {
+      swiper_dog_id: activeDog.value.id,
+    })
+    if (error) throw error
+    candidates.value = (data ?? []) as Candidate[]
     if (candidates.value.length === 0) noMoreCandidates.value = true
   } catch {
     noMoreCandidates.value = true
@@ -81,17 +82,30 @@ async function loadCandidates() {
   }
 }
 
+/* Inserta el swipe; el trigger handle_swipe crea el match si el like es
+   recíproco, así que después de un like preguntamos si apareció. */
+async function swipe(direction: 'like' | 'dislike', swiperId: number, swipedId: number) {
+  const { error } = await supabase
+    .from('swipes')
+    .insert({ swiper_id: swiperId, swiped_id: swipedId, direction })
+  if (error) throw error
+  if (direction !== 'like') return null
+  const { data } = await supabase
+    .from('matches')
+    .select('id')
+    .eq('dog1_id', Math.min(swiperId, swipedId))
+    .eq('dog2_id', Math.max(swiperId, swipedId))
+    .maybeSingle()
+  return data as { id: number } | null
+}
+
 async function performSwipe(direction: 'like' | 'dislike') {
   if (!activeDog.value || !topCandidate.value || isAnimating.value) return
   isAnimating.value = true
   swipeDirection.value = direction
 
   const [result] = await Promise.allSettled([
-    api.post<{ swiped: boolean; match?: { id: string } }>('/api/swipe', {
-      swiper_dog_id: Number(activeDog.value.id),
-      swiped_dog_id: Number(topCandidate.value.id),
-      direction,
-    }),
+    swipe(direction, activeDog.value.id, topCandidate.value.id),
     new Promise<void>((r) => setTimeout(r, 380)),
   ])
 
@@ -101,11 +115,11 @@ async function performSwipe(direction: 'like' | 'dislike') {
   isAnimating.value = false
   candidates.value.shift()
 
-  if (result.status === 'fulfilled' && result.value?.match && activeDog.value && matchedCandidate) {
+  if (result.status === 'fulfilled' && result.value && activeDog.value && matchedCandidate) {
     matchCelebration.value = {
       myDog: activeDog.value,
       otherDog: matchedCandidate,
-      matchId: result.value.match.id,
+      matchId: String(result.value.id),
     }
   }
   if (candidates.value.length < 2) loadCandidates()
@@ -181,8 +195,7 @@ onMounted(async () => {
     if (found) {
       activeDog.value = found
     } else {
-      const res = await api.get<{ dog: Dog }>(`/api/dogs/${dogId.value}`)
-      activeDog.value = res.dog
+      activeDog.value = await dogsStore.fetchDog(dogId.value)
     }
     await loadCandidates()
   } catch {

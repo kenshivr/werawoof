@@ -15,7 +15,7 @@ onMounted(async () => {
 })
 
 const myExistingReview = computed(() =>
-  reviewsStore.reviews.find((r) => r.user_id === Number(authStore.user?.id))
+  reviewsStore.reviews.find((r) => r.user_id === authStore.user?.id)
 )
 
 watch(

@@ -159,10 +159,10 @@ definePageMeta({ layout: 'app', middleware: 'auth' })
 const dogsStore = useDogsStore()
 onMounted(() => dogsStore.fetchDogs())
 
-const dogToDelete = ref<{ id: string; name: string } | null>(null)
+const dogToDelete = ref<{ id: number; name: string } | null>(null)
 const deleting = ref(false)
 
-const confirmDelete = (dog: { id: string; name: string }) => {
+const confirmDelete = (dog: { id: number; name: string }) => {
   dogToDelete.value = dog
 }
 
