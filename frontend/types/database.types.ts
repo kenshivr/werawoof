@@ -321,6 +321,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_admin_dashboard: { Args: never; Returns: Json }
       get_candidates: {
         Args: { swiper_dog_id: number }
         Returns: {

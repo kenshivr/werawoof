@@ -148,7 +148,7 @@
                     Verificado
                   </span>
                   <span
-                    v-if="user.google_id"
+                    v-if="user.google"
                     class="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 font-jakarta shrink-0"
                   >
                     Google
@@ -445,12 +445,12 @@
               </div>
               <div class="flex flex-col gap-3">
                 <div class="bg-[#fff8f3] rounded-2xl p-4 text-center">
-                  <p class="text-xs text-[#7d571e] font-jakarta mb-1">Match rate</p>
+                  <p class="text-xs text-[#7d571e] font-jakarta mb-1">Reciprocidad</p>
                   <p class="text-3xl font-bold text-[#281808] font-jakarta">
                     {{ data.engagement.match_rate.toFixed(1) }}<span class="text-base">%</span>
                   </p>
                   <p class="text-[11px] text-[#4f4539] font-jakarta mt-1">
-                    de los likes se convierten en match
+                    de tus likes fueron correspondidos
                   </p>
                 </div>
               </div>
@@ -797,7 +797,7 @@ interface Dog {
 }
 
 interface AdminUser {
-  id: number
+  id: string
   name: string
   email: string
   avatar: string
@@ -805,7 +805,7 @@ interface AdminUser {
   location: string
   role: string
   verified: boolean
-  google_id: string
+  google: boolean
   created_at: string
   dogs: Dog[]
 }
@@ -866,6 +866,7 @@ interface DeviceStats {
   mobile_rate: number
 }
 
+/* Forma del jsonb que devuelve public.get_admin_dashboard() (supabase/003) */
 interface DashboardData {
   users: AdminUser[]
   visits: VisitStat[]
@@ -878,8 +879,7 @@ interface DashboardData {
   devices: DeviceStats
 }
 
-const config = useRuntimeConfig()
-const authStore = useAuthStore()
+const supabase = useSupabaseClient()
 
 const loading = ref(false)
 const error = ref('')
@@ -927,10 +927,10 @@ const engagementCards = computed(() => {
       sub: undefined,
     },
     {
-      label: 'Match rate',
+      label: 'Reciprocidad',
       icon: 'percent',
       value: e ? `${e.match_rate.toFixed(1)}%` : '—',
-      sub: 'de likes a match',
+      sub: 'likes correspondidos',
     },
     {
       label: 'Mensajes',
@@ -1000,11 +1000,11 @@ const fetchData = async () => {
   loading.value = true
   error.value = ''
   try {
-    const res = await $fetch<DashboardData>('/admin/dashboard', {
-      baseURL: config.public.apiBase as string,
-      headers: { Authorization: `Bearer ${authStore.token}` },
-    })
-    data.value = res
+    /* Una sola función security definer hace todas las agregaciones y
+       exige rol admin adentro; el rpc devuelve Json, de ahí el cast. */
+    const { data: res, error: rpcError } = await supabase.rpc('get_admin_dashboard')
+    if (rpcError) throw rpcError
+    data.value = res as unknown as DashboardData
   } catch {
     error.value = 'No se pudo cargar el dashboard. ¿Estás logueado como admin?'
   } finally {

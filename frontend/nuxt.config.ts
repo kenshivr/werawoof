@@ -74,13 +74,15 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE ?? 'http://localhost:3004',
-    },
+    /* Server-only: cuenta Gmail dedicada de WeraWoof + App Password, para los
+       mails de contacto y newsletter (server/utils/mail.ts).
+       Se cargan por env: NUXT_SMTP_USER y NUXT_SMTP_PASS. */
+    smtpUser: '',
+    smtpPass: '',
   },
 
   imports: {
-    dirs: ['stores', 'services'],
+    dirs: ['stores'],
   },
 
   typescript: {

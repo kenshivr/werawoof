@@ -39,11 +39,10 @@ export const useAuthStore = defineStore('auth', () => {
   /* OJO: en @nuxtjs/supabase 2.x useSupabaseUser() NO devuelve el User de
      auth sino los CLAIMS del JWT (auth.getClaims). El id vive en `sub`; no
      existen `id`, `created_at` ni `email_confirmed_at`, y el tipo JwtPayload
-     tiene `[key: string]: any`, así que TypeScript no avisa. El User
-     completo viene en session.user. Este store es el ÚNICO lugar que sabe
-     esto: el resto de la app usa `uid` y `user` de acá. */
+     tiene `[key: string]: any`, así que TypeScript no avisa. Tampoco sirve
+     session.user: el módulo lo borra a propósito. Este store es el ÚNICO
+     lugar que sabe esto: el resto de la app usa `uid` y `user` de acá. */
   const claims = useSupabaseUser()
-  const session = useSupabaseSession()
 
   const profile = ref<Profile | null>(null)
 
@@ -51,10 +50,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   /* id del usuario logueado (claims.sub === profiles.id) */
   const uid = computed(() => claims.value?.sub ?? null)
-
-  /* Compat transitoria: admin/chat todavía mandan Bearer al backend
-     viejo; muere cuando esas pantallas migren a supabase-js. */
-  const token = computed(() => session.value?.access_token ?? null)
 
   /* Vista con la forma del viejo User del backend Go */
   const user = computed<User | null>(() => {
@@ -166,7 +161,6 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     uid,
     profile,
-    token,
     isAuthenticated,
     login,
     register,

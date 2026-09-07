@@ -22,8 +22,7 @@ async function subscribeNewsletter() {
   }
   newsletterLoading.value = true
   try {
-    const config = useRuntimeConfig()
-    await $fetch(`${config.public.apiBase}/newsletter`, {
+    await $fetch('/api/newsletter', {
       method: 'POST',
       body: { email: newsletterEmail.value.trim() },
     })

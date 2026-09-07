@@ -322,7 +322,7 @@ definePageMeta({ layout: false })
             </h2>
             <p class="text-[#5a3e28] leading-relaxed">
               Para cualquier duda o aclaración sobre estos Términos, escríbenos a
-              <strong class="text-[#382615]">vidal.fullstack@gmail.com</strong>.
+              <strong class="text-[#382615]">werawoofapp@gmail.com</strong>.
             </p>
           </section>
         </div>

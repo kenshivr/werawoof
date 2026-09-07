@@ -1,8 +1,6 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 
-const config = useRuntimeConfig()
-
 const form = reactive({
   name: '',
   phone: '',
@@ -18,12 +16,7 @@ const handleSubmit = async () => {
   error.value = ''
   loading.value = true
   try {
-    const res = await fetch(`${config.public.apiBase}/contact`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
-    })
-    if (!res.ok) throw new Error('No se pudo enviar el mensaje')
+    await $fetch('/api/contact', { method: 'POST', body: { ...form } })
     success.value = true
     form.name = ''
     form.phone = ''
@@ -31,7 +24,7 @@ const handleSubmit = async () => {
     form.message = ''
   } catch {
     error.value =
-      'Hubo un problema al enviar tu mensaje. Intenta de nuevo o escríbenos directo a vidal.fullstack@gmail.com'
+      'Hubo un problema al enviar tu mensaje. Intenta de nuevo o escríbenos directo a werawoofapp@gmail.com'
   } finally {
     loading.value = false
   }
@@ -237,9 +230,9 @@ const handleSubmit = async () => {
           <p class="text-center text-xs text-[#B78F64]">
             También puedes escribirnos directo a
             <a
-              href="mailto:vidal.fullstack@gmail.com"
+              href="mailto:werawoofapp@gmail.com"
               class="underline hover:text-[#382615] transition-colors"
-              >vidal.fullstack@gmail.com</a
+              >werawoofapp@gmail.com</a
             >
           </p>
         </form>

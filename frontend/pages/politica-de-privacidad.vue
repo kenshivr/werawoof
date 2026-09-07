@@ -257,8 +257,8 @@ definePageMeta({ layout: 'public' })
         </div>
         <p class="text-[#5a3e28] leading-relaxed mt-4">
           Para ejercer estos derechos (derechos ARCO), contáctanos en
-          <strong class="text-[#382615]">vidal.fullstack@gmail.com</strong>. Responderemos en un
-          plazo máximo de 20 días hábiles.
+          <strong class="text-[#382615]">werawoofapp@gmail.com</strong>. Responderemos en un plazo
+          máximo de 20 días hábiles.
         </p>
       </section>
 
@@ -305,7 +305,7 @@ definePageMeta({ layout: 'public' })
         </h2>
         <p class="text-[#5a3e28] leading-relaxed">
           Si tienes dudas, comentarios o solicitudes relacionadas con este aviso, puedes escribirnos
-          a <strong class="text-[#382615]">vidal.fullstack@gmail.com</strong>. Haremos nuestro mejor
+          a <strong class="text-[#382615]">werawoofapp@gmail.com</strong>. Haremos nuestro mejor
           esfuerzo por responderte a la brevedad.
         </p>
       </section>
