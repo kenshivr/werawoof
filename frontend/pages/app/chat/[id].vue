@@ -10,21 +10,19 @@ const matchId = computed(() => Number(route.params.id))
 
 const authStore = useAuthStore()
 const dogsStore = useDogsStore()
-const config = useRuntimeConfig()
-const api = useApi()
+const messagesStore = useMessagesStore()
 
 const allMatches = ref<Match[]>([])
-const messages = ref<Message[]>([])
+const messages = computed(() => messagesStore.messages)
 const activeMatch = ref<Match | null>(null)
 const inputText = ref('')
+const sendError = ref('')
+const sending = ref(false)
 const loading = ref(true)
 const messagesContainer = ref<HTMLElement | null>(null)
 const searchQuery = ref('')
 const showEmojiPicker = ref(false)
 const emojiPickerRef = ref<HTMLElement | null>(null)
-
-let ws: WebSocket | null = null
-let reconnectTimer: ReturnType<typeof setTimeout> | null = null
 
 const myDogIds = computed(() => new Set(dogsStore.dogs.map((d) => String(d.id))))
 
@@ -39,7 +37,7 @@ const filteredMatches = computed(() => {
   return allMatches.value.filter((m) => otherDog(m)?.name?.toLowerCase().includes(q))
 })
 
-const isMyMessage = (msg: Message) => String(msg.sender_id) === String(authStore.user?.id)
+const isMyMessage = (msg: Message) => msg.sender_id === authStore.uid
 
 const formatTime = (dateStr: string) =>
   new Date(dateStr).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })
@@ -62,16 +60,6 @@ const scrollToBottom = () => {
   })
 }
 
-const loadMessages = async (mId: number) => {
-  try {
-    const res = await api.get<{ messages: Message[] }>(`/api/matches/${mId}/messages`)
-    messages.value = res.messages ?? []
-    scrollToBottom()
-  } catch {
-    messages.value = []
-  }
-}
-
 const loadAllMatches = async () => {
   if (dogsStore.dogs.length === 0) await dogsStore.fetchDogs().catch(() => {})
   const matchMap = new Map<number, Match>()
@@ -88,43 +76,33 @@ const loadAllMatches = async () => {
   )
 }
 
-const connectWS = () => {
-  if (!import.meta.client || !authStore.token) return
-  const wsBase = (config.public.apiBase as string).replace(/^http/, 'ws')
-  ws = new WebSocket(`${wsBase}/api/ws?token=${authStore.token}`)
-
-  ws.onmessage = (event) => {
-    try {
-      const msg: Message = JSON.parse(event.data)
-      if (msg.match_id === matchId.value) {
-        messages.value.push(msg)
-        scrollToBottom()
-      }
-    } catch {
-      // ignore malformed WS messages
-    }
+/* Historial + canal Realtime del match activo */
+const openChat = async (id: number) => {
+  activeMatch.value = allMatches.value.find((m) => m.id === id) ?? null
+  if (!activeMatch.value) {
+    messagesStore.clear()
+    return
   }
-
-  ws.onclose = () => {
-    reconnectTimer = setTimeout(connectWS, 2500)
-  }
+  await messagesStore.fetchMessages(id).catch(() => {})
+  messagesStore.listen(id, scrollToBottom)
+  scrollToBottom()
 }
 
-const sendMessage = () => {
+const sendMessage = async () => {
   const text = inputText.value.trim()
-  if (!text || !ws || ws.readyState !== WebSocket.OPEN) return
-
-  ws.send(JSON.stringify({ match_id: matchId.value, content: text }))
-
-  messages.value.push({
-    id: Date.now(),
-    match_id: matchId.value,
-    sender_id: Number(authStore.user?.id),
-    content: text,
-    created_at: new Date().toISOString(),
-  })
+  if (!text || sending.value) return
+  sending.value = true
+  sendError.value = ''
   inputText.value = ''
-  scrollToBottom()
+  try {
+    await messagesStore.sendMessage(matchId.value, text)
+    scrollToBottom()
+  } catch {
+    inputText.value = text
+    sendError.value = 'No se pudo enviar. Intentá de nuevo.'
+  } finally {
+    sending.value = false
+  }
 }
 
 const onKeydown = (e: KeyboardEvent) => {
@@ -157,31 +135,22 @@ watch(showEmojiPicker, (val) => {
   }
 })
 
-const selectMatch = async (match: Match) => {
-  activeMatch.value = match
-  await navigateTo(`/app/chat/${match.id}`)
-  await loadMessages(match.id)
-}
+/* Cambia la ruta; el watch de matchId abre el chat */
+const selectMatch = (match: Match) => navigateTo(`/app/chat/${match.id}`)
 
 onMounted(async () => {
   loading.value = true
   await loadAllMatches()
-  activeMatch.value = allMatches.value.find((m) => m.id === matchId.value) ?? null
-  await loadMessages(matchId.value)
-  connectWS()
+  await openChat(matchId.value)
   loading.value = false
 })
 
 onBeforeUnmount(() => {
-  if (reconnectTimer) clearTimeout(reconnectTimer)
-  if (ws) ws.close()
+  messagesStore.clear()
   document.removeEventListener('click', onClickOutsidePicker)
 })
 
-watch(matchId, async (id) => {
-  activeMatch.value = allMatches.value.find((m) => m.id === id) ?? null
-  await loadMessages(id)
-})
+watch(matchId, (id) => openChat(id))
 </script>
 
 <template>
@@ -396,6 +365,8 @@ watch(matchId, async (id) => {
           >
             <EmojiPicker @select="addEmoji" />
           </div>
+
+          <p v-if="sendError" class="text-red-500 text-sm text-center mb-2">{{ sendError }}</p>
 
           <form class="flex items-center gap-3" @submit.prevent="sendMessage">
             <div class="flex-1 relative">
