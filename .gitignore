@@ -21,12 +21,5 @@ frontend/.cache/
 frontend/dist/
 frontend/node_modules/
 
-# Backend binaries
-backend/main
-backend/main.exe
-backend/*.exe
-backend/.air.toml
-backend/tmp/
-
 # Previews locales de correos (no van al repo)
 preview-newsletter/
