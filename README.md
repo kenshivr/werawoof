@@ -169,6 +169,7 @@ npm install
    - `supabase/schema.sql` — tables, RLS policies, triggers, RPC, Realtime and the `photos` bucket
    - `supabase/002_get_reviews.sql` — public reviews function for `/comunidad`
    - `supabase/003_admin_dashboard.sql` — admin dashboard function
+   - `supabase/004_drop_anon_policies.sql` — removes the anonymous insert policies (server routes write with the secret key)
 3. **Authentication → URL Configuration**: set the Site URL to your production URL and add `http://localhost:3003/**` plus `https://<your-domain>/**` to the Redirect URLs.
 4. **Authentication → Providers → Google** (optional): create an OAuth client in Google Cloud Console with `https://<project-ref>.supabase.co/auth/v1/callback` as the redirect URI and paste the client ID and secret.
 5. **Authentication → SMTP Settings** (recommended): configure a custom SMTP. Supabase's built-in sender only delivers a few emails per hour to project members, which blocks real sign-ups.
