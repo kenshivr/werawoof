@@ -376,5 +376,5 @@ create policy "storage: borrar solo lo mío"
 --      update public.profiles set role = 'admin' where id = '<tu-uuid>';
 --   2. Habilitar Google como provider en Authentication > Providers.
 --   3. Configurar Site URL y Redirect URLs en Authentication > URL Configuration
---      (https://werawoof.vercel.app y http://localhost:3000).
+--      (https://werawoof.vercel.app/** y http://localhost:3003/**).
 -- =============================================================

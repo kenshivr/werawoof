@@ -198,19 +198,19 @@ definePageMeta({ layout: false })
               <div class="flex flex-wrap gap-3">
                 <span
                   class="px-4 py-2 bg-white rounded-xl text-on-surface-variant text-sm font-medium shadow-sm"
-                  >Go · Gin</span
-                >
-                <span
-                  class="px-4 py-2 bg-white rounded-xl text-on-surface-variant text-sm font-medium shadow-sm"
                   >Vue 3 · Nuxt</span
                 >
                 <span
                   class="px-4 py-2 bg-white rounded-xl text-on-surface-variant text-sm font-medium shadow-sm"
-                  >PostgreSQL</span
+                  >TypeScript</span
                 >
                 <span
                   class="px-4 py-2 bg-white rounded-xl text-on-surface-variant text-sm font-medium shadow-sm"
-                  >Redis</span
+                  >Supabase</span
+                >
+                <span
+                  class="px-4 py-2 bg-white rounded-xl text-on-surface-variant text-sm font-medium shadow-sm"
+                  >PostgreSQL</span
                 >
               </div>
             </div>

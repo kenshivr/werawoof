@@ -1,7 +1,7 @@
 import { serverSupabaseUser, serverSupabaseServiceRole } from '#supabase/server'
 
-/* Borrar la cuenta requiere la service role key (server-only, env
-   SUPABASE_SERVICE_KEY). El cascade de la base limpia profile, perros,
+/* Borrar la cuenta requiere la secret key (server-only, env
+   NUXT_SUPABASE_SECRET_KEY). El cascade de la base limpia profile, perros,
    swipes, matches y mensajes. */
 export default defineEventHandler(async (event) => {
   /* serverSupabaseUser devuelve los CLAIMS del JWT, no el User: el id es `sub` */

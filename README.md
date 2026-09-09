@@ -2,17 +2,19 @@
 
 # 🐾 WeraWoof
 
-### *Conectá patitas, creá recuerdos.*
+### _Conectá patitas, creá recuerdos._
 
-A modern matchmaking platform for dog owners — swipe, match, and chat in real time.
+A matchmaking platform for dog owners — swipe, match, and chat in real time.
 
-[![Go](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat-square&logo=go&logoColor=white)](https://golang.org)
 [![Nuxt](https://img.shields.io/badge/Nuxt-3-00DC82?style=flat-square&logo=nuxt.js&logoColor=white)](https://nuxt.com)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org)
-[![Redis](https://img.shields.io/badge/Redis-7-DC382D?style=flat-square&logo=redis&logoColor=white)](https://redis.io)
-[![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
+[![Vue](https://img.shields.io/badge/Vue-3-4FC08D?style=flat-square&logo=vue.js&logoColor=white)](https://vuejs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%C2%B7%20Auth%20%C2%B7%20Realtime%20%C2%B7%20Storage-3FCF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![Vercel](https://img.shields.io/badge/Vercel-deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://werawoof.vercel.app)
+[![CI](https://github.com/kenshivr/werawoof/actions/workflows/ci.yml/badge.svg)](https://github.com/kenshivr/werawoof/actions/workflows/ci.yml)
 
-[Live Demo](https://werawoof.vercel.app) · [API](https://werawoof-production.up.railway.app) · [Report Bug](https://github.com) · [Request Feature](https://github.com)
+[Live Demo](https://werawoof.vercel.app) · [Report Bug](https://github.com/kenshivr/werawoof/issues) · [Request Feature](https://github.com/kenshivr/werawoof/issues)
 
 </div>
 
@@ -27,12 +29,14 @@ A modern matchmaking platform for dog owners — swipe, match, and chat in real 
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
+  - [Supabase Setup](#supabase-setup)
   - [Environment Variables](#environment-variables)
   - [Running in Development](#running-in-development)
+- [Scripts](#scripts)
 - [Project Structure](#project-structure)
-- [API Reference](#api-reference)
-- [Data Models](#data-models)
-- [Real-Time Features](#real-time-features)
+- [Data Model](#data-model)
+- [Server Routes](#server-routes)
+- [Security Model](#security-model)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
 
@@ -40,110 +44,103 @@ A modern matchmaking platform for dog owners — swipe, match, and chat in real 
 
 ## Overview
 
-**WeraWoof** is a full-stack web application inspired by Tinder — but for dogs. Dog owners can create detailed profiles for their pets, swipe on other dogs, get matched when both sides like each other, and chat in real time with the other owner.
+**WeraWoof** is a web application inspired by Tinder — but for dogs. Dog owners create profiles for their pets, swipe on other dogs, get matched when both sides like each other, and chat in real time with the other owner to arrange playdates.
 
-The name comes from *Wera*, a real dog that inspired the project. Built as a learning platform to master Go, Vue 3, and modern backend architecture.
+The name comes from _Wera_, a real dog that inspired the project.
+
+WeraWoof was originally built with a Go + Gin backend (PostgreSQL, Redis, WebSockets) hosted on Railway. In September 2026 the whole backend was replaced by **Supabase** — Postgres with Row Level Security, Auth, Realtime and Storage — and the app now ships as a single Nuxt 3 project on Vercel. The Go implementation remains in the git history up to commit `4033595`.
 
 ---
 
 ## Features
 
 ### 🐕 Dog Profiles
-- Create and manage profiles for multiple dogs per account
-- Add breed, age, sex, size, bio, and personality tags
-- Upload multiple photos per dog (Cloudinary or local)
-- Geolocation support for proximity-based matching
+
+- Multiple dogs per account
+- Breed, age, sex, size, bio, personality tags and location
+- Multiple photos per dog stored in Supabase Storage, with drag-and-drop ordering
 
 ### 💘 Swipe & Match
+
 - Like or dislike other dogs
-- Automatic match creation on mutual like
-- Candidate feed excludes already-swiped dogs
-- Match celebration UI on new match
+- Candidate feed excludes your own dogs and dogs you already swiped (Postgres RPC)
+- A mutual like creates the match automatically through a database trigger
+- Match celebration UI and a matches list per account
 
 ### 💬 Real-Time Chat
-- WebSocket-based messaging per match
-- Message history persistence
-- Emoji picker support
-- Multi-dog account support (each match is scoped per dog pair)
 
-### 🔔 Notifications
-- Server-Sent Events (SSE) for instant notifications
-- Events: `new_match`, `new_message`
-- Per-user notification channels via broker pattern
+- One conversation per match
+- Message history loaded from Postgres, new messages pushed through Supabase Realtime
+- Emoji picker
 
-### 🔐 Authentication & Security
-- Email/password registration with bcrypt hashing
-- JWT authentication with configurable expiration
-- Token blacklisting on logout (Redis)
-- Google OAuth 2.0
-- Email verification on signup
-- Password reset via email
+### 🌎 Community
+
+- Public `/comunidad` page with reviews from members (one review per user, editable)
+- Public landing, about page, contact form, newsletter and legal pages
+
+### 🔐 Authentication
+
+- Email + password registration with confirmation email
+- Google OAuth
+- Password reset by email
+- Account deletion (cascades to profile, dogs, swipes, matches and messages)
+- Profile row created automatically on sign-up by a database trigger
+
+### 📊 Admin Dashboard
+
+- Restricted to users with the `admin` role
+- Users, dogs, matches, subscribers and page-visit stats aggregated by a single Postgres function
+- Page-visit tracking from a server route (path, IP and user agent)
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| **Backend Language** | Go 1.21+ |
-| **Backend Framework** | Gin |
-| **Database** | PostgreSQL 16 |
-| **ORM** | GORM |
-| **Cache / Sessions** | Redis 7 |
-| **Real-Time** | WebSocket (Gorilla), Server-Sent Events |
-| **Auth** | JWT, bcrypt, Google OAuth 2.0 |
-| **File Storage** | Cloudinary (with local fallback) |
-| **Email** | Gmail SMTP via gomail |
-| **Frontend Framework** | Nuxt 3 + Vue 3 |
-| **Language** | TypeScript |
-| **State Management** | Pinia |
-| **Styling** | Tailwind CSS |
-| **Containerization** | Docker + Docker Compose |
-| **CI/CD** | GitHub Actions |
-| **Hosting** | Railway (backend + DB), Vercel (frontend) |
+| Layer          | Technology                                                             |
+| -------------- | ---------------------------------------------------------------------- |
+| **Framework**  | Nuxt 3 (Vue 3, SSR) on Nitro                                           |
+| **Language**   | TypeScript (strict)                                                    |
+| **State**      | Pinia                                                                  |
+| **Styling**    | Tailwind CSS, self-hosted fonts                                        |
+| **Backend**    | Supabase — Postgres, Auth, Realtime, Storage                           |
+| **Client SDK** | `@nuxtjs/supabase` (supabase-js, SSR cookies)                          |
+| **Server**     | Nitro server routes for contact, newsletter, tracking, account removal |
+| **Email**      | Gmail SMTP through nodemailer (dedicated account)                      |
+| **Analytics**  | Vercel Analytics                                                       |
+| **Quality**    | ESLint, Prettier, Vitest, husky + lint-staged                          |
+| **CI/CD**      | GitHub Actions (lint + tests), Vercel (deploy)                         |
+| **Hosting**    | Vercel                                                                 |
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                        CLIENT                           │
-│              Nuxt 3 + Vue 3 + TypeScript                │
-│         (Pinia · Tailwind CSS · WebSocket · SSE)        │
-└──────────────────────────┬──────────────────────────────┘
-                           │ HTTP / WS / SSE
-┌──────────────────────────▼──────────────────────────────┐
-│                    BACKEND (Go + Gin)                   │
-│                                                         │
-│  ┌─────────────┐  ┌─────────────┐  ┌────────────────┐  │
-│  │  Handlers   │  │  Services   │  │  Repositories  │  │
-│  │ (HTTP layer)│→ │(business    │→ │  (data access) │  │
-│  │             │  │  logic)     │  │                │  │
-│  └─────────────┘  └─────────────┘  └────────────────┘  │
-│                                                         │
-│  ┌─────────────┐  ┌─────────────┐  ┌────────────────┐  │
-│  │  WS Hub     │  │ SSE Broker  │  │  Middleware    │  │
-│  │ (real-time  │  │(push notif.)│  │  (JWT auth)   │  │
-│  │   chat)     │  │             │  │                │  │
-│  └─────────────┘  └─────────────┘  └────────────────┘  │
-└────────┬──────────────────┬────────────────────────┬────┘
-         │                  │                        │
-┌────────▼──────┐  ┌────────▼──────┐  ┌─────────────▼──┐
-│  PostgreSQL   │  │     Redis     │  │   Cloudinary   │
-│  (main data)  │  │ (token BL +   │  │  (file upload) │
-│               │  │  sessions)    │  │                │
-└───────────────┘  └───────────────┘  └────────────────┘
+┌───────────────────────────────────────────────────────────────┐
+│                     NUXT 3 APP (Vercel)                       │
+│                                                               │
+│   Pages · Components · Pinia stores · Route middlewares       │
+│                                                               │
+│   ┌──────────────────────────┐   ┌──────────────────────────┐ │
+│   │  supabase-js (browser)   │   │  Nitro server routes     │ │
+│   │  Auth · tables via RLS   │   │  /api/contact            │ │
+│   │  RPC · Realtime          │   │  /api/newsletter         │ │
+│   │  Storage                 │   │  /api/track              │ │
+│   │                          │   │  /api/account (DELETE)   │ │
+│   └────────────┬─────────────┘   └───────┬──────────┬───────┘ │
+└────────────────┼─────────────────────────┼──────────┼─────────┘
+                 │ anon key + user JWT     │ secret   │ SMTP
+                 ▼                         ▼ key      ▼
+┌──────────────────────────────────────────────┐  ┌────────────┐
+│                  SUPABASE                    │  │   GMAIL    │
+│  Postgres (RLS, triggers, RPC) · Auth        │  │  (SMTP)    │
+│  Realtime (messages, matches) · Storage      │  │            │
+└──────────────────────────────────────────────┘  └────────────┘
 ```
 
-### Design Patterns
-
-- **Layered Architecture** — Handlers → Services → Repositories
-- **Repository Pattern** — data access abstracted behind interfaces
-- **Hub Pattern** — WebSocket connection management
-- **Broker Pattern** — fan-out event publishing for SSE
-- **Dependency Injection** — constructor-based DI throughout
-- **Middleware** — JWT auth as Gin middleware
+- **No custom backend.** The browser talks to Supabase directly with the user's JWT; every table is protected by Row Level Security, so the policies _are_ the authorization layer.
+- **Business rules live in Postgres.** Profile creation, match detection and candidate selection are triggers and functions, not application code.
+- **Server routes only where a secret is needed.** The service-role key and the SMTP credentials never reach the browser.
 
 ---
 
@@ -151,80 +148,86 @@ The name comes from *Wera*, a real dog that inspired the project. Built as a lea
 
 ### Prerequisites
 
-Make sure you have the following installed:
-
-- [Go 1.21+](https://golang.org/dl/)
-- [Node.js 20+](https://nodejs.org/) and npm
-- [Docker + Docker Compose](https://docs.docker.com/get-docker/)
-- [Git](https://git-scm.com/)
+- [Node.js 22](https://nodejs.org/) and npm (the version CI runs)
+- A [Supabase](https://supabase.com) project (the free tier is enough)
+- Optional: a Gmail account with an [App Password](https://myaccount.google.com/apppasswords) for the contact form and the newsletter
 
 ### Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/werawoof.git
-cd werawoof
-
-# Install frontend dependencies
-cd frontend && npm install && cd ..
+git clone https://github.com/kenshivr/werawoof.git
+cd werawoof/frontend
+npm install
 ```
+
+`npm install` also installs the git hooks from the repository root (husky).
+
+### Supabase Setup
+
+1. Create a project in the Supabase dashboard.
+2. Open the **SQL Editor** and run, in this order and only once each:
+   - `supabase/schema.sql` — tables, RLS policies, triggers, RPC, Realtime and the `photos` bucket
+   - `supabase/002_get_reviews.sql` — public reviews function for `/comunidad`
+   - `supabase/003_admin_dashboard.sql` — admin dashboard function
+3. **Authentication → URL Configuration**: set the Site URL to your production URL and add `http://localhost:3003/**` plus `https://<your-domain>/**` to the Redirect URLs.
+4. **Authentication → Providers → Google** (optional): create an OAuth client in Google Cloud Console with `https://<project-ref>.supabase.co/auth/v1/callback` as the redirect URI and paste the client ID and secret.
+5. **Authentication → SMTP Settings** (recommended): configure a custom SMTP. Supabase's built-in sender only delivers a few emails per hour to project members, which blocks real sign-ups.
+6. Promote your admin once your user exists:
+
+   ```sql
+   update public.profiles set role = 'admin' where id = '<your-user-uuid>';
+   ```
+
+7. Generate the TypeScript types for the schema and save them as `frontend/types/database.types.ts` (Supabase dashboard → API Docs → _Generate and download types_, or `supabase gen types typescript --project-id <project-ref> --schema public`). Regenerate them whenever the schema changes.
 
 ### Environment Variables
 
-Create a `.env` file in the project root. Here is the full reference:
+Create `frontend/.env`:
 
-| Variable | Description |
-|---|---|
-| `APP_ENV` | Application environment (`development` \| `production`) |
-| `APP_PORT` | Port the backend listens on |
-| `FRONTEND_URL` | Frontend base URL (for CORS and redirects) |
-| `DATABASE_URL` | Full PostgreSQL connection string |
-| `POSTGRES_DB` | Database name (used by Docker) |
-| `POSTGRES_USER` | Database user (used by Docker) |
-| `POSTGRES_PASSWORD` | Database password (used by Docker) |
-| `REDIS_URL` | Redis connection string |
-| `JWT_SECRET` | Secret key for signing JWT tokens |
-| `JWT_EXPIRATION_HOURS` | Token lifetime in hours |
-| `GOOGLE_CLIENT_ID` | Google OAuth 2.0 client ID |
-| `GOOGLE_CLIENT_SECRET` | Google OAuth 2.0 client secret |
-| `GOOGLE_REDIRECT_URL` | OAuth callback URL registered in Google Console |
-| `GMAIL_USER` | Gmail address used to send emails |
-| `GMAIL_APP_PASSWORD` | Gmail App Password (not your account password) |
-| `GMAIL_FROM` | Display name + address for outgoing emails |
-| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name |
-| `CLOUDINARY_API_KEY` | Cloudinary API key |
-| `CLOUDINARY_API_SECRET` | Cloudinary API secret |
-| `CLOUDINARY_FOLDER` | Folder name inside your Cloudinary account |
+| Variable                   | Scope       | Description                                                                           |
+| -------------------------- | ----------- | ------------------------------------------------------------------------------------- |
+| `NUXT_PUBLIC_SUPABASE_URL` | public      | Project URL, `https://<project-ref>.supabase.co`                                      |
+| `NUXT_PUBLIC_SUPABASE_KEY` | public      | Anon / publishable key                                                                |
+| `NUXT_SUPABASE_SECRET_KEY` | server only | Service-role / secret key. Used by `/api/account`, `/api/newsletter` and `/api/track` |
+| `NUXT_SMTP_USER`           | server only | Gmail address that sends contact and newsletter emails                                |
+| `NUXT_SMTP_PASS`           | server only | Gmail App Password for that account                                                   |
 
-> **Note:** For Google OAuth, create credentials at [Google Cloud Console](https://console.cloud.google.com). For Gmail SMTP, generate an [App Password](https://myaccount.google.com/apppasswords) with 2FA enabled.
+> `@nuxtjs/supabase` also accepts `SUPABASE_URL` and `SUPABASE_KEY` locally. `SUPABASE_SERVICE_KEY` is deprecated by the module; use `NUXT_SUPABASE_SECRET_KEY`.
+
+The inbox that receives contact messages and newsletter notices is the `CONTACT_INBOX` constant in `frontend/server/utils/mail.ts`. Change it if you self-host.
 
 ### Running in Development
 
-Open **three terminals**:
-
-**Terminal 1 — Infrastructure (PostgreSQL + Redis)**
-```bash
-docker compose up postgres redis
-```
-
-**Terminal 2 — Backend**
-```bash
-cd backend
-go run ./cmd/main.go
-```
-
-**Terminal 3 — Frontend**
 ```bash
 cd frontend
 npm run dev
 ```
 
-| Service | URL |
-|---|---|
-| Frontend | http://localhost:3000 |
-| Backend API | http://localhost:3004 |
-| Health check | http://localhost:3004/health |
-| Swagger UI | http://localhost:3004/swagger/index.html |
+| Service       | URL                       |
+| ------------- | ------------------------- |
+| App           | http://localhost:3003     |
+| Dashboard     | http://localhost:3003/app |
+| Nuxt DevTools | enabled in dev            |
+
+Register with a real email address: the confirmation link goes through Supabase Auth. Google login only works once the provider is enabled in the dashboard.
+
+---
+
+## Scripts
+
+All scripts run from `frontend/`:
+
+| Script             | What it does                       |
+| ------------------ | ---------------------------------- |
+| `npm run dev`      | Dev server on port 3003            |
+| `npm run build`    | Production build (`.output/`)      |
+| `npm run preview`  | Serve the production build locally |
+| `npm run generate` | Static generation                  |
+| `npm run lint`     | ESLint                             |
+| `npm run lint:fix` | ESLint with autofix                |
+| `npm run test`     | Vitest (`--passWithNoTests`)       |
+
+On every commit, husky runs lint-staged: ESLint + Prettier on staged `.ts` and `.vue` files, Prettier on `.css`, `.md` and `.json`.
 
 ---
 
@@ -232,311 +235,133 @@ npm run dev
 
 ```
 werawoof/
-├── backend/
-│   ├── cmd/
-│   │   └── main.go                   # Entry point
-│   ├── internal/
-│   │   ├── config/
-│   │   │   └── config.go             # Config loading from env
-│   │   ├── domain/
-│   │   │   ├── user.go               # User model
-│   │   │   ├── dog.go                # Dog model
-│   │   │   ├── match.go              # Swipe + Match models
-│   │   │   └── message.go            # Message model
-│   │   ├── handler/
-│   │   │   ├── auth_handler.go       # Register, login, logout
-│   │   │   ├── oauth_handler.go      # Google OAuth
-│   │   │   ├── user_handler.go       # Profile management
-│   │   │   ├── dog_handler.go        # Dog CRUD + photos
-│   │   │   ├── swipe_handler.go      # Swipe + candidates + matches
-│   │   │   ├── chat_handler.go       # WebSocket + message history
-│   │   │   ├── sse_handler.go        # SSE notifications
-│   │   │   ├── verification_handler.go
-│   │   │   ├── contact_handler.go
-│   │   │   └── health.go
-│   │   ├── middleware/
-│   │   │   └── auth.go               # JWT validation middleware
-│   │   ├── repository/
-│   │   │   ├── user_repository.go
-│   │   │   ├── dog_repository.go
-│   │   │   ├── swipe_repository.go
-│   │   │   └── message_repository.go
-│   │   └── service/
-│   │       ├── auth_service.go
-│   │       ├── oauth_service.go
-│   │       ├── user_service.go
-│   │       ├── dog_service.go
-│   │       ├── swipe_service.go
-│   │       ├── chat_service.go
-│   │       ├── email_service.go
-│   │       └── verification_service.go
-│   └── pkg/
-│       ├── cloudinary/               # File upload integration
-│       ├── database/                 # DB connection + migrations
-│       ├── hub/                      # WebSocket hub
-│       ├── redis/                    # Redis client + token blacklist
-│       └── sse/                      # SSE broker
+├── .github/workflows/ci.yml           # Lint + tests on push / PR (main, develop)
+├── .husky/pre-commit                  # lint-staged
+├── supabase/
+│   ├── schema.sql                     # Tables, RLS, triggers, RPC, Realtime, Storage
+│   ├── 002_get_reviews.sql            # Public reviews (security definer)
+│   └── 003_admin_dashboard.sql        # Admin dashboard aggregation
 │
 └── frontend/
+    ├── nuxt.config.ts                 # Modules, SEO head, dev port 3003, runtimeConfig
+    ├── app.vue · error.vue
     ├── pages/
-    │   ├── index.vue                 # Landing page
-    │   ├── auth/                     # Login, register, reset
-    │   └── app/                      # Protected app routes
-    │       ├── index.vue             # Dashboard
-    │       ├── dogs/                 # Dog management
-    │       ├── swipe/[dogId].vue     # Swiping interface
-    │       ├── matches.vue           # Matches list
-    │       └── chat/[id].vue         # Chat per match
+    │   ├── index.vue                  # Landing
+    │   ├── comunidad.vue              # Public reviews
+    │   ├── quienes-somos.vue          # About
+    │   ├── contacto.vue               # Contact form
+    │   ├── politica-de-privacidad.vue · terminos-de-servicio.vue
+    │   ├── [...slug].vue              # 404
+    │   ├── auth/                      # login · register · check-email · callback
+    │   │                              # forgot-password · reset-password
+    │   └── app/                       # Protected area (/app redirects to /app/dogs)
+    │       ├── dogs/                  # index · new · [id]/edit
+    │       ├── swipe/[dogId].vue      # Swiping with one of your dogs
+    │       ├── matches.vue
+    │       ├── chat/[id].vue          # Chat per match
+    │       ├── profile.vue
+    │       └── admin.vue              # Admin dashboard
     ├── components/
-    │   ├── auth/
-    │   ├── dog/
-    │   ├── layout/
-    │   └── ui/
-    ├── stores/
-    │   ├── auth.ts                   # Auth state (Pinia)
-    │   └── dogs.ts                   # Dogs state (Pinia)
-    ├── services/
-    │   └── api.ts                    # HTTP client wrapper
-    ├── middleware/
-    │   ├── auth.ts                   # Redirect unauthenticated
-    │   └── guest.ts                  # Redirect authenticated
-    ├── layouts/
-    │   ├── app.vue                   # Authenticated layout
-    │   ├── public.vue                # Public layout
-    │   └── onboarding.vue
-    └── types/                        # TypeScript interfaces
+    │   ├── auth/AuthCard.vue          # Login / register card (email + Google)
+    │   ├── layout/                    # Public and simple headers, footers, bottom nav
+    │   ├── MatchCelebration.vue
+    │   └── EmojiPicker.client.vue
+    ├── layouts/                       # app · public · onboarding · default
+    ├── middleware/                     # auth · guest · admin (route guards)
+    ├── plugins/
+    │   ├── auth.client.ts             # Syncs the profile with the Supabase session
+    │   └── track.client.ts            # Posts page visits to /api/track
+    ├── stores/                        # Pinia: auth · dogs · messages · reviews
+    ├── server/
+    │   ├── api/                       # contact · newsletter · track · account.delete
+    │   └── utils/mail.ts              # nodemailer + Gmail SMTP
+    ├── types/                         # auth · dog · match · message · review
+    │   └── database.types.ts          # Generated from the Supabase schema
+    ├── assets/css/fonts.css           # Self-hosted fonts
+    └── public/                        # Icons, manifest, OG image, robots.txt, llms.txt
 ```
 
 ---
 
-## API Reference
+## Data Model
 
-All protected endpoints require:
-```
-Authorization: Bearer <token>
-```
+All tables live in the `public` schema with Row Level Security enabled.
 
-### Authentication
+| Table         | Purpose                                     | Key columns                                                                                                        |
+| ------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `profiles`    | Mirror of `auth.users`, one row per account | `id` (uuid, FK → `auth.users`), `name`, `location`, `bio`, `avatar_url`, `role` (`user` \| `admin`)                |
+| `dogs`        | Dog profiles                                | `user_id`, `name`, `breed`, `age`, `sex`, `size`, `bio`, `personality_tags[]`, `photos[]`, `latitude`, `longitude` |
+| `swipes`      | One swipe per ordered pair of dogs          | `swiper_id`, `swiped_id`, `direction` (`like` \| `dislike`)                                                        |
+| `matches`     | Mutual likes, ordered pair (`dog1 < dog2`)  | `dog1_id`, `dog2_id`                                                                                               |
+| `messages`    | Chat per match                              | `match_id`, `sender_id` (uuid), `content` (1–2000 chars)                                                           |
+| `reviews`     | One review per user, public                 | `user_id` (unique), `rating` (1–5), `comment`                                                                      |
+| `subscribers` | Newsletter                                  | `email` (unique)                                                                                                   |
+| `page_visits` | Admin traffic stats                         | `path`, `ip`, `user_agent`, `visited_at`                                                                           |
 
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| `POST` | `/auth/register` | ❌ | Register with email and password |
-| `POST` | `/auth/login` | ❌ | Login, returns JWT token |
-| `POST` | `/auth/logout` | ✅ | Invalidates current token |
-| `GET` | `/auth/google` | ❌ | Redirect to Google OAuth |
-| `GET` | `/auth/google/callback` | ❌ | Google OAuth callback |
-| `GET` | `/auth/verify` | ❌ | Verify email with token |
-| `POST` | `/auth/forgot-password` | ❌ | Send password reset email |
-| `POST` | `/auth/reset-password` | ❌ | Reset password with token |
+### Functions and triggers
 
-### Users
+| Object                                    | Type                    | Role                                                                   |
+| ----------------------------------------- | ----------------------- | ---------------------------------------------------------------------- |
+| `handle_new_user`                         | trigger on `auth.users` | Creates the `profiles` row on sign-up (email or Google)                |
+| `handle_swipe`                            | trigger on `swipes`     | Inserts a `matches` row when a like is reciprocated                    |
+| `get_candidates(dog_id)`                  | RPC                     | Dogs of other users that the given dog has not swiped yet              |
+| `get_reviews()`                           | RPC, security definer   | Reviews with author name and avatar for the public community page      |
+| `get_admin_dashboard()`                   | RPC, security definer   | Every dashboard aggregation in one JSON payload; requires `admin` role |
+| `is_admin`, `owns_dog`, `is_match_member` | helpers                 | Used by the RLS policies                                               |
+| `moddatetime`                             | extension               | Keeps `updated_at` current on `profiles`, `dogs` and `reviews`         |
 
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| `GET` | `/api/me` | ✅ | Get authenticated user profile |
-| `PUT` | `/api/me` | ✅ | Update profile (name, location, bio) |
-| `POST` | `/api/me/avatar` | ✅ | Upload profile avatar |
+### Realtime and Storage
 
-### Dogs
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| `GET` | `/api/dogs` | ✅ | List all dogs owned by the user |
-| `POST` | `/api/dogs` | ✅ | Create a new dog profile |
-| `GET` | `/api/dogs/:id` | ✅ | Get a specific dog |
-| `PUT` | `/api/dogs/:id` | ✅ | Update dog profile |
-| `DELETE` | `/api/dogs/:id` | ✅ | Delete dog profile |
-| `POST` | `/api/dogs/:id/photos` | ✅ | Upload a photo for a dog |
-
-### Swipe & Matching
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| `POST` | `/api/swipe` | ✅ | Perform a swipe (like/dislike) |
-| `GET` | `/api/dogs/:id/candidates` | ✅ | Get candidate dogs for swiping |
-| `GET` | `/api/dogs/:id/matches` | ✅ | Get all matches for a dog |
-
-### Chat
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| `GET` | `/api/ws` | ✅ | Open WebSocket connection |
-| `GET` | `/api/matches/:match_id/messages` | ✅ | Get message history |
-
-### Notifications
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| `GET` | `/api/notifications` | ✅ | Open SSE stream for push notifications |
-
-### Other
-
-| Method | Endpoint | Auth | Description |
-|---|---|---|---|
-| `GET` | `/health` | ❌ | Health check |
-| `POST` | `/contact` | ❌ | Submit contact form |
-| `GET` | `/swagger/*any` | ❌ | Swagger UI |
+- `messages` and `matches` are in the `supabase_realtime` publication. The chat subscribes to `postgres_changes` filtered by match; the select policies decide what each client receives.
+- Bucket `photos` (public read). Paths follow `{user_id}/...`; users can only upload to and delete from their own folder.
 
 ---
 
-### Example Requests
+## Server Routes
 
-**Register**
-```bash
-curl -X POST http://localhost:3004/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name": "John Doe", "email": "john@example.com", "password": "secret123"}'
-```
+Nitro routes under `frontend/server/api/`. They exist only for actions that need a secret.
 
-**Create Dog**
-```bash
-curl -X POST http://localhost:3004/api/dogs \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Wera",
-    "breed": "Labrador",
-    "age": 2,
-    "sex": "female",
-    "size": "large",
-    "bio": "Playful and loves other dogs!",
-    "personality_tags": ["playful", "energetic", "friendly"],
-    "latitude": -34.6037,
-    "longitude": -58.3816
-  }'
-```
-
-**Swipe**
-```bash
-curl -X POST http://localhost:3004/api/swipe \
-  -H "Authorization: Bearer <token>" \
-  -H "Content-Type: application/json" \
-  -d '{"swiper_dog_id": 1, "swiped_dog_id": 2, "direction": "like"}'
-```
+| Method   | Route             | Body                                 | What it does                                                                                              |
+| -------- | ----------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| `POST`   | `/api/contact`    | `name`, `email`, `phone?`, `message` | Emails the message to the WeraWoof inbox with the sender as reply-to                                      |
+| `POST`   | `/api/newsletter` | `email`                              | Inserts the subscriber (service role), sends a welcome email and an internal notice. Duplicates return ok |
+| `POST`   | `/api/track`      | `path`                               | Records the visit with IP and user agent in `page_visits`                                                 |
+| `DELETE` | `/api/account`    | — (session cookie)                   | Deletes the authenticated user through the Auth admin API; the database cascade removes the rest          |
 
 ---
 
-## Data Models
+## Security Model
 
-### User
-| Field | Type | Notes |
-|---|---|---|
-| `id` | uint | Primary key |
-| `email` | string | Unique |
-| `name` | string | |
-| `location` | string | |
-| `bio` | string | |
-| `avatar` | string | URL |
-| `google_id` | string | Unique, OAuth users |
-| `verified` | bool | Email verification status |
-| `created_at` | timestamp | |
-| `updated_at` | timestamp | |
-
-### Dog
-| Field | Type | Notes |
-|---|---|---|
-| `id` | uint | Primary key |
-| `user_id` | uint | FK → User |
-| `name` | string | |
-| `breed` | string | |
-| `age` | int | |
-| `sex` | string | `"male"` \| `"female"` |
-| `size` | string | `"small"` \| `"medium"` \| `"large"` |
-| `bio` | string | |
-| `personality_tags` | string[] | PostgreSQL array |
-| `photos` | string[] | PostgreSQL array of URLs |
-| `latitude` | float64 | |
-| `longitude` | float64 | |
-
-### Swipe
-| Field | Type | Notes |
-|---|---|---|
-| `id` | uint | Primary key |
-| `swiper_id` | uint | FK → Dog (who swiped) |
-| `swiped_id` | uint | FK → Dog (who was swiped) |
-| `direction` | string | `"like"` \| `"dislike"` |
-| `created_at` | timestamp | |
-
-### Match
-| Field | Type | Notes |
-|---|---|---|
-| `id` | uint | Primary key |
-| `dog1_id` | uint | FK → Dog |
-| `dog2_id` | uint | FK → Dog |
-| `created_at` | timestamp | |
-
-### Message
-| Field | Type | Notes |
-|---|---|---|
-| `id` | uint | Primary key |
-| `match_id` | uint | FK → Match |
-| `sender_id` | uint | FK → User |
-| `content` | string | |
-| `created_at` | timestamp | |
-
----
-
-## Real-Time Features
-
-### WebSocket (Chat)
-
-Connect to `ws://localhost:3004/api/ws`. Send messages in this format:
-
-```json
-{
-  "match_id": 1,
-  "content": "Hola! ¿Cuándo podemos hacer un playdate?"
-}
-```
-
-The Hub manages all active connections and routes messages to the correct match participants.
-
-### Server-Sent Events (Notifications)
-
-Connect to `GET /api/notifications` — the server streams events as they happen:
-
-```
-event: new_match
-data: {"match_id": 5, "dog_name": "Rocky"}
-
-event: new_message
-data: {"match_id": 5, "sender": "John", "preview": "Hola!"}
-```
+- **RLS on every table.** Logged-in users read all profiles and dogs (needed for candidates and matches) but can only write their own rows.
+- **Swipes are validated in the policy:** you can only swipe with a dog you own, against a dog you do not own.
+- **Matches and profiles cannot be inserted by clients.** Only the triggers create them.
+- **The `role` column is not writable by users.** Update is granted per column, so nobody can promote themselves to admin.
+- **Public data is exposed through `security definer` functions** (`get_reviews`, `get_admin_dashboard`) that return exactly the fields the page needs.
+- **Secrets stay on the server.** The service-role key and SMTP credentials are read from `runtimeConfig` inside Nitro routes only.
 
 ---
 
 ## Deployment
 
-### Production URLs
+### Vercel
 
-| Service | URL |
-|---|---|
-| Frontend | https://werawoof.vercel.app |
-| Backend API | https://werawoof-production.up.railway.app |
+1. Import the repository and set the **Root Directory** to `frontend`. Nuxt is detected automatically.
+2. Add the five [environment variables](#environment-variables) for **Production** and **Preview**. `NUXT_PUBLIC_*` values are plain variables; the rest should be marked as sensitive.
+3. Redeploy after changing any variable.
+4. Make sure the production URL is in Supabase's Redirect URLs (see [Supabase Setup](#supabase-setup)).
 
-### Full Stack with Docker
+Preview deployments load without errors, but signing in from a preview URL redirects to production unless the preview pattern is added to Supabase's Redirect URLs.
 
-```bash
-docker compose up --build
-```
+### Continuous Integration
 
-| Container | Internal Port | External Port |
-|---|---|---|
-| `werawoof-postgres` | 5432 | 5433 |
-| `werawoof-redis` | 6379 | 6379 |
-| `werawoof-backend` | 3004 | 3004 |
-| `werawoof-frontend` | 3000 | 3003 |
+GitHub Actions runs ESLint and Vitest on every push and pull request to `main` and `develop`.
 
-### Backend (Railway)
+### Production
 
-- Go buildpack auto-detected
-- PostgreSQL + Redis as Railway plugins
-- Environment variables set via Railway dashboard
-
-### Frontend (Vercel)
-
-- Nuxt 3 preset auto-detected
-- Set `NUXT_PUBLIC_API_BASE` to the Railway backend URL
+| Service | URL                           |
+| ------- | ----------------------------- |
+| App     | https://werawoof.vercel.app   |
+| Backend | Supabase (project `werawoof`) |
 
 ---
 
@@ -544,7 +369,7 @@ docker compose up --build
 
 1. Fork the repository
 2. Create your feature branch: `git checkout -b feat/amazing-feature`
-3. Commit your changes following [Conventional Commits](https://www.conventionalcommits.org/): `git commit -m 'feat: add amazing feature'`
+3. Commit following [Conventional Commits](https://www.conventionalcommits.org/): `git commit -m 'feat: add amazing feature'`
 4. Push to the branch: `git push origin feat/amazing-feature`
 5. Open a Pull Request
 

@@ -8,9 +8,11 @@
 - [Comunidad](https://werawoof.vercel.app/comunidad): la comunidad WeraWoof
 - [Quiénes somos](https://werawoof.vercel.app/quienes-somos): historia y equipo del proyecto
 - [Contacto](https://werawoof.vercel.app/contacto): formulario de contacto
+- [Política de privacidad](https://werawoof.vercel.app/politica-de-privacidad): qué datos se guardan y cómo se usan
+- [Términos de servicio](https://werawoof.vercel.app/terminos-de-servicio): condiciones de uso de la plataforma
 - [Iniciar sesión](https://werawoof.vercel.app/auth/login): entrada a la app
 - [Crear cuenta](https://werawoof.vercel.app/auth/register): registro de usuario
 
 ## Código
 
-- [Repositorio en GitHub](https://github.com/kenshivr/werawoof): código fuente del proyecto (Nuxt 3 + Go/Gin)
+- [Repositorio en GitHub](https://github.com/kenshivr/werawoof): código fuente del proyecto (Nuxt 3 + Supabase, desplegado en Vercel)

@@ -17,7 +17,7 @@ definePageMeta({ layout: 'public' })
       >
         Aviso de Privacidad
       </h1>
-      <p class="text-[#7d571e] mt-3 text-base">Última actualización: abril de 2026</p>
+      <p class="text-[#7d571e] mt-3 text-base">Última actualización: septiembre de 2026</p>
     </div>
 
     <div class="space-y-10">
@@ -169,8 +169,8 @@ definePageMeta({ layout: 'public' })
             >
             <span
               ><strong class="text-[#382615]">Infraestructura:</strong> nuestros servidores y base
-              de datos están alojados en proveedores externos (Railway). Los datos se almacenan con
-              medidas de seguridad estándar de la industria.</span
+              de datos están alojados en proveedores externos (Supabase y Vercel). Los datos se
+              almacenan con medidas de seguridad estándar de la industria.</span
             >
           </li>
         </ul>
