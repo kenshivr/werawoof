@@ -228,7 +228,7 @@ All scripts run from `frontend/`:
 | `npm run lint`      | ESLint                             |
 | `npm run lint:fix`  | ESLint with autofix                |
 | `npm run typecheck` | `vue-tsc` through `nuxi typecheck` |
-| `npm run test`      | Vitest (`--passWithNoTests`)       |
+| `npm run test`      | Vitest unit tests (`tests/`)       |
 
 On every commit, husky runs lint-staged: ESLint + Prettier on staged `.ts` and `.vue` files, Prettier on `.css`, `.md` and `.json`.
 
@@ -249,6 +249,7 @@ werawoof/
 │
 └── frontend/
     ├── nuxt.config.ts                 # Modules, SEO head, dev port 3003, runtimeConfig
+    ├── vitest.config.ts               # Unit tests without Nuxt: Nitro auto-imports stubbed
     ├── app.vue · error.vue
     ├── pages/
     │   ├── index.vue                  # Landing
@@ -282,6 +283,9 @@ werawoof/
     │   └── utils/mail.ts              # nodemailer + Gmail SMTP
     ├── types/                         # auth · dog · match · message · review
     │   └── database.types.ts          # Generated from the Supabase schema
+    ├── tests/                         # Vitest: server routes, mail utils, messages store
+    │   ├── setup.ts                   # Nitro globals + nodemailer mock for every spec
+    │   └── mocks/                     # #supabase/server and nodemailer fakes
     ├── assets/css/fonts.css           # Self-hosted fonts
     └── public/                        # Icons, manifest, OG image, robots.txt, llms.txt
 ```
