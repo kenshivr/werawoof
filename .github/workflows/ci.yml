@@ -2,13 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
+    branches: [main]
 
 jobs:
   frontend:
-    name: Frontend — Lint & Test
+    name: Frontend — Lint, Typecheck & Test
     runs-on: ubuntu-latest
 
     steps:
@@ -29,6 +29,10 @@ jobs:
       - name: Lint
         working-directory: ./frontend
         run: npm run lint
+
+      - name: Typecheck
+        working-directory: ./frontend
+        run: npm run typecheck
 
       - name: Run tests
         working-directory: ./frontend

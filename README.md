@@ -39,6 +39,7 @@ A matchmaking platform for dog owners — swipe, match, and chat in real time.
 - [Security Model](#security-model)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
+- [License](#license)
 
 ---
 
@@ -108,7 +109,7 @@ WeraWoof was originally built with a Go + Gin backend (PostgreSQL, Redis, WebSoc
 | **Email**      | Gmail SMTP through nodemailer (dedicated account)                      |
 | **Analytics**  | Vercel Analytics                                                       |
 | **Quality**    | ESLint, Prettier, Vitest, husky + lint-staged                          |
-| **CI/CD**      | GitHub Actions (lint + tests), Vercel (deploy)                         |
+| **CI/CD**      | GitHub Actions (lint + typecheck + tests), Vercel (deploy)             |
 | **Hosting**    | Vercel                                                                 |
 
 ---
@@ -218,15 +219,16 @@ Register with a real email address: the confirmation link goes through Supabase 
 
 All scripts run from `frontend/`:
 
-| Script             | What it does                       |
-| ------------------ | ---------------------------------- |
-| `npm run dev`      | Dev server on port 3003            |
-| `npm run build`    | Production build (`.output/`)      |
-| `npm run preview`  | Serve the production build locally |
-| `npm run generate` | Static generation                  |
-| `npm run lint`     | ESLint                             |
-| `npm run lint:fix` | ESLint with autofix                |
-| `npm run test`     | Vitest (`--passWithNoTests`)       |
+| Script              | What it does                       |
+| ------------------- | ---------------------------------- |
+| `npm run dev`       | Dev server on port 3003            |
+| `npm run build`     | Production build (`.output/`)      |
+| `npm run preview`   | Serve the production build locally |
+| `npm run generate`  | Static generation                  |
+| `npm run lint`      | ESLint                             |
+| `npm run lint:fix`  | ESLint with autofix                |
+| `npm run typecheck` | `vue-tsc` through `nuxi typecheck` |
+| `npm run test`      | Vitest (`--passWithNoTests`)       |
 
 On every commit, husky runs lint-staged: ESLint + Prettier on staged `.ts` and `.vue` files, Prettier on `.css`, `.md` and `.json`.
 
@@ -236,12 +238,14 @@ On every commit, husky runs lint-staged: ESLint + Prettier on staged `.ts` and `
 
 ```
 werawoof/
-├── .github/workflows/ci.yml           # Lint + tests on push / PR (main, develop)
+├── .github/workflows/ci.yml           # Lint + typecheck + tests on push / PR to main
 ├── .husky/pre-commit                  # lint-staged
+├── CHANGELOG.md · LICENSE
 ├── supabase/
 │   ├── schema.sql                     # Tables, RLS, triggers, RPC, Realtime, Storage
 │   ├── 002_get_reviews.sql            # Public reviews (security definer)
-│   └── 003_admin_dashboard.sql        # Admin dashboard aggregation
+│   ├── 003_admin_dashboard.sql        # Admin dashboard aggregation
+│   └── 004_drop_anon_policies.sql     # Server routes write with the secret key
 │
 └── frontend/
     ├── nuxt.config.ts                 # Modules, SEO head, dev port 3003, runtimeConfig
@@ -355,7 +359,7 @@ Preview deployments load without errors, but signing in from a preview URL redir
 
 ### Continuous Integration
 
-GitHub Actions runs ESLint and Vitest on every push and pull request to `main` and `develop`.
+GitHub Actions runs ESLint, `nuxi typecheck` and Vitest on every push and pull request to `main`.
 
 ### Production
 
@@ -373,6 +377,14 @@ GitHub Actions runs ESLint and Vitest on every push and pull request to `main` a
 3. Commit following [Conventional Commits](https://www.conventionalcommits.org/): `git commit -m 'feat: add amazing feature'`
 4. Push to the branch: `git push origin feat/amazing-feature`
 5. Open a Pull Request
+
+Changes are tracked in [CHANGELOG.md](CHANGELOG.md).
+
+---
+
+## License
+
+Distributed under the [MIT License](LICENSE).
 
 ---
 

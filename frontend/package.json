@@ -1,5 +1,6 @@
 {
   "name": "werawoof-frontend",
+  "version": "1.0.0",
   "type": "module",
   "private": true,
   "scripts": {
@@ -10,6 +11,7 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "typecheck": "nuxi typecheck",
     "test": "vitest run --passWithNoTests",
     "prepare": "cd .. && husky"
   },
@@ -35,7 +37,8 @@
     "lint-staged": "^15.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.8.0",
-    "vitest": "^3.0.0"
+    "vitest": "^3.0.0",
+    "vue-tsc": "^2.2.12"
   },
   "lint-staged": {
     "*.{ts,vue}": [
