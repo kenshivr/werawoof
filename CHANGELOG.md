@@ -12,6 +12,8 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
   la foto de Wera en el piso se recorta a la franja que realmente se ve y se
   sirve en tres tamaños (450, 700 y 900 px): de 312 KB a entre 62 y 209 KB
   según la pantalla.
+- Login y registro: la foto del panel izquierdo se recomprime (110 KB → 71 KB)
+  y se sirve en tres tamaños (600, 800 y 1066 px) según el ancho del panel.
 
 ## [1.0.1] - 2026-09-11
 

@@ -152,6 +152,8 @@ const copy = computed(() =>
           />
           <img
             :src="'/images/vertical.webp'"
+            :srcset="'/images/vertical-600.webp 600w, /images/vertical-800.webp 800w, /images/vertical.webp 1066w'"
+            sizes="(min-width: 1024px) 512px, 50vw"
             alt="Wera the dog"
             width="1066"
             height="1600"
