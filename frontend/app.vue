@@ -13,7 +13,21 @@ useHead({
       rel: 'preload',
       as: 'font',
       type: 'font/woff2',
+      href: '/fonts/vietnam-500.woff2',
+      crossorigin: '',
+    },
+    {
+      rel: 'preload',
+      as: 'font',
+      type: 'font/woff2',
       href: '/fonts/jakarta-800.woff2',
+      crossorigin: '',
+    },
+    {
+      rel: 'preload',
+      as: 'font',
+      type: 'font/woff2',
+      href: '/fonts/jakarta-700.woff2',
       crossorigin: '',
     },
     {

@@ -52,6 +52,10 @@ const handleClubClick = () => {
         <div class="absolute inset-0 z-0">
           <img
             :src="'/images/horizontal.webp'"
+            :srcset="'/images/horizontal-800.webp 800w, /images/horizontal-1200.webp 1200w, /images/horizontal.webp 1600w'"
+            sizes="100vw"
+            width="1600"
+            height="1066"
             alt="Wera, a golden-colored dog, sitting happily in a sunny park."
             class="w-full h-full object-cover"
             fetchpriority="high"

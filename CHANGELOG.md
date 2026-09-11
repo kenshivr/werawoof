@@ -6,6 +6,13 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+### Changed
+
+- Landing: el hero se sirve en tres tamaños (800, 1200 y 1600 px) según el
+  ancho de pantalla, el logo del header se muestra a su tamaño real y se
+  precargan las fuentes `vietnam-500` y `jakarta-700` del primer render
+  (hallazgos de PageSpeed Insights).
+
 ## [1.0.0] - 2026-09-11
 
 Primera versión estable: perfiles de perros con varias fotos, swipe con match
