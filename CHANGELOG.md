@@ -6,6 +6,8 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-09-11
+
 ### Changed
 
 - Quiénes somos: el hero usa las mismas variantes responsivas que la landing y
@@ -14,6 +16,11 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
   según la pantalla.
 - Login y registro: la foto del panel izquierdo se recomprime (110 KB → 71 KB)
   y se sirve en tres tamaños (600, 800 y 1066 px) según el ancho del panel.
+
+### Security
+
+- `esbuild` 0.27.7 → 0.28.2 en el lockfile (Dependabot #2, dependencia de
+  desarrollo): cierra la única alerta abierta de `npm audit`.
 
 ## [1.0.1] - 2026-09-11
 
@@ -41,6 +48,7 @@ Redis y WebSockets) alojado en Railway. En septiembre de 2026 ese backend se
 reemplazó por completo por Supabase; la implementación en Go sigue en la
 historia de git hasta el commit `4033595`.
 
-[Unreleased]: https://github.com/kenshivr/werawoof/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/kenshivr/werawoof/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/kenshivr/werawoof/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/kenshivr/werawoof/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/kenshivr/werawoof/releases/tag/v1.0.0
