@@ -11,10 +11,12 @@ A matchmaking platform for dog owners — swipe, match, and chat in real time.
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%C2%B7%20Auth%20%C2%B7%20Realtime%20%C2%B7%20Storage-3FCF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
-[![Vercel](https://img.shields.io/badge/Vercel-deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://werawoof.vercel.app)
+[![Vercel](https://img.shields.io/badge/Vercel-deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://werawoof.com)
 [![CI](https://github.com/kenshivr/werawoof/actions/workflows/ci.yml/badge.svg)](https://github.com/kenshivr/werawoof/actions/workflows/ci.yml)
+[![Lighthouse](https://img.shields.io/badge/Lighthouse%20mobile-91%20·%20100%20·%20100%20·%20100-4ade80?style=flat-square&logo=lighthouse&logoColor=white)](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fwerawoof.com)
+[![PWA](https://img.shields.io/badge/PWA-installable-4ade80?style=flat-square&logo=pwa&logoColor=white)](https://werawoof.com)
 
-[Live Demo](https://werawoof.vercel.app) · [Report Bug](https://github.com/kenshivr/werawoof/issues) · [Request Feature](https://github.com/kenshivr/werawoof/issues)
+[Live Demo](https://werawoof.com) · [Report Bug](https://github.com/kenshivr/werawoof/issues) · [Request Feature](https://github.com/kenshivr/werawoof/issues)
 
 </div>
 
@@ -23,6 +25,7 @@ A matchmaking platform for dog owners — swipe, match, and chat in real time.
 ## Table of Contents
 
 - [Overview](#overview)
+- [Screenshots](#screenshots)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Architecture](#architecture)
@@ -50,6 +53,23 @@ A matchmaking platform for dog owners — swipe, match, and chat in real time.
 The name comes from _Wera_, a real dog that inspired the project.
 
 WeraWoof was originally built with a Go + Gin backend (PostgreSQL, Redis, WebSockets) hosted on Railway. In September 2026 the whole backend was replaced by **Supabase** — Postgres with Row Level Security, Auth, Realtime and Storage — and the app now ships as a single Nuxt 3 project on Vercel. The Go implementation remains in the git history up to commit `4033595`.
+
+---
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/mobile-landing.webp" width="32%" alt="Landing on mobile: find the perfect match for your dog" />
+  <img src="docs/screenshots/mobile-swipe.webp" width="32%" alt="Swipe on mobile: exploring as Wera, a card for Canela" />
+  <img src="docs/screenshots/mobile-match.webp" width="32%" alt="It's a match on mobile: Lolo Bartolo and Wera" />
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/desktop-swipe.webp" width="49%" alt="Swipe on desktop: a dog card with pass and like buttons" />
+  <img src="docs/screenshots/desktop-chat.webp" width="49%" alt="Real-time chat on desktop between two owners" />
+</p>
+
+Lighthouse on the production landing, mobile emulation: Performance 91, Accessibility 100, Best Practices 100, SEO 100. Desktop scores 100 in all four categories.
 
 ---
 
@@ -369,7 +389,7 @@ GitHub Actions runs ESLint, `nuxi typecheck` and Vitest on every push and pull r
 
 | Service | URL                           |
 | ------- | ----------------------------- |
-| App     | https://werawoof.vercel.app   |
+| App     | https://werawoof.com          |
 | Backend | Supabase (project `werawoof`) |
 
 ---
