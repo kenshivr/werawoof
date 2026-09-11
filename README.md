@@ -163,6 +163,8 @@ Lighthouse on the production landing, mobile emulation: Performance 91, Accessib
 - **Business rules live in Postgres.** Profile creation, match detection and candidate selection are triggers and functions, not application code.
 - **Server routes only where a secret is needed.** The service-role key and the SMTP credentials never reach the browser.
 
+The reasoning behind these choices is recorded in the [architecture decision records](docs/adr/README.md) (Spanish). There is also a [postmortem of the cutover day](docs/postmortem-2026-09-06-cutover.md).
+
 ---
 
 ## Getting Started
@@ -261,6 +263,11 @@ werawoof/
 ├── .github/workflows/ci.yml           # Lint + typecheck + tests on push / PR to main
 ├── .husky/pre-commit                  # lint-staged
 ├── CHANGELOG.md · LICENSE
+├── docs/
+│   ├── adr/                           # Architecture decision records
+│   ├── screenshots/                   # README images
+│   ├── postmortem-2026-09-06-cutover.md
+│   └── social-preview.html · .png     # GitHub social preview (rendered with Edge headless)
 ├── supabase/
 │   ├── schema.sql                     # Tables, RLS, triggers, RPC, Realtime, Storage
 │   ├── 002_get_reviews.sql            # Public reviews (security definer)
