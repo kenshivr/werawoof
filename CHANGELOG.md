@@ -6,6 +6,8 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-09-11
+
 ### Changed
 
 - Landing: el hero se sirve en tres tamaños (800, 1200 y 1600 px) según el
@@ -30,5 +32,6 @@ Redis y WebSockets) alojado en Railway. En septiembre de 2026 ese backend se
 reemplazó por completo por Supabase; la implementación en Go sigue en la
 historia de git hasta el commit `4033595`.
 
-[Unreleased]: https://github.com/kenshivr/werawoof/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/kenshivr/werawoof/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/kenshivr/werawoof/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/kenshivr/werawoof/releases/tag/v1.0.0
