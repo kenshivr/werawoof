@@ -40,3 +40,8 @@ Go no se migraron; los usuarios volvieron a registrarse.
 - ⚠️ Acoplamiento a `supabase-js`, Realtime y Storage. Los datos son Postgres puro
   (`pg_dump` funciona), pero Auth, Realtime y Storage tendrían que reemplazarse si el proyecto
   se mudara.
+- ⚠️ El módulo de Nuxt crea el cliente de Supabase en todas las páginas, así que la landing
+  descarga `supabase-js` entero (unos 160 KB comprimidos, más de la mitad sin usar ahí).
+  Se aceptó: la landing rinde 99 en móvil y 100 en escritorio con Lighthouse, y sacarlo
+  del chunk de entrada implica reemplazar el módulo por un cliente propio cargado bajo
+  demanda. Se revisa si la landing se vuelve una prioridad de marketing.

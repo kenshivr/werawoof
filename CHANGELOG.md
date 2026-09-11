@@ -9,9 +9,11 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 ### Changed
 
 - Landing: el hero se sirve en tres tamaños (800, 1200 y 1600 px) según el
-  ancho de pantalla, el logo del header se muestra a su tamaño real y se
-  precargan las fuentes `vietnam-500` y `jakarta-700` del primer render
-  (hallazgos de PageSpeed Insights).
+  ancho de pantalla, la imagen del bento en dos (400 y 640 px), el logo del
+  header se muestra a su tamaño real y se precargan las fuentes `vietnam-500`
+  y `jakarta-700` del primer render (hallazgos de PageSpeed Insights).
+  Lighthouse móvil pasa de 91 a 99 (FCP 2.2 s → 0.9 s, LCP 3.0 s → 1.7 s);
+  escritorio 100 en las cuatro categorías.
 
 ## [1.0.0] - 2026-09-11
 

@@ -161,6 +161,8 @@ const handleClubClick = () => {
             >
               <img
                 :src="'/images/hand.webp'"
+                :srcset="'/images/hand-400.webp 400w, /images/hand.webp 640w'"
+                sizes="(min-width: 768px) 60vw, 100vw"
                 alt="Wera playing with a playful expression."
                 class="w-full h-full object-cover"
                 loading="lazy"

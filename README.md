@@ -13,7 +13,7 @@ A matchmaking platform for dog owners — swipe, match, and chat in real time.
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![Vercel](https://img.shields.io/badge/Vercel-deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://werawoof.com)
 [![CI](https://github.com/kenshivr/werawoof/actions/workflows/ci.yml/badge.svg)](https://github.com/kenshivr/werawoof/actions/workflows/ci.yml)
-[![Lighthouse](https://img.shields.io/badge/Lighthouse%20mobile-91%20·%20100%20·%20100%20·%20100-4ade80?style=flat-square&logo=lighthouse&logoColor=white)](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fwerawoof.com)
+[![Lighthouse](https://img.shields.io/badge/Lighthouse%20mobile-99%20·%20100%20·%20100%20·%20100-4ade80?style=flat-square&logo=lighthouse&logoColor=white)](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fwerawoof.com)
 [![PWA](https://img.shields.io/badge/PWA-installable-4ade80?style=flat-square&logo=pwa&logoColor=white)](https://werawoof.com)
 
 [Live Demo](https://werawoof.com) · [Report Bug](https://github.com/kenshivr/werawoof/issues) · [Request Feature](https://github.com/kenshivr/werawoof/issues)
@@ -69,7 +69,12 @@ WeraWoof was originally built with a Go + Gin backend (PostgreSQL, Redis, WebSoc
   <img src="docs/screenshots/desktop-chat.webp" width="49%" alt="Real-time chat on desktop between two owners" />
 </p>
 
-Lighthouse on the production landing, mobile emulation: Performance 91, Accessibility 100, Best Practices 100, SEO 100. Desktop scores 100 in all four categories.
+[PageSpeed Insights](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fwerawoof.com) on the production landing, 2026-09-11:
+
+| Device  | Performance | Accessibility | Best Practices | SEO | FCP   | LCP   |
+| ------- | ----------- | ------------- | -------------- | --- | ----- | ----- |
+| Mobile  | 99          | 100           | 100            | 100 | 0.9 s | 1.7 s |
+| Desktop | 100         | 100           | 100            | 100 | 0.4 s | 0.7 s |
 
 ---
 
@@ -117,20 +122,20 @@ Lighthouse on the production landing, mobile emulation: Performance 91, Accessib
 
 ## Tech Stack
 
-| Layer          | Technology                                                             |
-| -------------- | ---------------------------------------------------------------------- |
-| **Framework**  | Nuxt 3 (Vue 3, SSR) on Nitro                                           |
-| **Language**   | TypeScript (strict)                                                    |
-| **State**      | Pinia                                                                  |
-| **Styling**    | Tailwind CSS, self-hosted fonts                                        |
-| **Backend**    | Supabase — Postgres, Auth, Realtime, Storage                           |
-| **Client SDK** | `@nuxtjs/supabase` (supabase-js, SSR cookies)                          |
-| **Server**     | Nitro server routes for contact, newsletter, tracking, account removal |
-| **Email**      | Gmail SMTP through nodemailer (dedicated account)                      |
-| **Analytics**  | Vercel Analytics                                                       |
-| **Quality**    | ESLint, Prettier, Vitest, husky + lint-staged                          |
-| **CI/CD**      | GitHub Actions (lint + typecheck + tests), Vercel (deploy)             |
-| **Hosting**    | Vercel                                                                 |
+| Layer          | Technology                                                                         |
+| -------------- | ---------------------------------------------------------------------------------- |
+| **Framework**  | Nuxt 3 (Vue 3, SSR) on Nitro                                                       |
+| **Language**   | TypeScript (strict)                                                                |
+| **State**      | Pinia                                                                              |
+| **Styling**    | Tailwind CSS, self-hosted fonts                                                    |
+| **Backend**    | Supabase — Postgres, Auth, Realtime, Storage                                       |
+| **Client SDK** | `@nuxtjs/supabase` (supabase-js, SSR cookies)                                      |
+| **Server**     | Nitro server routes for contact, newsletter, tracking, account removal             |
+| **Email**      | Gmail SMTP through nodemailer (dedicated account)                                  |
+| **Analytics**  | Vercel Analytics                                                                   |
+| **Quality**    | ESLint, Prettier, Vitest, husky + lint-staged · Lighthouse 99 mobile / 100 desktop |
+| **CI/CD**      | GitHub Actions (lint + typecheck + tests), Vercel (deploy)                         |
+| **Hosting**    | Vercel                                                                             |
 
 ---
 
