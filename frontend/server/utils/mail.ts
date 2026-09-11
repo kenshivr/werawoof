@@ -74,7 +74,7 @@ export const WELCOME_HTML = `
         <p style="margin:0;color:#5a4030;font-size:14px;line-height:1.6">Mientras tanto, armá el perfil de tu perro y encontrá con quién menear la cola.</p>
       </div>
       <div style="text-align:center;margin:8px 0 4px">
-        <a href="https://werawoof.vercel.app" style="display:inline-block;background:#F4C07D;color:#382615;text-decoration:none;font-weight:700;font-size:15px;padding:14px 40px;border-radius:12px;letter-spacing:0.2px;box-shadow:0 4px 12px rgba(244,192,125,0.4)">Entrar a WeraWoof →</a>
+        <a href="https://werawoof.com" style="display:inline-block;background:#F4C07D;color:#382615;text-decoration:none;font-weight:700;font-size:15px;padding:14px 40px;border-radius:12px;letter-spacing:0.2px;box-shadow:0 4px 12px rgba(244,192,125,0.4)">Entrar a WeraWoof →</a>
       </div>
     </div>
     <div style="background:#382615;border-radius:0 0 16px 16px;padding:18px 32px;text-align:center">
