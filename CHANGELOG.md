@@ -6,7 +6,7 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
-## [1.0.0] - 2026-09-10
+## [1.0.0] - 2026-09-11
 
 Primera versión estable: perfiles de perros con varias fotos, swipe con match
 automático cuando el like es mutuo, chat en tiempo real por match, comunidad
