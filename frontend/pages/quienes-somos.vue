@@ -14,6 +14,8 @@ definePageMeta({ layout: false })
         <div class="absolute inset-0 z-0">
           <img
             :src="'/images/horizontal.webp'"
+            :srcset="'/images/horizontal-800.webp 800w, /images/horizontal-1200.webp 1200w, /images/horizontal.webp 1600w'"
+            sizes="100vw"
             alt="Wera"
             width="1600"
             height="1066"
@@ -63,6 +65,10 @@ definePageMeta({ layout: false })
             <div class="relative h-[400px] rounded-3xl overflow-hidden shadow-xl">
               <img
                 :src="'/images/piso.webp'"
+                :srcset="'/images/piso-450.webp 450w, /images/piso-700.webp 700w, /images/piso.webp 900w'"
+                sizes="(min-width: 1280px) 576px, (min-width: 768px) calc(50vw - 64px), calc(100vw - 64px)"
+                width="900"
+                height="1040"
                 alt="WeraWoof"
                 loading="lazy"
                 class="w-full h-full object-cover"

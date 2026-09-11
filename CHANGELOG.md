@@ -6,6 +6,13 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+### Changed
+
+- Quiénes somos: el hero usa las mismas variantes responsivas que la landing y
+  la foto de Wera en el piso se recorta a la franja que realmente se ve y se
+  sirve en tres tamaños (450, 700 y 900 px): de 312 KB a entre 62 y 209 KB
+  según la pantalla.
+
 ## [1.0.1] - 2026-09-11
 
 ### Changed
