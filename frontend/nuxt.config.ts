@@ -28,6 +28,10 @@ export default defineNuxtConfig({
         { property: 'og:image', content: 'https://werawoof.com/og-werawoof.png' },
         { property: 'og:image:width', content: '1200' },
         { property: 'og:image:height', content: '630' },
+        /* LinkedIn clasifica todo enlace compartido como "Article" (así lo
+           modela su Share API) y toma de aquí la "Publish date" que muestra el
+           Post Inspector. Fecha del lanzamiento en werawoof.com (1.0.0). */
+        { property: 'article:published_time', content: '2026-09-11T00:00:00-06:00' },
         { name: 'twitter:card', content: 'summary_large_image' },
         {
           name: 'twitter:title',

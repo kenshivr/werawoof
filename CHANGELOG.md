@@ -6,6 +6,13 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+### Added
+
+- Meta `article:published_time` con la fecha del lanzamiento en werawoof.com
+  (2026-09-11): el Post Inspector de LinkedIn ya no marca "No publication date
+  found". El `og:type` sigue en `website`; LinkedIn muestra "Article" para
+  cualquier enlace compartido.
+
 ## [1.0.2] - 2026-09-11
 
 ### Changed
