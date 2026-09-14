@@ -46,9 +46,10 @@ const handleClubClick = () => {
       >
     </div>
 
-    <main class="pt-20 pb-20 md:pb-0">
-      <!-- Hero -->
-      <section class="relative min-h-[870px] flex items-center overflow-hidden">
+    <main class="pb-20 md:pb-0">
+      <!-- Hero: pasa por debajo del header fijo (como en quienes-somos); el pt-20
+           deja el contenido fuera del header, la imagen sí llega hasta arriba. -->
+      <section class="relative min-h-[870px] flex items-center overflow-hidden pt-20">
         <div class="absolute inset-0 z-0">
           <img
             :src="'/images/horizontal.webp'"

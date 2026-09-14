@@ -13,6 +13,20 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
   found". El `og:type` sigue en `website`; LinkedIn muestra "Article" para
   cualquier enlace compartido.
 
+### Fixed
+
+- Los íconos de Material Symbols ignoraban las utilidades de Tailwind (`hidden`,
+  `text-3xl`, etc.) porque su clase base vivía en `fonts.css`, que se inyecta
+  después del CSS de Tailwind y ganaba el empate de especificidad: en móvil los
+  íconos del login se encimaban con los placeholders y todos los íconos de la
+  app medían 24 px desde 1.0.0. La clase pasa a `@layer components` en
+  `assets/css/tailwind.css`, capa que Tailwind siempre deja debajo de las
+  utilidades.
+- Franja clara entre el header y el hero de la landing en móvil: el header mide
+  72 px y la página le dejaba 80 px de padding. El hero ahora pasa por debajo
+  del header fijo, como en Quiénes Somos, y el padding vive dentro de la
+  sección.
+
 ## [1.0.2] - 2026-09-11
 
 ### Changed
