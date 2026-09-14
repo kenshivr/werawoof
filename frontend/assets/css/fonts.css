@@ -1,6 +1,12 @@
 /* Fuentes self-hosted (subset latin, generadas desde Google Fonts).
-   Los íconos son un subset con solo los glifos usados en la app:
-   ícono nuevo => regenerar public/fonts/material-symbols.woff2 con icon_names. */
+   Los íconos son un subset con solo los glifos usados en la app: un ícono que
+   no esté en la lista se ve como texto ("MY_LOCATION"). Ícono nuevo =>
+   agregarlo a la lista (orden alfabético) y regenerar el woff2:
+   1. curl con User-Agent de Chrome a
+      https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&icon_names=<lista>&display=block
+   2. descargar la url(...) del @font-face que devuelve a public/fonts/material-symbols.woff2
+   Lista actual (70):
+   account_circle,add,add_a_photo,analytics,arrow_back,arrow_forward,block,calendar_today,cancel,chat,chat_bubble,chat_bubble_outline,check,check_circle,chevron_left,chevron_right,close,computer,delete,description,drag_indicator,eco,edit,expand_more,explore,favorite,folder_special,forum,gavel,handshake,home,hourglass_empty,house,info,language,location_on,lock,lock_reset,login,logout,mail,mark_email_read,mark_email_unread,mood,my_location,person,person_add,pets,phone,photo_camera,progress_activity,rate_review,refresh,school,search,send,sentiment_satisfied,share,smartphone,star,storage,swap_horiz,swipe,trending_up,upload_file,verified,visibility,visibility_off,warning,work */
 @font-face {
   font-family: 'Be Vietnam Pro';
   font-style: normal;

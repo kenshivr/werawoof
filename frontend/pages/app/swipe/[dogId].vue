@@ -73,7 +73,11 @@ async function loadCandidates() {
       swiper_dog_id: activeDog.value.id,
     })
     if (error) throw error
-    candidates.value = (data ?? []) as Candidate[]
+    /* distance_km viene null si alguno de los dos no compartió ubicación */
+    candidates.value = (data ?? []).map(({ distance_km, ...dog }) => ({
+      ...dog,
+      distance: distance_km ?? undefined,
+    }))
     if (candidates.value.length === 0) noMoreCandidates.value = true
   } catch {
     noMoreCandidates.value = true
@@ -208,17 +212,21 @@ onMounted(async () => {
 
 <template>
   <div
-    class="flex flex-col items-center justify-start md:justify-center min-h-[calc(100vh-80px)] px-4 pt-16 pb-8 md:py-8 overflow-y-auto"
+    class="relative flex flex-col items-center justify-center h-[calc(100dvh-10rem)] p-2 overflow-hidden md:h-auto md:min-h-[calc(100vh-80px)] md:px-4 md:py-8 md:overflow-y-auto"
   >
-    <!-- Active dog banner -->
+    <!-- En móvil la página mide exactamente lo que queda entre el header (80 px)
+         y el menú inferior (80 px): la foto llena ese espacio y no hay scroll.
+         En escritorio se conserva la tarjeta centrada de siempre. -->
+
+    <!-- Active dog banner: flota sobre la foto en móvil, fijo bajo el header en escritorio -->
     <div
       v-if="activeDog && !loadingDog"
-      class="fixed top-[74px] md:top-[96px] left-0 right-0 z-40 flex justify-center pointer-events-none"
+      class="absolute top-3.5 left-0 right-0 z-40 flex justify-center pointer-events-none md:fixed md:top-[96px]"
     >
       <div
-        class="flex items-center gap-2 bg-white/90 backdrop-blur-md border border-[#fdddc3] px-4 py-2 rounded-full shadow-sm text-sm font-medium text-[#382615] font-jakarta pointer-events-auto"
+        class="flex items-center gap-1.5 md:gap-2 bg-white/90 backdrop-blur-md border border-[#fdddc3] px-3 py-1.5 md:px-4 md:py-2 rounded-full shadow-sm text-xs md:text-sm font-medium text-[#382615] font-jakarta pointer-events-auto"
       >
-        <div class="w-6 h-6 rounded-full overflow-hidden bg-[#fff1e8] shrink-0">
+        <div class="w-5 h-5 md:w-6 md:h-6 rounded-full overflow-hidden bg-[#fff1e8] shrink-0">
           <img
             v-if="activeDog.photos?.length"
             :src="activeDog.photos[0]"
@@ -234,8 +242,13 @@ onMounted(async () => {
         <span
           >Explorando como <strong>{{ activeDog.name }}</strong></span
         >
-        <NuxtLink to="/app/dogs" class="ml-1 text-[#795832] hover:text-[#382615] transition-colors">
-          <span class="material-symbols-outlined text-base leading-none">swap_horiz</span>
+        <NuxtLink
+          to="/app/dogs"
+          class="ml-1 inline-flex items-center text-[#795832] hover:text-[#382615] transition-colors"
+        >
+          <span class="material-symbols-outlined text-sm md:text-base leading-none"
+            >swap_horiz</span
+          >
         </NuxtLink>
       </div>
     </div>
@@ -265,7 +278,10 @@ onMounted(async () => {
       </div>
 
       <!-- No more candidates -->
-      <div v-else-if="noMoreCandidates && candidates.length === 0" class="text-center space-y-4">
+      <div
+        v-else-if="noMoreCandidates && candidates.length === 0"
+        class="text-center space-y-4 px-6"
+      >
         <span class="material-symbols-outlined text-6xl text-[#382615]/30"
           >sentiment_satisfied</span
         >
@@ -273,403 +289,438 @@ onMounted(async () => {
           ¡Ya viste a todos los de tu zona!
         </h2>
         <p class="text-body-md text-on-surface-variant">
-          Volvé más tarde para ver nuevos peludos cerca.
+          Volvé más tarde o ampliá tu radio de búsqueda desde tu perfil.
         </p>
-        <NuxtLink
-          to="/app/dogs"
-          class="inline-flex items-center gap-2 text-[#795832] font-medium hover:text-[#382615] transition-colors"
-        >
-          <span class="material-symbols-outlined text-base">arrow_back</span>
-          Explorar con otro can
-        </NuxtLink>
+        <div class="flex flex-col items-center gap-3">
+          <NuxtLink
+            to="/app/profile"
+            class="inline-flex items-center gap-2 text-[#795832] font-medium hover:text-[#382615] transition-colors"
+          >
+            <span class="material-symbols-outlined text-base">my_location</span>
+            Cambiar mi radio de búsqueda
+          </NuxtLink>
+          <NuxtLink
+            to="/app/dogs"
+            class="inline-flex items-center gap-2 text-[#795832] font-medium hover:text-[#382615] transition-colors"
+          >
+            <span class="material-symbols-outlined text-base">arrow_back</span>
+            Explorar con otro can
+          </NuxtLink>
+        </div>
       </div>
 
       <!-- Swipe deck -->
       <template v-else-if="candidates.length > 0 || !noMoreCandidates">
-        <!-- Card stack -->
-        <div class="relative w-full max-w-[342px]" style="height: 414px">
-          <div
-            v-if="candidates.length >= 3"
-            class="absolute inset-0 bg-white rounded-[16px] shadow-[0_4px_20px_rgba(113,62,24,0.08)] opacity-60"
-            style="transform: scale(0.92) translateY(-48px); z-index: 5"
-          />
-          <div
-            v-if="candidates.length >= 2"
-            class="absolute inset-0 bg-white rounded-[16px] shadow-[0_4px_20px_rgba(113,62,24,0.08)] opacity-80"
-            style="transform: scale(0.96) translateY(-24px); z-index: 10"
-          />
-          <div
-            v-if="topCandidate"
-            class="absolute inset-0 bg-white rounded-[16px] shadow-[0_4px_20px_rgba(113,62,24,0.08)] overflow-hidden select-none"
-            :class="isAnimating ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'"
-            :style="{
-              transform: cardTransform || undefined,
-              transition: isDragging
-                ? 'none'
-                : 'transform 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-              zIndex: 20,
-              touchAction: 'none',
-            }"
-            @pointerdown="onPointerDown"
-            @pointermove="onPointerMove"
-            @pointerup="onPointerUp"
-            @pointercancel="onPointerUp"
-          >
-            <img
-              :src="dogPhoto(topCandidate)"
-              :alt="topCandidate.name"
-              class="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        <!-- Deck + botones. En móvil el deck ocupa todo el alto y los botones
+             flotan sobre la foto; en escritorio el deck mide 414 px y los
+             botones van debajo. -->
+        <div class="relative w-full h-full md:h-auto md:max-w-[342px]">
+          <!-- Card stack -->
+          <div class="relative h-full md:h-[414px]">
+            <div
+              v-if="candidates.length >= 3"
+              class="hidden md:block absolute inset-0 bg-white rounded-[16px] shadow-[0_4px_20px_rgba(113,62,24,0.08)] opacity-60"
+              style="transform: scale(0.92) translateY(-48px); z-index: 5"
             />
             <div
-              class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"
+              v-if="candidates.length >= 2"
+              class="hidden md:block absolute inset-0 bg-white rounded-[16px] shadow-[0_4px_20px_rgba(113,62,24,0.08)] opacity-80"
+              style="transform: scale(0.96) translateY(-24px); z-index: 10"
             />
             <div
-              class="absolute top-10 left-8 border-4 border-primary text-primary font-h2 px-4 py-1 rounded-lg -rotate-12 pointer-events-none transition-opacity duration-100 font-jakarta uppercase tracking-wider text-2xl font-black"
-              :style="{ opacity: likeOpacity }"
+              v-if="topCandidate"
+              class="absolute inset-0 bg-white rounded-[16px] shadow-[0_4px_20px_rgba(113,62,24,0.08)] overflow-hidden select-none"
+              :class="isAnimating ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'"
+              :style="{
+                transform: cardTransform || undefined,
+                transition: isDragging
+                  ? 'none'
+                  : 'transform 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                zIndex: 20,
+                touchAction: 'none',
+              }"
+              @pointerdown="onPointerDown"
+              @pointermove="onPointerMove"
+              @pointerup="onPointerUp"
+              @pointercancel="onPointerUp"
             >
-              LIKE
-            </div>
-            <div
-              class="absolute top-10 right-8 border-4 border-error text-error font-h2 px-4 py-1 rounded-lg rotate-12 pointer-events-none transition-opacity duration-100 font-jakarta uppercase tracking-wider text-2xl font-black"
-              :style="{ opacity: nopeOpacity }"
-            >
-              NOPE
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
-              <div class="flex items-end justify-between gap-4">
-                <div class="flex-1 min-w-0 pointer-events-none">
-                  <div class="flex items-center gap-2 mb-2">
-                    <h2 class="text-3xl font-extrabold font-jakarta">
-                      {{ topCandidate.name }}, {{ topCandidate.age }}
-                    </h2>
-                    <span
-                      class="material-symbols-outlined text-[#F4C07D]"
-                      style="font-variation-settings: 'FILL' 1"
-                      >verified</span
-                    >
-                  </div>
+              <img
+                :src="dogPhoto(topCandidate)"
+                :alt="topCandidate.name"
+                class="absolute inset-0 w-full h-full object-cover pointer-events-none"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"
+              />
+              <div
+                class="absolute top-24 md:top-10 left-8 border-4 border-primary text-primary font-h2 px-4 py-1 rounded-lg -rotate-12 pointer-events-none transition-opacity duration-100 font-jakarta uppercase tracking-wider text-2xl font-black"
+                :style="{ opacity: likeOpacity }"
+              >
+                LIKE
+              </div>
+              <div
+                class="absolute top-24 md:top-10 right-8 border-4 border-error text-error font-h2 px-4 py-1 rounded-lg rotate-12 pointer-events-none transition-opacity duration-100 font-jakarta uppercase tracking-wider text-2xl font-black"
+                :style="{ opacity: nopeOpacity }"
+              >
+                NOPE
+              </div>
+              <!-- En móvil deja lugar abajo para los botones que flotan sobre la foto -->
+              <div class="absolute bottom-0 left-0 right-0 p-5 pb-[4.5rem] md:p-6 text-white">
+                <div class="flex items-end justify-between gap-4">
+                  <div class="flex-1 min-w-0 pointer-events-none">
+                    <div class="flex items-center gap-2 mb-2">
+                      <h2 class="text-3xl font-extrabold font-jakarta">
+                        {{ topCandidate.name }}, {{ topCandidate.age }}
+                      </h2>
+                      <span
+                        class="material-symbols-outlined text-[#F4C07D]"
+                        style="font-variation-settings: 'FILL' 1"
+                        >verified</span
+                      >
+                    </div>
 
-                  <div class="flex flex-wrap gap-2 mb-3">
-                    <span
-                      class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-white/20"
-                      >{{ topCandidate.breed }}</span
-                    >
-                    <span
-                      v-if="topCandidate.distance"
-                      class="bg-black/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1"
-                    >
-                      <span class="material-symbols-outlined text-sm">location_on</span>
-                      {{ topCandidate.distance.toFixed(1) }} km
-                    </span>
-                  </div>
+                    <div class="flex flex-wrap gap-2 mb-3">
+                      <span
+                        class="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border border-white/20"
+                        >{{ topCandidate.breed }}</span
+                      >
+                      <span
+                        v-if="topCandidate.distance != null"
+                        class="bg-black/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1"
+                      >
+                        <span class="material-symbols-outlined text-sm">location_on</span>
+                        {{ topCandidate.distance.toFixed(1) }} km
+                      </span>
+                    </div>
 
-                  <p v-if="topCandidate.bio" class="text-white/90 text-sm line-clamp-2">
-                    {{ topCandidate.bio }}
-                  </p>
+                    <p v-if="topCandidate.bio" class="text-white/90 text-sm line-clamp-2">
+                      {{ topCandidate.bio }}
+                    </p>
+                  </div>
+                  <!-- En móvil el botón de info baja a la fila de los botones
+                       de swipe, pegado a la derecha; en escritorio sigue al
+                       lado del texto. -->
+                  <button
+                    class="shrink-0 absolute right-5 bottom-4 w-10 h-10 md:static md:w-11 md:h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center md:mb-1 hover:bg-white/30 transition-colors"
+                    @click.stop="openProfile"
+                  >
+                    <span class="material-symbols-outlined text-white text-xl">info</span>
+                  </button>
                 </div>
-                <button
-                  class="shrink-0 w-11 h-11 rounded-full bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center mb-1 hover:bg-white/30 transition-colors"
-                  @click.stop="openProfile"
-                >
-                  <span class="material-symbols-outlined text-white text-xl">info</span>
-                </button>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Action buttons -->
-        <div class="mt-8 flex items-center gap-8">
-          <button
-            class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-stone-400 shadow-[0_4px_20px_rgba(113,62,24,0.08)] hover:bg-stone-100 active:scale-90 transition-all duration-200 disabled:opacity-40"
-            :disabled="isAnimating"
-            @click="performSwipe('dislike')"
+          <!-- Action buttons -->
+          <div
+            class="absolute bottom-3 inset-x-0 z-30 flex items-center justify-center gap-8 pointer-events-none md:static md:mt-8"
           >
-            <span class="material-symbols-outlined text-3xl">close</span>
-          </button>
-          <button
-            class="w-20 h-20 rounded-full bg-[#F4C07D] flex items-center justify-center text-[#382615] shadow-[0_4px_20px_rgba(113,62,24,0.12)] hover:opacity-90 active:scale-90 transition-all duration-200 disabled:opacity-40"
-            :disabled="isAnimating"
-            @click="performSwipe('like')"
-          >
-            <span
-              class="material-symbols-outlined text-4xl"
-              style="font-variation-settings: 'FILL' 1"
-              >favorite</span
+            <button
+              class="pointer-events-auto w-10 h-10 md:w-16 md:h-16 rounded-full bg-white flex items-center justify-center text-stone-400 shadow-[0_4px_20px_rgba(113,62,24,0.08)] hover:bg-stone-100 active:scale-90 transition-all duration-200 disabled:opacity-40"
+              :disabled="isAnimating"
+              @click="performSwipe('dislike')"
             >
-          </button>
+              <span class="material-symbols-outlined text-xl md:text-3xl">close</span>
+            </button>
+            <button
+              class="pointer-events-auto w-12 h-12 md:w-20 md:h-20 rounded-full bg-[#F4C07D] flex items-center justify-center text-[#382615] shadow-[0_4px_20px_rgba(113,62,24,0.12)] hover:opacity-90 active:scale-90 transition-all duration-200 disabled:opacity-40"
+              :disabled="isAnimating"
+              @click="performSwipe('like')"
+            >
+              <span
+                class="material-symbols-outlined text-2xl md:text-4xl"
+                style="font-variation-settings: 'FILL' 1"
+                >favorite</span
+              >
+            </button>
+          </div>
         </div>
       </template>
     </template>
 
-    <!-- Profile detail -->
-    <Transition name="profile-fade">
-      <div v-if="showProfile && topCandidate" class="fixed inset-0 z-[100]">
-        <!-- MOBILE -->
-        <div class="md:hidden absolute inset-0 bg-white overflow-y-auto no-scrollbar">
-          <nav
-            class="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-6 py-6 pointer-events-none"
-          >
-            <button
-              class="pointer-events-auto bg-white/20 backdrop-blur-md text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/30 transition-all shadow-sm"
-              @click="closeProfile"
+    <!-- Profile detail. Va por Teleport porque el <main> del layout es un
+         stacking context (relative z-10) por debajo del header y del menú
+         inferior (z-50): sin esto el z-[100] no sirve y la ficha queda
+         tapada por ambos. -->
+    <Teleport to="#teleports">
+      <Transition name="profile-fade">
+        <div v-if="showProfile && topCandidate" class="fixed inset-0 z-[100]">
+          <!-- MOBILE -->
+          <div class="md:hidden absolute inset-0 bg-white overflow-y-auto no-scrollbar">
+            <nav
+              class="fixed top-0 left-0 right-0 z-10 flex justify-between items-center px-6 py-6 pointer-events-none"
             >
-              <span class="material-symbols-outlined">arrow_back</span>
-            </button>
-          </nav>
-          <section
-            class="relative h-[530px] w-full bg-stone-200"
-            @touchstart.passive="onProfileTouchStart"
-            @touchend.passive="onProfileTouchEnd"
-          >
-            <img
-              :src="topCandidate.photos?.[profilePhotoIdx] ?? dogPhoto(topCandidate)"
-              :alt="topCandidate.name"
-              class="w-full h-full object-cover"
-            />
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"
-            />
-            <button
-              v-if="(topCandidate.photos?.length ?? 0) > 1"
-              class="absolute inset-y-0 left-0 w-1/2"
-              @click="prevPhoto"
-            />
-            <button
-              v-if="(topCandidate.photos?.length ?? 0) > 1"
-              class="absolute inset-y-0 right-0 w-1/2"
-              @click="nextPhoto"
-            />
-            <div
-              v-if="(topCandidate.photos?.length ?? 0) > 1"
-              class="absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-1.5 px-3 py-1.5 bg-black/20 backdrop-blur-md rounded-full"
-            >
-              <div
-                v-for="(_, i) in topCandidate.photos"
-                :key="i"
-                class="w-2 h-2 rounded-full transition-all duration-200"
-                :class="i === profilePhotoIdx ? 'bg-white' : 'bg-white/40'"
-              />
-            </div>
-          </section>
-          <section class="relative -mt-8 bg-white rounded-t-[32px] px-6 pt-8 pb-36">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h1
-                  class="font-jakarta font-extrabold text-[32px] text-[#281808] leading-tight flex items-center gap-2"
-                >
-                  {{ topCandidate.name }}
-                  <span
-                    class="material-symbols-outlined text-[#F4C07D] text-2xl"
-                    style="font-variation-settings: 'FILL' 1"
-                    >verified</span
-                  >
-                </h1>
-                <p
-                  v-if="topCandidate.distance"
-                  class="text-[#4f4539] flex items-center gap-1 mt-1 text-sm"
-                >
-                  <span class="material-symbols-outlined text-[18px]">location_on</span>
-                  {{ topCandidate.distance.toFixed(1) }} km de distancia
-                </p>
-              </div>
-              <div
-                class="bg-[#fff1e8] px-4 py-2 rounded-2xl flex flex-col items-center shrink-0 ml-4"
+              <button
+                class="pointer-events-auto bg-white/20 backdrop-blur-md text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/30 transition-all shadow-sm"
+                @click="closeProfile"
               >
-                <span class="font-jakarta font-bold text-[#7d571e] text-xl leading-tight">{{
-                  topCandidate.age
-                }}</span>
-                <span class="text-[10px] font-bold uppercase tracking-widest text-[#4f4539]"
-                  >Años</span
-                >
-              </div>
-            </div>
-            <div class="flex flex-wrap gap-2 mb-7">
-              <span
-                class="bg-[#B78F64]/10 text-[#B78F64] px-4 py-2 rounded-full text-sm font-semibold"
-                >{{ topCandidate.breed }}</span
-              >
-            </div>
-            <div v-if="topCandidate.bio" class="mb-8">
-              <h3 class="font-jakarta font-bold text-xl text-[#281808] mb-3">
-                Sobre {{ topCandidate.name }}
-              </h3>
-              <p class="text-[#4f4539] leading-relaxed">{{ topCandidate.bio }}</p>
-            </div>
-            <div v-if="(topCandidate.photos?.length ?? 0) > 1" class="mb-4">
-              <p class="text-xs font-bold uppercase tracking-widest text-[#4f4539]/60 mb-3">
-                Fotos
-              </p>
-              <div class="grid grid-cols-3 gap-2">
-                <div
-                  v-for="(photo, i) in topCandidate.photos"
-                  :key="i"
-                  class="aspect-square rounded-2xl overflow-hidden cursor-pointer transition-all duration-150"
-                  :class="
-                    i === profilePhotoIdx
-                      ? 'ring-2 ring-[#F4C07D] ring-offset-2'
-                      : 'opacity-75 hover:opacity-100'
-                  "
-                  @click="profilePhotoIdx = i"
-                >
-                  <img
-                    :src="photo"
-                    :alt="`${topCandidate.name} ${i + 1}`"
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <div
-          class="md:hidden absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white to-transparent"
-        >
-          <div class="max-w-md mx-auto flex gap-4">
-            <button
-              class="flex-1 h-16 bg-white border-2 border-stone-200 rounded-[20px] flex items-center justify-center text-stone-400 hover:border-red-400 hover:text-red-400 transition-all duration-200 shadow-lg active:scale-95"
-              @click="
-                () => {
-                  closeProfile()
-                  performSwipe('dislike')
-                }
-              "
+                <span class="material-symbols-outlined">arrow_back</span>
+              </button>
+            </nav>
+            <section
+              class="relative h-[530px] w-full bg-stone-200"
+              @touchstart.passive="onProfileTouchStart"
+              @touchend.passive="onProfileTouchEnd"
             >
-              <span class="material-symbols-outlined text-[32px]">close</span>
-            </button>
-            <button
-              class="flex-[2] h-16 bg-[#F4C07D] text-[#382615] rounded-[20px] flex items-center justify-center gap-2 font-jakarta font-bold text-lg shadow-xl active:scale-95 transition-all duration-200"
-              @click="
-                () => {
-                  closeProfile()
-                  performSwipe('like')
-                }
-              "
-            >
-              <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"
-                >favorite</span
-              >
-              ¡Vamos!
-            </button>
-          </div>
-        </div>
-
-        <!-- DESKTOP -->
-        <div class="hidden md:flex absolute inset-0 items-center justify-center px-6">
-          <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="closeProfile" />
-          <div
-            class="relative w-full max-w-4xl bg-white rounded-[16px] shadow-[0_12px_40px_rgba(113,62,24,0.12)] overflow-hidden flex"
-            style="max-height: 88vh"
-          >
-            <button
-              class="absolute top-6 left-6 z-30 w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-[#382615] shadow-md hover:bg-white transition-all"
-              @click="closeProfile"
-            >
-              <span class="material-symbols-outlined">arrow_back</span>
-            </button>
-            <div class="w-1/2 relative bg-stone-100 min-h-[500px]">
               <img
                 :src="topCandidate.photos?.[profilePhotoIdx] ?? dogPhoto(topCandidate)"
                 :alt="topCandidate.name"
-                class="absolute inset-0 w-full h-full object-cover"
+                class="w-full h-full object-cover"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none"
               />
               <button
                 v-if="(topCandidate.photos?.length ?? 0) > 1"
-                class="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200"
+                class="absolute inset-y-0 left-0 w-1/2"
                 @click="prevPhoto"
-              >
-                <span class="material-symbols-outlined text-white text-xl leading-none"
-                  >chevron_left</span
-                >
-              </button>
+              />
               <button
                 v-if="(topCandidate.photos?.length ?? 0) > 1"
-                class="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200"
+                class="absolute inset-y-0 right-0 w-1/2"
                 @click="nextPhoto"
-              >
-                <span class="material-symbols-outlined text-white text-xl leading-none"
-                  >chevron_right</span
-                >
-              </button>
+              />
               <div
                 v-if="(topCandidate.photos?.length ?? 0) > 1"
-                class="absolute bottom-6 left-0 right-0 z-20 flex justify-center gap-2"
+                class="absolute bottom-16 left-1/2 -translate-x-1/2 flex px-1.5 bg-black/20 backdrop-blur-md rounded-full"
               >
-                <div
+                <!-- Cada punto es un botón con 6 px de padding: el punto sigue
+                     midiendo 8 px pero el área de toque pasa a 20 px. -->
+                <button
                   v-for="(_, i) in topCandidate.photos"
                   :key="i"
-                  class="w-2.5 h-2.5 rounded-full cursor-pointer transition-all duration-200"
-                  :class="i === profilePhotoIdx ? 'bg-[#F4C07D]' : 'bg-white/50'"
+                  class="p-1.5"
+                  :aria-label="`Foto ${i + 1}`"
                   @click.stop="profilePhotoIdx = i"
-                />
+                >
+                  <span
+                    class="block w-2 h-2 rounded-full transition-all duration-200"
+                    :class="i === profilePhotoIdx ? 'bg-white' : 'bg-white/40'"
+                  />
+                </button>
               </div>
-            </div>
-            <div class="w-1/2 flex flex-col overflow-y-auto custom-scrollbar">
-              <div class="flex-1 p-8 pb-4 space-y-6">
+            </section>
+            <section class="relative -mt-8 bg-white rounded-t-[32px] px-6 pt-8 pb-36">
+              <div class="flex justify-between items-start mb-4">
                 <div>
                   <h1
-                    class="font-jakarta font-extrabold text-[32px] text-[#281808] leading-tight mb-1"
+                    class="font-jakarta font-extrabold text-[32px] text-[#281808] leading-tight flex items-center gap-2"
                   >
-                    {{ topCandidate.name }}, {{ topCandidate.age }}
+                    {{ topCandidate.name }}
+                    <span
+                      class="material-symbols-outlined text-[#F4C07D] text-2xl"
+                      style="font-variation-settings: 'FILL' 1"
+                      >verified</span
+                    >
                   </h1>
-                  <p class="text-[#7d571e] font-semibold text-lg">{{ topCandidate.breed }}</p>
-                </div>
-                <div v-if="topCandidate.distance" class="grid grid-cols-2 gap-4">
-                  <div
-                    class="bg-[#fff1e8] p-4 rounded-[16px] flex flex-col items-center col-span-2"
+                  <p
+                    v-if="topCandidate.distance != null"
+                    class="text-[#4f4539] flex items-center gap-1 mt-1 text-sm"
                   >
-                    <span class="material-symbols-outlined text-[#795832] mb-1">location_on</span>
-                    <span class="text-xs font-bold uppercase tracking-wide text-[#4f4539]"
-                      >Distancia</span
-                    >
-                    <span class="font-bold text-[#281808] mt-1"
-                      >{{ topCandidate.distance.toFixed(1) }} km</span
-                    >
-                  </div>
+                    <span class="material-symbols-outlined text-[18px]">location_on</span>
+                    {{ topCandidate.distance.toFixed(1) }} km de distancia
+                  </p>
                 </div>
-                <div v-if="topCandidate.bio">
-                  <h3 class="font-jakarta font-bold text-xl text-[#281808] mb-3">
-                    Sobre {{ topCandidate.name }}
-                  </h3>
-                  <p class="text-[#4f4539] leading-relaxed">{{ topCandidate.bio }}</p>
+                <div
+                  class="bg-[#fff1e8] px-4 py-2 rounded-2xl flex flex-col items-center shrink-0 ml-4"
+                >
+                  <span class="font-jakarta font-bold text-[#7d571e] text-xl leading-tight">{{
+                    topCandidate.age
+                  }}</span>
+                  <span class="text-[10px] font-bold uppercase tracking-widest text-[#4f4539]"
+                    >Años</span
+                  >
                 </div>
               </div>
-              <div
-                class="flex-shrink-0 flex gap-4 px-8 py-5 bg-white/90 backdrop-blur-md border-t border-[#fdddc3] sticky bottom-0"
-              >
-                <button
-                  class="flex-1 flex items-center justify-center gap-2 border-2 border-[#ba1a1a] text-[#ba1a1a] py-4 px-6 rounded-[16px] font-bold hover:bg-red-50 transition-all duration-200 active:scale-95"
-                  @click="
-                    () => {
-                      closeProfile()
-                      performSwipe('dislike')
-                    }
-                  "
+              <div class="flex flex-wrap gap-2 mb-7">
+                <span
+                  class="bg-[#B78F64]/10 text-[#B78F64] px-4 py-2 rounded-full text-sm font-semibold"
+                  >{{ topCandidate.breed }}</span
                 >
-                  <span class="material-symbols-outlined">close</span>
-                  Pasar
-                </button>
-                <button
-                  class="flex-1 flex items-center justify-center gap-2 bg-[#F4C07D] text-[#382615] py-4 px-6 rounded-[16px] font-bold shadow-md hover:opacity-90 active:scale-95 transition-all duration-200"
-                  @click="
-                    () => {
-                      closeProfile()
-                      performSwipe('like')
-                    }
-                  "
-                >
-                  <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"
-                    >favorite</span
+              </div>
+              <div v-if="topCandidate.bio" class="mb-8">
+                <h3 class="font-jakarta font-bold text-xl text-[#281808] mb-3">
+                  Sobre {{ topCandidate.name }}
+                </h3>
+                <p class="text-[#4f4539] leading-relaxed">{{ topCandidate.bio }}</p>
+              </div>
+              <div v-if="(topCandidate.photos?.length ?? 0) > 1" class="mb-4">
+                <p class="text-xs font-bold uppercase tracking-widest text-[#4f4539]/60 mb-3">
+                  Fotos
+                </p>
+                <div class="grid grid-cols-3 gap-2">
+                  <div
+                    v-for="(photo, i) in topCandidate.photos"
+                    :key="i"
+                    class="aspect-square rounded-2xl overflow-hidden cursor-pointer transition-all duration-150"
+                    :class="
+                      i === profilePhotoIdx
+                        ? 'ring-2 ring-[#F4C07D] ring-offset-2'
+                        : 'opacity-75 hover:opacity-100'
+                    "
+                    @click="profilePhotoIdx = i"
                   >
-                  Me gusta {{ topCandidate.name }}
+                    <img
+                      :src="photo"
+                      :alt="`${topCandidate.name} ${i + 1}`"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div
+            class="md:hidden absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white to-transparent"
+          >
+            <div class="max-w-md mx-auto flex gap-4">
+              <button
+                class="flex-1 h-16 bg-white border-2 border-stone-200 rounded-[20px] flex items-center justify-center text-stone-400 hover:border-red-400 hover:text-red-400 transition-all duration-200 shadow-lg active:scale-95"
+                @click="
+                  () => {
+                    closeProfile()
+                    performSwipe('dislike')
+                  }
+                "
+              >
+                <span class="material-symbols-outlined text-[32px]">close</span>
+              </button>
+              <button
+                class="flex-[2] h-16 bg-[#F4C07D] text-[#382615] rounded-[20px] flex items-center justify-center gap-2 font-jakarta font-bold text-lg shadow-xl active:scale-95 transition-all duration-200"
+                @click="
+                  () => {
+                    closeProfile()
+                    performSwipe('like')
+                  }
+                "
+              >
+                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1"
+                  >favorite</span
+                >
+                ¡Vamos!
+              </button>
+            </div>
+          </div>
+
+          <!-- DESKTOP -->
+          <div class="hidden md:flex absolute inset-0 items-center justify-center px-6">
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="closeProfile" />
+            <div
+              class="relative w-full max-w-4xl bg-white rounded-[16px] shadow-[0_12px_40px_rgba(113,62,24,0.12)] overflow-hidden flex"
+              style="max-height: 88vh"
+            >
+              <button
+                class="absolute top-6 left-6 z-30 w-10 h-10 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-[#382615] shadow-md hover:bg-white transition-all"
+                @click="closeProfile"
+              >
+                <span class="material-symbols-outlined">arrow_back</span>
+              </button>
+              <div class="w-1/2 relative bg-stone-100 min-h-[500px]">
+                <img
+                  :src="topCandidate.photos?.[profilePhotoIdx] ?? dogPhoto(topCandidate)"
+                  :alt="topCandidate.name"
+                  class="absolute inset-0 w-full h-full object-cover"
+                />
+                <button
+                  v-if="(topCandidate.photos?.length ?? 0) > 1"
+                  class="absolute left-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200"
+                  @click="prevPhoto"
+                >
+                  <span class="material-symbols-outlined text-white text-xl leading-none"
+                    >chevron_left</span
+                  >
                 </button>
+                <button
+                  v-if="(topCandidate.photos?.length ?? 0) > 1"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-black/30 hover:bg-black/50 backdrop-blur-sm flex items-center justify-center transition-all duration-200"
+                  @click="nextPhoto"
+                >
+                  <span class="material-symbols-outlined text-white text-xl leading-none"
+                    >chevron_right</span
+                  >
+                </button>
+                <div
+                  v-if="(topCandidate.photos?.length ?? 0) > 1"
+                  class="absolute bottom-6 left-0 right-0 z-20 flex justify-center gap-2"
+                >
+                  <div
+                    v-for="(_, i) in topCandidate.photos"
+                    :key="i"
+                    class="w-2.5 h-2.5 rounded-full cursor-pointer transition-all duration-200"
+                    :class="i === profilePhotoIdx ? 'bg-[#F4C07D]' : 'bg-white/50'"
+                    @click.stop="profilePhotoIdx = i"
+                  />
+                </div>
+              </div>
+              <div class="w-1/2 flex flex-col overflow-y-auto custom-scrollbar">
+                <div class="flex-1 p-8 pb-4 space-y-6">
+                  <div>
+                    <h1
+                      class="font-jakarta font-extrabold text-[32px] text-[#281808] leading-tight mb-1"
+                    >
+                      {{ topCandidate.name }}, {{ topCandidate.age }}
+                    </h1>
+                    <p class="text-[#7d571e] font-semibold text-lg">{{ topCandidate.breed }}</p>
+                  </div>
+                  <div v-if="topCandidate.distance != null" class="grid grid-cols-2 gap-4">
+                    <div
+                      class="bg-[#fff1e8] p-4 rounded-[16px] flex flex-col items-center col-span-2"
+                    >
+                      <span class="material-symbols-outlined text-[#795832] mb-1">location_on</span>
+                      <span class="text-xs font-bold uppercase tracking-wide text-[#4f4539]"
+                        >Distancia</span
+                      >
+                      <span class="font-bold text-[#281808] mt-1"
+                        >{{ topCandidate.distance.toFixed(1) }} km</span
+                      >
+                    </div>
+                  </div>
+                  <div v-if="topCandidate.bio">
+                    <h3 class="font-jakarta font-bold text-xl text-[#281808] mb-3">
+                      Sobre {{ topCandidate.name }}
+                    </h3>
+                    <p class="text-[#4f4539] leading-relaxed">{{ topCandidate.bio }}</p>
+                  </div>
+                </div>
+                <div
+                  class="flex-shrink-0 flex gap-4 px-8 py-5 bg-white/90 backdrop-blur-md border-t border-[#fdddc3] sticky bottom-0"
+                >
+                  <button
+                    class="flex-1 flex items-center justify-center gap-2 border-2 border-[#ba1a1a] text-[#ba1a1a] py-4 px-6 rounded-[16px] font-bold hover:bg-red-50 transition-all duration-200 active:scale-95"
+                    @click="
+                      () => {
+                        closeProfile()
+                        performSwipe('dislike')
+                      }
+                    "
+                  >
+                    <span class="material-symbols-outlined">close</span>
+                    Pasar
+                  </button>
+                  <button
+                    class="flex-1 flex items-center justify-center gap-2 bg-[#F4C07D] text-[#382615] py-4 px-6 rounded-[16px] font-bold shadow-md hover:opacity-90 active:scale-95 transition-all duration-200"
+                    @click="
+                      () => {
+                        closeProfile()
+                        performSwipe('like')
+                      }
+                    "
+                  >
+                    <span
+                      class="material-symbols-outlined"
+                      style="font-variation-settings: 'FILL' 1"
+                      >favorite</span
+                    >
+                    Me gusta {{ topCandidate.name }}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </Transition>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
