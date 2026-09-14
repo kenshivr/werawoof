@@ -26,6 +26,21 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
   72 px y la página le dejaba 80 px de padding. El hero ahora pasa por debajo
   del header fijo, como en Quiénes Somos, y el padding vive dentro de la
   sección.
+- Las páginas de Comunidad y Política de Privacidad no mostraban el menú
+  inferior de móvil que sí tienen la landing, Quiénes Somos, Contacto y
+  Términos.
+- Tarjetas de Mis Canes en móvil: la foto se veía aplastada y los botones se
+  salían de la tarjeta, lo que ensanchaba la página y desalineaba el header y
+  el menú fijos. La foto es siempre un cuadrado del alto de la tarjeta, por
+  debajo de `md` los botones van en columna pegados a la derecha y el nombre
+  largo se corta con puntos suspensivos.
+- El header mide 80 px fijos en todos los tamaños. Las páginas ya le dejaban
+  ese espacio (`pt-20`), pero en móvil medía 72 px y en tablet 64, y esa
+  diferencia se veía como una franja clara arriba del contenido (chat, app).
+- Chat en móvil: sin menú inferior y sin scroll de página. El chat ocupa toda
+  la pantalla bajo el header (alto en `dvh`, que descuenta la barra del
+  navegador) y solo la lista de mensajes hace scroll, así el cuadro para
+  escribir siempre queda visible.
 
 ## [1.0.2] - 2026-09-11
 
