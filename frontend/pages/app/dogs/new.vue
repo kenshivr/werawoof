@@ -350,13 +350,20 @@
           <label class="text-xs font-bold uppercase tracking-widest text-secondary font-jakarta"
             >Raza</label
           >
-          <input
-            v-model="form.breed"
-            type="text"
-            placeholder="Golden Retriever"
-            required
-            class="w-full h-14 px-4 bg-white border border-[#DBD8D0] rounded-xl focus:border-[#B78F64] focus:ring-0 outline-none transition-all shadow-sm"
-          />
+          <div class="relative">
+            <select
+              v-model="form.breed"
+              required
+              class="w-full h-14 appearance-none bg-white border border-[#DBD8D0] rounded-xl pl-4 pr-10 focus:border-[#B78F64] focus:ring-0 outline-none transition-all shadow-sm text-[#281808]"
+            >
+              <option value="">Seleccioná la raza</option>
+              <option v-for="b in breeds" :key="b" :value="b">{{ b }}</option>
+            </select>
+            <span
+              class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#4f4539]"
+              >expand_more</span
+            >
+          </div>
         </div>
         <div class="flex flex-col gap-1.5">
           <label class="text-xs font-bold uppercase tracking-widest text-secondary font-jakarta"
@@ -522,28 +529,7 @@ const form = reactive({
   personality_tags: [] as string[],
 })
 
-const breeds = [
-  'Labrador Retriever',
-  'Golden Retriever',
-  'French Bulldog',
-  'Pastor Alemán',
-  'Bulldog',
-  'Poodle',
-  'Beagle',
-  'Rottweiler',
-  'Yorkshire Terrier',
-  'Dachshund',
-  'Boxer',
-  'Border Collie',
-  'Shih Tzu',
-  'Maltés',
-  'Cocker Spaniel',
-  'Doberman',
-  'Australian Shepherd',
-  'Siberian Husky',
-  'Chihuahua',
-  'Mestizo',
-]
+const breeds = BREEDS
 
 const sizes = [
   { value: 'small', label: 'Chico' },
