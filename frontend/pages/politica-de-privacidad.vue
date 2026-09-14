@@ -80,6 +80,18 @@ definePageMeta({ layout: 'public' })
           </li>
           <li class="flex items-start gap-3 text-[#5a3e28]">
             <span class="material-symbols-outlined text-[#F4C07D] text-lg mt-0.5 shrink-0"
+              >my_location</span
+            >
+            <span
+              ><strong class="text-[#382615]">Ubicación aproximada:</strong> solo si eliges
+              compartirla desde tu perfil, las coordenadas que reporta tu dispositivo y la dirección
+              aproximada (colonia, municipio y estado) que derivamos de ellas, para mostrarte canes
+              cerca. Los demás usuarios ven únicamente la distancia en kilómetros, nunca tu punto
+              exacto, y puedes quitarla cuando quieras.</span
+            >
+          </li>
+          <li class="flex items-start gap-3 text-[#5a3e28]">
+            <span class="material-symbols-outlined text-[#F4C07D] text-lg mt-0.5 shrink-0"
               >analytics</span
             >
             <span
@@ -171,6 +183,17 @@ definePageMeta({ layout: 'public' })
               ><strong class="text-[#382615]">Infraestructura:</strong> nuestros servidores y base
               de datos están alojados en proveedores externos (Supabase y Vercel). Los datos se
               almacenan con medidas de seguridad estándar de la industria.</span
+            >
+          </li>
+          <li class="flex items-start gap-3">
+            <span class="material-symbols-outlined text-[#F4C07D] text-lg mt-0.5 shrink-0"
+              >explore</span
+            >
+            <span
+              ><strong class="text-[#382615]">OpenStreetMap:</strong> para convertir tus coordenadas
+              en una dirección aproximada las enviamos al servicio Nominatim de la OpenStreetMap
+              Foundation, que las recibe únicamente para responder esa consulta y no las asocia a tu
+              cuenta de WeraWoof.</span
             >
           </li>
         </ul>

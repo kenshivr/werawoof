@@ -1,5 +1,13 @@
 import { vi } from 'vitest'
-import { createError, defineEventHandler, getRequestHeader, getRequestIP, readBody } from 'h3'
+import {
+  createError,
+  defineEventHandler,
+  getQuery,
+  getRequestHeader,
+  getRequestIP,
+  readBody,
+  setResponseHeader,
+} from 'h3'
 import {
   CONTACT_INBOX,
   EMAIL_RE,
@@ -16,6 +24,8 @@ vi.mock('nodemailer', () => import('./mocks/nodemailer'))
    Nitro, así que se exponen como globales antes de cargar cada route. */
 vi.stubGlobal('defineEventHandler', defineEventHandler)
 vi.stubGlobal('readBody', readBody)
+vi.stubGlobal('getQuery', getQuery)
+vi.stubGlobal('setResponseHeader', setResponseHeader)
 vi.stubGlobal('createError', createError)
 vi.stubGlobal('getRequestIP', getRequestIP)
 vi.stubGlobal('getRequestHeader', getRequestHeader)

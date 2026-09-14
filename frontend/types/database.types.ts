@@ -40,8 +40,6 @@ export type Database = {
           breed: string
           created_at: string
           id: number
-          latitude: number
-          longitude: number
           name: string
           personality_tags: string[]
           photos: string[]
@@ -56,8 +54,6 @@ export type Database = {
           breed?: string
           created_at?: string
           id?: never
-          latitude?: number
-          longitude?: number
           name: string
           personality_tags?: string[]
           photos?: string[]
@@ -72,8 +68,6 @@ export type Database = {
           breed?: string
           created_at?: string
           id?: never
-          latitude?: number
-          longitude?: number
           name?: string
           personality_tags?: string[]
           photos?: string[]
@@ -191,6 +185,41 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_locations: {
+        Row: {
+          label: string
+          lat: number
+          lng: number
+          location: unknown
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          label?: string
+          lat: number
+          lng: number
+          location?: unknown
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          label?: string
+          lat?: number
+          lng?: number
+          location?: unknown
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'profile_locations_user_id_fkey'
+            columns: ['user_id']
+            isOneToOne: true
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string
@@ -200,6 +229,7 @@ export type Database = {
           location: string
           name: string
           role: string
+          search_radius_km: number
           updated_at: string
         }
         Insert: {
@@ -210,6 +240,7 @@ export type Database = {
           location?: string
           name?: string
           role?: string
+          search_radius_km?: number
           updated_at?: string
         }
         Update: {
@@ -220,6 +251,7 @@ export type Database = {
           location?: string
           name?: string
           role?: string
+          search_radius_km?: number
           updated_at?: string
         }
         Relationships: []
@@ -329,9 +361,8 @@ export type Database = {
           bio: string
           breed: string
           created_at: string
+          distance_km: number
           id: number
-          latitude: number
-          longitude: number
           name: string
           personality_tags: string[]
           photos: string[]
@@ -340,12 +371,6 @@ export type Database = {
           updated_at: string
           user_id: string
         }[]
-        SetofOptions: {
-          from: '*'
-          to: 'dogs'
-          isOneToOne: false
-          isSetofReturn: true
-        }
       }
       get_reviews: {
         Args: never

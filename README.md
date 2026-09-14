@@ -86,13 +86,14 @@ WeraWoof nació con un backend en Go + Gin (PostgreSQL, Redis, WebSockets) aloja
 ### 🐕 Perfiles de perros
 
 - Varios perros por cuenta
-- Raza, edad, sexo, tamaño, bio, etiquetas de personalidad y ubicación
+- Raza, edad, sexo, tamaño, bio y etiquetas de personalidad
 - Varias fotos por perro en Supabase Storage, con orden por arrastrar y soltar
 
 ### 💘 Swipe y match
 
 - Me gusta o no me gusta a otros perros
 - El feed de candidatos excluye tus perros y los que ya swipeaste (RPC en Postgres)
+- Candidatos por cercanía: el dueño comparte su ubicación (Geolocation API del navegador), ve su dirección aproximada para confirmarla (reverse geocoding con OpenStreetMap) y elige un radio de 1 a 100 km; PostGIS filtra y calcula la distancia en Postgres
 - Un like mutuo crea el match automáticamente con un trigger de la base
 - Pantalla de celebración del match y lista de matches por cuenta
 
@@ -114,6 +115,7 @@ WeraWoof nació con un backend en Go + Gin (PostgreSQL, Redis, WebSockets) aloja
 - Restablecer contraseña por correo
 - Borrado de cuenta (en cascada: perfil, perros, swipes, matches y mensajes)
 - El perfil se crea automáticamente al registrarse con un trigger de la base
+- Al iniciar sesión, quien todavía no tiene canes cae en el perfil para completar el alta; quien ya los tiene va a Mis Canes
 
 ### 📊 Panel de administración
 
@@ -201,6 +203,8 @@ npm install
    - `supabase/002_get_reviews.sql`: función de reseñas públicas para `/comunidad`
    - `supabase/003_admin_dashboard.sql`: función del panel de administración
    - `supabase/004_drop_anon_policies.sql`: retira las políticas de insert anónimo (las server routes escriben con la secret key)
+   - `supabase/005_ubicacion.sql`: PostGIS, ubicación del dueño, radio de búsqueda y `get_candidates` por cercanía
+   - `supabase/006_ubicacion_etiqueta.sql`: etiqueta legible de la ubicación ("colonia, municipio, estado")
 3. **Authentication → URL Configuration**: pon tu URL de producción como Site URL y agrega `http://localhost:3003/**` y `https://<tu-dominio>/**` a las Redirect URLs.
 4. **Authentication → Providers → Google** (opcional): crea un cliente OAuth en Google Cloud Console con `https://<project-ref>.supabase.co/auth/v1/callback` como redirect URI y pega el client ID y el secret.
 5. **Authentication → SMTP Settings** (recomendado): configura un SMTP propio. El remitente integrado de Supabase entrega unos pocos correos por hora y solo a miembros del proyecto, lo que bloquea los registros reales.
@@ -280,7 +284,9 @@ werawoof/
 │   ├── schema.sql                     # Tablas, RLS, triggers, RPC, Realtime, Storage
 │   ├── 002_get_reviews.sql            # Reseñas públicas (security definer)
 │   ├── 003_admin_dashboard.sql        # Agregación del panel de administración
-│   └── 004_drop_anon_policies.sql     # Las server routes escriben con la secret key
+│   ├── 004_drop_anon_policies.sql     # Las server routes escriben con la secret key
+│   ├── 005_ubicacion.sql              # PostGIS: ubicación del dueño y candidatos por radio
+│   └── 006_ubicacion_etiqueta.sql     # Etiqueta legible de la ubicación
 │
 └── frontend/
     ├── nuxt.config.ts                 # Módulos, head de SEO, puerto 3003, runtimeConfig
@@ -331,28 +337,30 @@ werawoof/
 
 Todas las tablas viven en el esquema `public` con Row Level Security activado.
 
-| Tabla         | Propósito                                   | Columnas clave                                                                                                     |
-| ------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `profiles`    | Espejo de `auth.users`, una fila por cuenta | `id` (uuid, FK → `auth.users`), `name`, `location`, `bio`, `avatar_url`, `role` (`user` \| `admin`)                |
-| `dogs`        | Perfiles de perros                          | `user_id`, `name`, `breed`, `age`, `sex`, `size`, `bio`, `personality_tags[]`, `photos[]`, `latitude`, `longitude` |
-| `swipes`      | Un swipe por par ordenado de perros         | `swiper_id`, `swiped_id`, `direction` (`like` \| `dislike`)                                                        |
-| `matches`     | Likes mutuos, par ordenado (`dog1 < dog2`)  | `dog1_id`, `dog2_id`                                                                                               |
-| `messages`    | Chat por match                              | `match_id`, `sender_id` (uuid), `content` (1–2000 caracteres)                                                      |
-| `reviews`     | Una reseña por usuario, pública             | `user_id` (única), `rating` (1–5), `comment`                                                                       |
-| `subscribers` | Newsletter                                  | `email` (único)                                                                                                    |
-| `page_visits` | Estadísticas de tráfico del panel           | `path`, `ip`, `user_agent`, `visited_at`                                                                           |
+| Tabla               | Propósito                                                      | Columnas clave                                                                                                          |
+| ------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `profiles`          | Espejo de `auth.users`, una fila por cuenta                    | `id` (uuid, FK → `auth.users`), `name`, `location`, `bio`, `avatar_url`, `role` (`user` \| `admin`), `search_radius_km` |
+| `profile_locations` | Ubicación del dueño, una fila por cuenta; solo la lee su dueño | `user_id` (PK, FK → `profiles`), `lat`, `lng`, `label`, `location` (`geography`, generada e indexada con GiST)          |
+| `dogs`              | Perfiles de perros                                             | `user_id`, `name`, `breed`, `age`, `sex`, `size`, `bio`, `personality_tags[]`, `photos[]`                               |
+| `swipes`            | Un swipe por par ordenado de perros                            | `swiper_id`, `swiped_id`, `direction` (`like` \| `dislike`)                                                             |
+| `matches`           | Likes mutuos, par ordenado (`dog1 < dog2`)                     | `dog1_id`, `dog2_id`                                                                                                    |
+| `messages`          | Chat por match                                                 | `match_id`, `sender_id` (uuid), `content` (1–2000 caracteres)                                                           |
+| `reviews`           | Una reseña por usuario, pública                                | `user_id` (única), `rating` (1–5), `comment`                                                                            |
+| `subscribers`       | Newsletter                                                     | `email` (único)                                                                                                         |
+| `page_visits`       | Estadísticas de tráfico del panel                              | `path`, `ip`, `user_agent`, `visited_at`                                                                                |
 
 ### Funciones y triggers
 
-| Objeto                                    | Tipo                    | Rol                                                                       |
-| ----------------------------------------- | ----------------------- | ------------------------------------------------------------------------- |
-| `handle_new_user`                         | trigger en `auth.users` | Crea la fila de `profiles` al registrarse (correo o Google)               |
-| `handle_swipe`                            | trigger en `swipes`     | Inserta una fila en `matches` cuando el like es correspondido             |
-| `get_candidates(dog_id)`                  | RPC                     | Perros de otros usuarios que el perro dado todavía no swipeó              |
-| `get_reviews()`                           | RPC, security definer   | Reseñas con nombre y avatar del autor para la página pública de comunidad |
-| `get_admin_dashboard()`                   | RPC, security definer   | Todas las agregaciones del panel en un solo JSON; exige el rol `admin`    |
-| `is_admin`, `owns_dog`, `is_match_member` | helpers                 | Los usan las políticas RLS                                                |
-| `moddatetime`                             | extensión               | Mantiene `updated_at` al día en `profiles`, `dogs` y `reviews`            |
+| Objeto                                    | Tipo                    | Rol                                                                                                                                |
+| ----------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `handle_new_user`                         | trigger en `auth.users` | Crea la fila de `profiles` al registrarse (correo o Google)                                                                        |
+| `handle_swipe`                            | trigger en `swipes`     | Inserta una fila en `matches` cuando el like es correspondido                                                                      |
+| `get_candidates(dog_id)`                  | RPC, security definer   | Perros de otros usuarios que el perro dado todavía no swipeó, dentro del radio del dueño y ordenados por distancia (`distance_km`) |
+| `get_reviews()`                           | RPC, security definer   | Reseñas con nombre y avatar del autor para la página pública de comunidad                                                          |
+| `get_admin_dashboard()`                   | RPC, security definer   | Todas las agregaciones del panel en un solo JSON; exige el rol `admin`                                                             |
+| `is_admin`, `owns_dog`, `is_match_member` | helpers                 | Los usan las políticas RLS                                                                                                         |
+| `moddatetime`                             | extensión               | Mantiene `updated_at` al día en `profiles`, `profile_locations`, `dogs` y `reviews`                                                |
+| `postgis`                                 | extensión               | Tipo `geography`, índice GiST y `ST_DWithin`/`ST_Distance` para la cercanía                                                        |
 
 ### Realtime y Storage
 
@@ -365,12 +373,13 @@ Todas las tablas viven en el esquema `public` con Row Level Security activado.
 
 Rutas de Nitro en `frontend/server/api/`. Existen solo para las acciones que necesitan un secreto.
 
-| Método   | Ruta              | Body                                 | Qué hace                                                                                                            |
-| -------- | ----------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| `POST`   | `/api/contact`    | `name`, `email`, `phone?`, `message` | Envía el mensaje a la bandeja de WeraWoof con el remitente como reply-to                                            |
-| `POST`   | `/api/newsletter` | `email`                              | Inserta el suscriptor (service role), manda un correo de bienvenida y un aviso interno. Los duplicados devuelven ok |
-| `POST`   | `/api/track`      | `path`                               | Registra la visita con IP y user agent en `page_visits`                                                             |
-| `DELETE` | `/api/account`    | — (cookie de sesión)                 | Borra al usuario autenticado con la Auth admin API; la cascada de la base se lleva el resto                         |
+| Método   | Ruta              | Body                                 | Qué hace                                                                                                                                                                                                                                                               |
+| -------- | ----------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `POST`   | `/api/contact`    | `name`, `email`, `phone?`, `message` | Envía el mensaje a la bandeja de WeraWoof con el remitente como reply-to                                                                                                                                                                                               |
+| `POST`   | `/api/newsletter` | `email`                              | Inserta el suscriptor (service role), manda un correo de bienvenida y un aviso interno. Los duplicados devuelven ok                                                                                                                                                    |
+| `POST`   | `/api/track`      | `path`                               | Registra la visita con IP y user agent en `page_visits`                                                                                                                                                                                                                |
+| `DELETE` | `/api/account`    | — (cookie de sesión)                 | Borra al usuario autenticado con la Auth admin API; la cascada de la base se lleva el resto                                                                                                                                                                            |
+| `GET`    | `/api/geocode`    | `?lat=&lng=`                         | Reverse geocoding con Nominatim (OpenStreetMap): devuelve "colonia, municipio, estado". Va por el server porque Nominatim exige un User-Agent propio; cachea por punto y encola las consultas a 1 por segundo (429 + `Retry-After` si se satura; el cliente reintenta) |
 
 ---
 
@@ -381,6 +390,7 @@ Rutas de Nitro en `frontend/server/api/`. Existen solo para las acciones que nec
 - **Ni los matches ni los perfiles los insertan los clientes.** Solo los crean los triggers.
 - **La columna `role` no la escriben los usuarios.** El update se concede por columna, así que nadie puede volverse admin solo.
 - **Los datos públicos salen por funciones `security definer`** (`get_reviews`, `get_admin_dashboard`) que devuelven exactamente los campos que la página necesita.
+- **Las coordenadas nunca salen de la base.** `profile_locations` solo la lee su dueño; `get_candidates` devuelve la distancia redondeada, no el punto.
 - **Los secretos se quedan en el servidor.** La service-role key y las credenciales SMTP se leen de `runtimeConfig` solo dentro de las rutas de Nitro.
 
 ---

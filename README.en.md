@@ -86,13 +86,14 @@ WeraWoof was originally built with a Go + Gin backend (PostgreSQL, Redis, WebSoc
 ### 🐕 Dog Profiles
 
 - Multiple dogs per account
-- Breed, age, sex, size, bio, personality tags and location
+- Breed, age, sex, size, bio and personality tags
 - Multiple photos per dog stored in Supabase Storage, with drag-and-drop ordering
 
 ### 💘 Swipe & Match
 
 - Like or dislike other dogs
 - Candidate feed excludes your own dogs and dogs you already swiped (Postgres RPC)
+- Nearby candidates: the owner shares their location (browser Geolocation API), sees their approximate address to confirm it (reverse geocoding with OpenStreetMap) and picks a 1–100 km radius; PostGIS filters and computes the distance in Postgres
 - A mutual like creates the match automatically through a database trigger
 - Match celebration UI and a matches list per account
 
@@ -114,6 +115,7 @@ WeraWoof was originally built with a Go + Gin backend (PostgreSQL, Redis, WebSoc
 - Password reset by email
 - Account deletion (cascades to profile, dogs, swipes, matches and messages)
 - Profile row created automatically on sign-up by a database trigger
+- After signing in, users without dogs land on the profile to finish onboarding; users with dogs go to My Dogs
 
 ### 📊 Admin Dashboard
 
@@ -201,6 +203,8 @@ npm install
    - `supabase/002_get_reviews.sql` — public reviews function for `/comunidad`
    - `supabase/003_admin_dashboard.sql` — admin dashboard function
    - `supabase/004_drop_anon_policies.sql` — removes the anonymous insert policies (server routes write with the secret key)
+   - `supabase/005_ubicacion.sql` — PostGIS, owner location, search radius and nearby `get_candidates`
+   - `supabase/006_ubicacion_etiqueta.sql` — human-readable location label ("neighbourhood, municipality, state")
 3. **Authentication → URL Configuration**: set the Site URL to your production URL and add `http://localhost:3003/**` plus `https://<your-domain>/**` to the Redirect URLs.
 4. **Authentication → Providers → Google** (optional): create an OAuth client in Google Cloud Console with `https://<project-ref>.supabase.co/auth/v1/callback` as the redirect URI and paste the client ID and secret.
 5. **Authentication → SMTP Settings** (recommended): configure a custom SMTP. Supabase's built-in sender only delivers a few emails per hour to project members, which blocks real sign-ups.
@@ -280,7 +284,9 @@ werawoof/
 │   ├── schema.sql                     # Tables, RLS, triggers, RPC, Realtime, Storage
 │   ├── 002_get_reviews.sql            # Public reviews (security definer)
 │   ├── 003_admin_dashboard.sql        # Admin dashboard aggregation
-│   └── 004_drop_anon_policies.sql     # Server routes write with the secret key
+│   ├── 004_drop_anon_policies.sql     # Server routes write with the secret key
+│   ├── 005_ubicacion.sql              # PostGIS: owner location and candidates by radius
+│   └── 006_ubicacion_etiqueta.sql     # Human-readable location label
 │
 └── frontend/
     ├── nuxt.config.ts                 # Modules, SEO head, dev port 3003, runtimeConfig
@@ -331,28 +337,30 @@ werawoof/
 
 All tables live in the `public` schema with Row Level Security enabled.
 
-| Table         | Purpose                                     | Key columns                                                                                                        |
-| ------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `profiles`    | Mirror of `auth.users`, one row per account | `id` (uuid, FK → `auth.users`), `name`, `location`, `bio`, `avatar_url`, `role` (`user` \| `admin`)                |
-| `dogs`        | Dog profiles                                | `user_id`, `name`, `breed`, `age`, `sex`, `size`, `bio`, `personality_tags[]`, `photos[]`, `latitude`, `longitude` |
-| `swipes`      | One swipe per ordered pair of dogs          | `swiper_id`, `swiped_id`, `direction` (`like` \| `dislike`)                                                        |
-| `matches`     | Mutual likes, ordered pair (`dog1 < dog2`)  | `dog1_id`, `dog2_id`                                                                                               |
-| `messages`    | Chat per match                              | `match_id`, `sender_id` (uuid), `content` (1–2000 chars)                                                           |
-| `reviews`     | One review per user, public                 | `user_id` (unique), `rating` (1–5), `comment`                                                                      |
-| `subscribers` | Newsletter                                  | `email` (unique)                                                                                                   |
-| `page_visits` | Admin traffic stats                         | `path`, `ip`, `user_agent`, `visited_at`                                                                           |
+| Table               | Purpose                                                         | Key columns                                                                                                             |
+| ------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `profiles`          | Mirror of `auth.users`, one row per account                     | `id` (uuid, FK → `auth.users`), `name`, `location`, `bio`, `avatar_url`, `role` (`user` \| `admin`), `search_radius_km` |
+| `profile_locations` | Owner location, one row per account; readable only by its owner | `user_id` (PK, FK → `profiles`), `lat`, `lng`, `label`, `location` (`geography`, generated and GiST-indexed)            |
+| `dogs`              | Dog profiles                                                    | `user_id`, `name`, `breed`, `age`, `sex`, `size`, `bio`, `personality_tags[]`, `photos[]`                               |
+| `swipes`            | One swipe per ordered pair of dogs                              | `swiper_id`, `swiped_id`, `direction` (`like` \| `dislike`)                                                             |
+| `matches`           | Mutual likes, ordered pair (`dog1 < dog2`)                      | `dog1_id`, `dog2_id`                                                                                                    |
+| `messages`          | Chat per match                                                  | `match_id`, `sender_id` (uuid), `content` (1–2000 chars)                                                                |
+| `reviews`           | One review per user, public                                     | `user_id` (unique), `rating` (1–5), `comment`                                                                           |
+| `subscribers`       | Newsletter                                                      | `email` (unique)                                                                                                        |
+| `page_visits`       | Admin traffic stats                                             | `path`, `ip`, `user_agent`, `visited_at`                                                                                |
 
 ### Functions and triggers
 
-| Object                                    | Type                    | Role                                                                   |
-| ----------------------------------------- | ----------------------- | ---------------------------------------------------------------------- |
-| `handle_new_user`                         | trigger on `auth.users` | Creates the `profiles` row on sign-up (email or Google)                |
-| `handle_swipe`                            | trigger on `swipes`     | Inserts a `matches` row when a like is reciprocated                    |
-| `get_candidates(dog_id)`                  | RPC                     | Dogs of other users that the given dog has not swiped yet              |
-| `get_reviews()`                           | RPC, security definer   | Reviews with author name and avatar for the public community page      |
-| `get_admin_dashboard()`                   | RPC, security definer   | Every dashboard aggregation in one JSON payload; requires `admin` role |
-| `is_admin`, `owns_dog`, `is_match_member` | helpers                 | Used by the RLS policies                                               |
-| `moddatetime`                             | extension               | Keeps `updated_at` current on `profiles`, `dogs` and `reviews`         |
+| Object                                    | Type                    | Role                                                                                                                         |
+| ----------------------------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `handle_new_user`                         | trigger on `auth.users` | Creates the `profiles` row on sign-up (email or Google)                                                                      |
+| `handle_swipe`                            | trigger on `swipes`     | Inserts a `matches` row when a like is reciprocated                                                                          |
+| `get_candidates(dog_id)`                  | RPC, security definer   | Dogs of other users that the given dog has not swiped yet, within the owner's radius and ordered by distance (`distance_km`) |
+| `get_reviews()`                           | RPC, security definer   | Reviews with author name and avatar for the public community page                                                            |
+| `get_admin_dashboard()`                   | RPC, security definer   | Every dashboard aggregation in one JSON payload; requires `admin` role                                                       |
+| `is_admin`, `owns_dog`, `is_match_member` | helpers                 | Used by the RLS policies                                                                                                     |
+| `moddatetime`                             | extension               | Keeps `updated_at` current on `profiles`, `profile_locations`, `dogs` and `reviews`                                          |
+| `postgis`                                 | extension               | `geography` type, GiST index and `ST_DWithin`/`ST_Distance` for proximity                                                    |
 
 ### Realtime and Storage
 
@@ -365,12 +373,13 @@ All tables live in the `public` schema with Row Level Security enabled.
 
 Nitro routes under `frontend/server/api/`. They exist only for actions that need a secret.
 
-| Method   | Route             | Body                                 | What it does                                                                                              |
-| -------- | ----------------- | ------------------------------------ | --------------------------------------------------------------------------------------------------------- |
-| `POST`   | `/api/contact`    | `name`, `email`, `phone?`, `message` | Emails the message to the WeraWoof inbox with the sender as reply-to                                      |
-| `POST`   | `/api/newsletter` | `email`                              | Inserts the subscriber (service role), sends a welcome email and an internal notice. Duplicates return ok |
-| `POST`   | `/api/track`      | `path`                               | Records the visit with IP and user agent in `page_visits`                                                 |
-| `DELETE` | `/api/account`    | — (session cookie)                   | Deletes the authenticated user through the Auth admin API; the database cascade removes the rest          |
+| Method   | Route             | Body                                 | What it does                                                                                                                                                                                                                                                                   |
+| -------- | ----------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `POST`   | `/api/contact`    | `name`, `email`, `phone?`, `message` | Emails the message to the WeraWoof inbox with the sender as reply-to                                                                                                                                                                                                           |
+| `POST`   | `/api/newsletter` | `email`                              | Inserts the subscriber (service role), sends a welcome email and an internal notice. Duplicates return ok                                                                                                                                                                      |
+| `POST`   | `/api/track`      | `path`                               | Records the visit with IP and user agent in `page_visits`                                                                                                                                                                                                                      |
+| `DELETE` | `/api/account`    | — (session cookie)                   | Deletes the authenticated user through the Auth admin API; the database cascade removes the rest                                                                                                                                                                               |
+| `GET`    | `/api/geocode`    | `?lat=&lng=`                         | Reverse geocoding with Nominatim (OpenStreetMap): returns "neighbourhood, municipality, state". Server-side because Nominatim requires an identifying User-Agent; cached per point and queued at 1 request per second (429 + `Retry-After` when saturated; the client retries) |
 
 ---
 
@@ -381,6 +390,7 @@ Nitro routes under `frontend/server/api/`. They exist only for actions that need
 - **Matches and profiles cannot be inserted by clients.** Only the triggers create them.
 - **The `role` column is not writable by users.** Update is granted per column, so nobody can promote themselves to admin.
 - **Public data is exposed through `security definer` functions** (`get_reviews`, `get_admin_dashboard`) that return exactly the fields the page needs.
+- **Coordinates never leave the database.** `profile_locations` is readable only by its owner; `get_candidates` returns the rounded distance, never the point.
 - **Secrets stay on the server.** The service-role key and SMTP credentials are read from `runtimeConfig` inside Nitro routes only.
 
 ---

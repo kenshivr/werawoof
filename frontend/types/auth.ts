@@ -6,6 +6,7 @@ export interface Profile {
   bio: string
   avatar_url: string
   role: 'user' | 'admin'
+  search_radius_km: number
   created_at: string
   updated_at: string
 }
@@ -38,4 +39,5 @@ export interface UpdateProfilePayload {
   name: string
   location?: string
   bio?: string
+  search_radius_km?: number
 }

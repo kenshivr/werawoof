@@ -47,6 +47,7 @@
                       v-if="avatarPreview"
                       :src="avatarPreview"
                       alt="Foto de perfil"
+                      referrerpolicy="no-referrer"
                       class="w-full h-full object-cover"
                     />
                     <span v-else class="material-symbols-outlined text-5xl text-[#d3c4b4]"
@@ -95,7 +96,7 @@
                     for="location"
                     class="text-xs font-bold uppercase tracking-widest text-[#7d571e] font-jakarta"
                   >
-                    Ciudad / Ubicación
+                    Ciudad
                   </label>
                   <div class="relative">
                     <input
@@ -111,6 +112,13 @@
                     >
                   </div>
                 </div>
+
+                <!-- Ubicación (coordenadas) y radio de búsqueda -->
+                <ProfileLocationPicker
+                  v-model:coords="coords"
+                  v-model:radius="form.radius"
+                  @city="onCity"
+                />
 
                 <!-- Bio -->
                 <div class="flex flex-col gap-2">
@@ -478,7 +486,7 @@
     </div>
 
     <!-- ─── MOBILE ─── -->
-    <div class="md:hidden relative min-h-screen">
+    <div class="md:hidden relative">
       <!-- Decorative paw -->
       <div class="fixed top-0 right-0 pointer-events-none overflow-hidden -z-10 opacity-20">
         <span class="material-symbols-outlined text-[200px] text-[#382615] -mr-20 -mt-10"
@@ -511,7 +519,7 @@
 
       <!-- STEP 1: Owner Profile Mobile -->
       <template v-if="currentStep === 1">
-        <div class="px-6 pb-40">
+        <div class="px-6 pb-8">
           <section class="mb-7">
             <h1
               class="text-[32px] font-bold leading-tight tracking-tight text-[#382615] font-jakarta mb-1"
@@ -535,6 +543,7 @@
                     v-if="avatarPreview"
                     :src="avatarPreview"
                     alt="Foto de perfil"
+                    referrerpolicy="no-referrer"
                     class="w-full h-full object-cover"
                   />
                   <span v-else class="material-symbols-outlined text-5xl text-[#d3c4b4]"
@@ -580,7 +589,7 @@
                 for="location-m"
                 class="text-xs font-bold uppercase tracking-widest text-[#7d571e] font-jakarta"
               >
-                Ciudad / Ubicación
+                Ciudad
               </label>
               <div class="relative">
                 <input
@@ -596,6 +605,13 @@
                 >
               </div>
             </div>
+
+            <!-- Ubicación (coordenadas) y radio de búsqueda -->
+            <ProfileLocationPicker
+              v-model:coords="coords"
+              v-model:radius="form.radius"
+              @city="onCity"
+            />
 
             <!-- Bio -->
             <div class="flex flex-col gap-2">
@@ -616,13 +632,9 @@
 
             <p v-if="error" class="text-red-500 text-sm text-center">{{ error }}</p>
           </form>
-        </div>
 
-        <!-- Fixed bottom CTA Step 1 -->
-        <div
-          class="fixed bottom-[72px] left-0 w-full bg-white/80 backdrop-blur-md px-6 py-5 border-t border-[#DBD8D0]/50 z-[60]"
-        >
-          <div class="max-w-md mx-auto">
+          <!-- CTA Step 1: en el flujo de la página, no fijo -->
+          <div class="mt-8 max-w-md mx-auto">
             <button
               :disabled="saving || dogsStore.loading"
               class="w-full h-14 bg-[#F4C07D] text-[#382615] rounded-xl font-bold text-lg font-jakarta flex items-center justify-center gap-2 shadow-[0_4px_12px_rgba(244,192,125,0.4)] hover:opacity-90 active:scale-95 transition-all disabled:opacity-60"
@@ -649,7 +661,7 @@
 
       <!-- STEP 2: Dog Profile Mobile -->
       <template v-if="currentStep === 2">
-        <div class="px-5 space-y-6 pb-64">
+        <div class="px-5 space-y-6 pb-8">
           <!-- Photos -->
           <div>
             <p class="text-xs font-bold uppercase tracking-widest text-[#795832] mb-3 font-jakarta">
@@ -720,13 +732,20 @@
               <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta"
                 >Raza</label
               >
-              <input
-                v-model="dogForm.breed"
-                type="text"
-                placeholder="Golden Retriever"
-                required
-                class="w-full h-14 px-4 bg-white border border-[#DBD8D0] rounded-xl focus:border-[#B78F64] focus:ring-0 outline-none transition-all shadow-sm"
-              />
+              <div class="relative">
+                <select
+                  v-model="dogForm.breed"
+                  required
+                  class="w-full h-14 appearance-none bg-white border border-[#DBD8D0] rounded-xl pl-4 pr-10 focus:border-[#B78F64] focus:ring-0 outline-none transition-all shadow-sm text-[#281808]"
+                >
+                  <option value="">Seleccioná la raza</option>
+                  <option v-for="b in breeds" :key="b" :value="b">{{ b }}</option>
+                </select>
+                <span
+                  class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#4f4539]"
+                  >expand_more</span
+                >
+              </div>
             </div>
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-bold uppercase tracking-widest text-[#795832] font-jakarta"
@@ -837,13 +856,9 @@
           </div>
 
           <p v-if="error" class="text-red-500 text-sm text-center">{{ error }}</p>
-        </div>
 
-        <!-- Fixed bottom CTA Step 2 -->
-        <div
-          class="fixed bottom-[72px] left-0 w-full bg-white/90 backdrop-blur-md px-6 py-5 border-t border-[#DBD8D0]/50 z-[60]"
-        >
-          <div class="max-w-md mx-auto space-y-3">
+          <!-- CTA Step 2: en el flujo de la página, no fijo -->
+          <div class="max-w-md mx-auto space-y-3 pt-2">
             <button
               type="button"
               :disabled="saving"
@@ -919,11 +934,13 @@
 
 <script setup lang="ts">
 import draggable from 'vuedraggable'
+import type { Coords } from '~/stores/location'
 
 definePageMeta({ layout: 'app', middleware: 'auth' })
 
 const authStore = useAuthStore()
 const dogsStore = useDogsStore()
+const locationStore = useLocationStore()
 const router = useRouter()
 
 const currentStep = ref(1)
@@ -954,7 +971,32 @@ const form = reactive({
   name: authStore.user?.name ?? '',
   location: authStore.user?.location ?? '',
   bio: authStore.user?.bio ?? '',
+  radius: authStore.profile?.search_radius_km ?? 10,
 })
+
+/* Punto del dueño: `coords` es lo que muestra el selector, `savedCoords`
+   lo que hay en la base. Se persiste junto con el perfil, solo si cambió. */
+const coords = ref<Coords | null>(null)
+const savedCoords = ref<Coords | null>(null)
+
+const persistLocation = async () => {
+  const next = coords.value
+  const prev = savedCoords.value
+  const changed =
+    !!next && (!prev || next.lat !== prev.lat || next.lng !== prev.lng || next.label !== prev.label)
+  if (!next && prev) {
+    await locationStore.clearLocation()
+  } else if (next && changed) {
+    await locationStore.saveLocation(next)
+  }
+  savedCoords.value = locationStore.coords
+}
+
+/* Ciudad se llena sola con el municipio y estado de la dirección, pero solo
+   si el dueño no escribió nada: lo que tipeó él manda. */
+const onCity = (city: string) => {
+  if (!form.location.trim()) form.location = city
+}
 
 const dogForm = reactive({
   name: '',
@@ -972,28 +1014,7 @@ interface DogPhotoItem {
 }
 const dogPhotos = ref<DogPhotoItem[]>([])
 
-const breeds = [
-  'Labrador Retriever',
-  'Golden Retriever',
-  'French Bulldog',
-  'Pastor Alemán',
-  'Bulldog',
-  'Poodle',
-  'Beagle',
-  'Rottweiler',
-  'Yorkshire Terrier',
-  'Dachshund',
-  'Boxer',
-  'Border Collie',
-  'Shih Tzu',
-  'Maltés',
-  'Cocker Spaniel',
-  'Doberman',
-  'Australian Shepherd',
-  'Siberian Husky',
-  'Chihuahua',
-  'Mestizo',
-]
+const breeds = BREEDS
 
 const sizes = [
   { value: 'small', label: 'Chico' },
@@ -1026,6 +1047,26 @@ onMounted(async () => {
   }
   if (authStore.user?.avatar) {
     avatarPreview.value = authStore.user.avatar
+  }
+  form.radius = authStore.profile?.search_radius_km ?? form.radius
+  await locationStore.fetchLocation().catch(() => {})
+  coords.value = locationStore.coords
+  savedCoords.value = locationStore.coords
+
+  /* Auto-reparación: punto guardado sin dirección (el geocoding falló en su
+     momento) → se pide de nuevo y se guarda sola. Si mientras tanto el dueño
+     cambió el punto, lo suyo manda. */
+  const saved = locationStore.coords
+  if (saved && !saved.label) {
+    locationStore
+      .describe(saved)
+      .then(({ label }) => locationStore.saveLocation({ ...saved, label }))
+      .then(() => {
+        if (coords.value !== saved) return
+        coords.value = locationStore.coords
+        savedCoords.value = locationStore.coords
+      })
+      .catch(() => {})
   }
 })
 
@@ -1088,15 +1129,22 @@ const handleSaveStep1 = async () => {
 
     if (hasDogs.value) {
       await authStore.updateProfile(
-        { name: form.name.trim(), location: form.location.trim(), bio: form.bio.trim() },
+        {
+          name: form.name.trim(),
+          location: form.location.trim(),
+          bio: form.bio.trim(),
+          search_radius_km: form.radius,
+        },
         avatarFile.value ?? undefined
       )
+      await persistLocation()
       await router.push('/app/dogs')
     } else {
       saving.value = false
       currentStep.value = 2
     }
-  } catch {
+  } catch (e) {
+    console.error('[profile] guardar paso 1', e)
     error.value = 'No se pudo guardar el perfil. Intentá de nuevo.'
     saving.value = false
   }
@@ -1115,6 +1163,7 @@ const handleSaveStep2 = async () => {
       { name: form.name.trim(), location: form.location.trim(), bio: form.bio.trim() },
       avatarFile.value ?? undefined
     )
+    await persistLocation()
 
     const dog = await dogsStore.createDog({
       name: dogForm.name.trim(),
@@ -1131,7 +1180,8 @@ const handleSaveStep2 = async () => {
     }
 
     await router.push('/app/dogs')
-  } catch {
+  } catch (e) {
+    console.error('[profile] guardar paso 2', e)
     error.value = 'No se pudo guardar. Intentá de nuevo.'
   } finally {
     saving.value = false

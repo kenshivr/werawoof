@@ -10,8 +10,6 @@ export interface Dog {
   bio: string
   personality_tags: string[]
   photos: string[]
-  latitude: number
-  longitude: number
   created_at: string
   updated_at: string
 }

@@ -140,12 +140,20 @@ export const useAuthStore = defineStore('auth', () => {
         name: payload.name,
         location: payload.location ?? '',
         bio: payload.bio ?? '',
+        ...(payload.search_radius_km !== undefined
+          ? { search_radius_km: payload.search_radius_km }
+          : {}),
         ...(avatarUrl ? { avatar_url: avatarUrl } : {}),
       })
       .eq('id', id)
       .select()
       .single()
-    if (error) throw new Error(translateAuthError(error.message))
+    if (error) {
+      /* El mensaje traducido es genérico: la causa real (columna que falta,
+         policy, etc.) queda en la consola para poder diagnosticar. */
+      console.error('[auth] updateProfile', error)
+      throw new Error(translateAuthError(error.message))
+    }
     profile.value = data as Profile
   }
 
