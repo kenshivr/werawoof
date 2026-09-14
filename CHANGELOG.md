@@ -8,13 +8,62 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ### Added
 
+- Canes cerca tuyo. El dueño comparte su ubicación desde el perfil con un botón "Usar mi
+  ubicación" (Geolocation API del navegador, sin proveedores externos) y elige un radio de
+  búsqueda de 1 a 100 km con una barra. Al ubicarse ve su dirección aproximada ("colonia,
+  municipio, estado", reverse geocoding con Nominatim/OpenStreetMap vía la server route
+  `/api/geocode`) y el margen de error en metros, para confirmar que el punto es el suyo;
+  la dirección se guarda junto al punto (`006_ubicacion_etiqueta.sql`) y, si el campo
+  Ciudad está vacío, se llena solo. La ruta encola las consultas a Nominatim a una por
+  segundo y el cliente reintenta; si la dirección no llega, la ubicación queda igual y el
+  perfil la vuelve a pedir en la próxima visita. `get_candidates` filtra por ese radio con PostGIS y
+  devuelve la distancia, que ahora sí aparece en la tarjeta del swipe. Las coordenadas
+  viven en `profile_locations`, que solo lee su dueño: los demás reciben la distancia,
+  nunca el punto. Migración `supabase/005_ubicacion.sql`; las columnas `latitude` y
+  `longitude` de `dogs`, que nunca se escribieron, se retiran. ADR 0008. El subconjunto
+  self-hosted de Material Symbols se regeneró con el ícono `my_location`; la receta y la
+  lista de íconos quedan documentadas en `assets/css/fonts.css`.
 - Meta `article:published_time` con la fecha del lanzamiento en werawoof.com
   (2026-09-11): el Post Inspector de LinkedIn ya no marca "No publication date
   found". El `og:type` sigue en `website`; LinkedIn muestra "Article" para
   cualquier enlace compartido.
 
+### Changed
+
+- Explorar en móvil, al estilo Tinder: la foto del can ocupa toda la pantalla
+  entre el header y el menú inferior, los botones de descartar y me gusta
+  flotan sobre la foto y la píldora "Explorando como" flota arriba con margen,
+  en lugar de quedar pegada al header. La página ya no hace scroll; antes la
+  tarjeta de alto fijo más los botones no cabían en el teléfono y había que
+  desplazarse para ver los botones. En escritorio se ve igual que antes.
+- En la ficha del can en móvil, los puntos que indican las fotos ahora cambian
+  la foto al tocarlos, como ya pasaba en escritorio, con un área de toque de
+  20 px alrededor de cada punto.
+- Raza del can: la lista desplegable ahora existe también en móvil (antes era un campo de
+  texto libre) y "Mestizo" es la primera opción. La lista vive en un solo lugar
+  (`utils/breeds.ts`) para el perfil, el alta y la edición; al editar un can con una raza
+  escrita a mano se conserva como opción.
+- Perfil en móvil: los botones de guardar, eliminar cuenta, completar y volver
+  dejan de estar fijos sobre el formulario y pasan al final de la página, en
+  el flujo normal con scroll. La barra fija tapaba los campos y la nota de
+  "podés cambiar estos datos" quedaba encimada con el menú inferior.
+
 ### Fixed
 
+- La foto de perfil de las cuentas de Google no cargaba (Google responde 403 a las
+  imágenes de `googleusercontent.com` cuando llega un Referer de otro sitio): todas las
+  etiquetas `<img>` de avatares llevan `referrerpolicy="no-referrer"`.
+- Al entrar por primera vez, con Google o con el link de confirmación del correo, la app
+  mandaba a Mis Canes con el perfil vacío. Ahora quien todavía no tiene canes cae en el
+  perfil, que es el onboarding (tus datos y después tu can); quien ya los tiene sigue
+  yendo a Mis Canes. Misma regla para el inicio de sesión con contraseña.
+- La ficha del can (botón de info) y la celebración del match se dibujaban
+  debajo del header y del menú inferior: el botón de volver quedaba escondido y
+  los botones de abajo, tapados. El `<main>` del layout de la app es un
+  stacking context (`relative z-10`) por debajo de ambos (`z-50`), así que
+  ningún `z-index` interno podía taparlos. Los dos overlays salen del `<main>`
+  con `<Teleport to="#teleports">`; la celebración además hace scroll cuando
+  el contenido no entra en la pantalla.
 - Los íconos de Material Symbols ignoraban las utilidades de Tailwind (`hidden`,
   `text-3xl`, etc.) porque su clase base vivía en `fonts.css`, que se inyecta
   después del CSS de Tailwind y ganaba el empate de especificidad: en móvil los
