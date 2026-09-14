@@ -56,7 +56,7 @@
     <div v-else class="flex flex-col gap-3">
       <div v-for="dog in dogsStore.dogs" :key="dog.id" class="bg-white rounded-2xl flex gap-1 h-28">
         <!-- Photo -->
-        <div class="h-[calc(100%-20px)] aspect-square m-[10px] rounded-md overflow-hidden">
+        <div class="h-[calc(100%-20px)] aspect-square shrink-0 m-[10px] rounded-md overflow-hidden">
           <img
             v-if="dog.photos?.length"
             :src="dog.photos[0]"
@@ -68,17 +68,20 @@
           </div>
         </div>
 
-        <!-- Info + actions -->
-        <div class="flex flex-col justify-between pb-2">
-          <div>
-            <p class="font-jakarta font-extrabold text-[#281808] text-lg">
+        <!-- Info + actions: en móvil los botones van en columna, pegados a la
+             derecha de la tarjeta; desde md, en fila debajo del nombre. -->
+        <div class="flex-1 min-w-0 flex justify-between gap-2 py-2 pr-[10px] md:flex-col md:pt-0">
+          <div class="min-w-0">
+            <p class="font-jakarta font-extrabold text-[#281808] text-lg truncate">
               {{ dog.name }}
             </p>
             <p class="text-sm font-semibold text-[#7d571e] mt-0.5">
               {{ dog.age }} {{ dog.age === 1 ? 'año' : 'años' }}
             </p>
           </div>
-          <div class="flex gap-3 items-center">
+          <div
+            class="flex flex-col justify-center gap-1 shrink-0 md:flex-row md:justify-end md:items-center md:gap-3"
+          >
             <NuxtLink
               :to="`/app/swipe/${dog.id}`"
               class="flex items-center justify-center gap-1 bg-[#F4C07D] text-[#382615] px-2 py-1 rounded-lg font-bold text-xs font-jakarta shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 active:scale-95"
