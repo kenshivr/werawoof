@@ -323,6 +323,7 @@ watch(matchId, (id) => openChat(id))
                   <img
                     v-if="authStore.user?.avatar"
                     :src="authStore.user.avatar"
+                    referrerpolicy="no-referrer"
                     class="w-full h-full object-cover"
                   />
                   <span v-else class="material-symbols-outlined text-[#B78F64] text-sm"

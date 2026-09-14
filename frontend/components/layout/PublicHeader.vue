@@ -80,6 +80,7 @@ const firstName = computed(() => authStore.user?.name?.split(' ')[0] ?? '')
               v-if="authStore.user?.avatar"
               :src="authStore.user.avatar"
               :alt="authStore.user.name"
+              referrerpolicy="no-referrer"
               class="w-full h-full object-cover"
             />
             <span v-else class="material-symbols-outlined text-[#F4C07D] text-lg">person</span>

@@ -112,6 +112,7 @@ async function submitReview() {
                     v-if="review.user?.avatar"
                     :src="review.user.avatar"
                     :alt="review.user.name"
+                    referrerpolicy="no-referrer"
                     class="w-full h-full object-cover"
                   />
                   <span v-else class="material-symbols-outlined text-[#F4C07D]">person</span>

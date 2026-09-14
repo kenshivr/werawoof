@@ -5,17 +5,18 @@ definePageMeta({ layout: false })
    El módulo de Supabase intercambia el code (PKCE) solo al cargar la página;
    nosotros únicamente esperamos a que aparezca la sesión. */
 const user = useSupabaseUser()
+const postLoginPath = usePostLoginPath()
 
-onMounted(() => {
+onMounted(async () => {
   if (user.value) {
-    navigateTo('/app')
+    await navigateTo(await postLoginPath())
     return
   }
 
   const stop = watch(user, async (u) => {
     if (u) {
       stop()
-      await navigateTo('/app')
+      await navigateTo(await postLoginPath())
     }
   })
 

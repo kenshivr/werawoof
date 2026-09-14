@@ -4,6 +4,7 @@ const props = defineProps<{ mode: 'login' | 'register' }>()
 const isRegister = computed(() => props.mode === 'register')
 
 const authStore = useAuthStore()
+const postLoginPath = usePostLoginPath()
 
 const route = useRoute()
 const form = reactive({ name: '', email: '', password: '', confirmPassword: '' })
@@ -69,7 +70,7 @@ const handleSubmit = async () => {
       await navigateTo('/auth/check-email')
     } else {
       await authStore.login({ email: form.email, password: form.password })
-      await navigateTo('/app')
+      await navigateTo(await postLoginPath())
     }
   } catch (e: unknown) {
     error.value = isRegister.value

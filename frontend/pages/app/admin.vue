@@ -114,6 +114,7 @@
                   v-if="user.avatar"
                   :src="user.avatar"
                   :alt="user.name"
+                  referrerpolicy="no-referrer"
                   class="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover border-2 border-[#ffeadb]"
                 />
                 <div
