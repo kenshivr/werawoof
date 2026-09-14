@@ -11,7 +11,8 @@ const firstName = computed(() => authStore.user?.name?.split(' ')[0] ?? '')
 
 <template>
   <header class="fixed top-0 z-50 w-full bg-[#382615] shadow-xl">
-    <div class="flex items-center justify-between w-full px-8 py-4">
+    <!-- Alto fijo de 80 px (h-20): las páginas le dejan ese espacio con pt-20. -->
+    <div class="flex items-center justify-between w-full h-20 px-8">
       <NuxtLink to="/">
         <picture>
           <source
