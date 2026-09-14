@@ -3,7 +3,7 @@ import type { Match } from '~/types/match'
 import type { Dog } from '~/types/dog'
 import type { Message } from '~/types/message'
 
-definePageMeta({ layout: 'app', middleware: 'auth' })
+definePageMeta({ layout: 'app', middleware: 'auth', bottomNav: false })
 
 const route = useRoute()
 const matchId = computed(() => Number(route.params.id))
@@ -154,7 +154,9 @@ watch(matchId, (id) => openChat(id))
 </script>
 
 <template>
-  <div class="flex overflow-hidden" style="height: calc(100vh - 80px)">
+  <div class="flex overflow-hidden h-[calc(100dvh-5rem)]">
+    <!-- Ocupa exactamente lo que queda bajo el header (pt-20 del layout); dvh
+         descuenta la barra del navegador en móvil. Solo scrollea la lista de mensajes. -->
     <!-- SIDEBAR — oculto en mobile, visible en md+ -->
     <aside
       class="hidden md:flex w-[300px] lg:w-[340px] flex-col border-r border-[#d3c4b4] bg-white shrink-0"

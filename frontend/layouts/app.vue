@@ -40,13 +40,18 @@ const isActive = (path: string) =>
       >
     </div>
 
-    <!-- Page content -->
-    <main class="flex-1 pt-20 pb-20 md:pb-0 relative z-10">
+    <!-- Page content. Una página puede pedir `bottomNav: false` en su
+         definePageMeta (el chat) para ocupar toda la pantalla sin menú inferior. -->
+    <main
+      class="flex-1 pt-20 relative z-10"
+      :class="{ 'pb-20 md:pb-0': route.meta.bottomNav !== false }"
+    >
       <slot />
     </main>
 
     <!-- Bottom nav (mobile only) -->
     <nav
+      v-if="route.meta.bottomNav !== false"
       class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-white shadow-[0_-4px_20px_rgba(113,62,24,0.08)] rounded-t-3xl border-t border-[#DBD8D0]"
     >
       <NuxtLink
