@@ -245,5 +245,6 @@ async function submitReview() {
     </main>
 
     <LayoutPublicFooter />
+    <LayoutPublicBottomNav />
   </div>
 </template>

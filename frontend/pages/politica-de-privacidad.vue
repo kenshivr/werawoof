@@ -320,5 +320,9 @@ definePageMeta({ layout: 'public' })
         Volver al inicio
       </NuxtLink>
     </div>
+
+    <!-- El layout public lo comparten las páginas de auth, que no llevan el
+         menú inferior; por eso se incluye acá y no en el layout. -->
+    <LayoutPublicBottomNav />
   </div>
 </template>
