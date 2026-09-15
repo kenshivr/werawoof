@@ -117,6 +117,12 @@ WeraWoof nació con un backend en Go + Gin (PostgreSQL, Redis, WebSockets) aloja
 - El perfil se crea automáticamente al registrarse con un trigger de la base
 - Al iniciar sesión, quien todavía no tiene canes cae en el perfil para completar el alta; quien ya los tiene va a Mis Canes
 
+### 📱 App instalable (PWA)
+
+- Se instala desde Chrome (Android y escritorio) y abre a pantalla completa, sin barra del navegador, directo en Mis Canes (`display: standalone`, `start_url: /app/dogs`)
+- El `scope` es `/`: todas las páginas del dominio, públicas y privadas, se abren dentro de la app. Un destino fuera del scope (por ejemplo la pantalla de consentimiento de Google) se abre en una pestaña con barra que Chrome cierra al volver
+- Manifest estático en `frontend/public/manifest.webmanifest`, sin service worker (no hay modo offline). Chrome revisa el manifest de la app instalada al abrirla, como mucho una vez cada 24 horas, y actualiza la app si cambiaron `scope`, `start_url`, íconos o colores; para forzarlo, desinstalar y volver a instalar
+
 ### 📊 Panel de administración
 
 - Solo para usuarios con el rol `admin`

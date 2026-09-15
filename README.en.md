@@ -117,6 +117,12 @@ WeraWoof was originally built with a Go + Gin backend (PostgreSQL, Redis, WebSoc
 - Profile row created automatically on sign-up by a database trigger
 - After signing in, users without dogs land on the profile to finish onboarding; users with dogs go to My Dogs
 
+### 📱 Installable App (PWA)
+
+- Installs from Chrome (Android and desktop) and opens full screen, with no browser bar, straight into My Dogs (`display: standalone`, `start_url: /app/dogs`)
+- The `scope` is `/`: every page on the domain, public or private, opens inside the app. A destination outside the scope (for example Google's consent screen) opens in a tab with a browser bar that Chrome closes on return
+- Static manifest at `frontend/public/manifest.webmanifest`, no service worker (no offline mode). Chrome re-checks the manifest of the installed app on launch, at most once every 24 hours, and updates the app when `scope`, `start_url`, icons or colors changed; to force it, uninstall and reinstall
+
 ### 📊 Admin Dashboard
 
 - Restricted to users with the `admin` role

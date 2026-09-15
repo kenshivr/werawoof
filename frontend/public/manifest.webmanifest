@@ -5,6 +5,7 @@
   "id": "/",
   "lang": "es",
   "start_url": "/app/dogs",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#fff8f5",
   "theme_color": "#fff8f5",

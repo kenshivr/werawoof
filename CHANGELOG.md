@@ -50,6 +50,13 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ### Fixed
 
+- En la app instalada desde Chrome en Android, el login, la landing, Comunidad y la
+  Política de Privacidad se abrían con la barra del navegador arriba (equis, título,
+  dominio y menú) en vez de a pantalla completa. El manifest no declaraba `scope` y el
+  navegador lo deduce del directorio del `start_url` (`/app/dogs` → `/app/`), así que toda
+  ruta fuera de `/app/` contaba como otro sitio y se abría en una Custom Tab. Ahora `scope`
+  es `/`: todo werawoof.com es la app. Chrome actualiza solo el manifest de la app ya
+  instalada al abrirla; para verlo de inmediato, desinstalarla y volver a instalarla.
 - La foto de perfil de las cuentas de Google no cargaba (Google responde 403 a las
   imágenes de `googleusercontent.com` cuando llega un Referer de otro sitio): todas las
   etiquetas `<img>` de avatares llevan `referrerpolicy="no-referrer"`.
