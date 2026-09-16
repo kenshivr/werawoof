@@ -6,6 +6,13 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+### Fixed
+
+- Panel de admin: con la base de datos vacía las barras de Dislikes y Desktop mostraban
+  100.0 %, porque se calculaban como `100 - likes` y `100 - mobile`. Ahora cada lado se
+  calcula por separado con el helper `utils/percent.ts` (`shareOf`), que devuelve 0 cuando
+  no hay total; con datos, ambos lados siguen sumando 100 %.
+
 ## [1.1.0] - 2026-09-15
 
 ### Added
