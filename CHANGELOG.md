@@ -6,6 +6,8 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-09-16
+
 ### Added
 
 - Acceso al panel de administración desde el perfil: los usuarios con rol `admin` ven una
@@ -161,7 +163,8 @@ Redis y WebSockets) alojado en Railway. En septiembre de 2026 ese backend se
 reemplazó por completo por Supabase; la implementación en Go sigue en la
 historia de git hasta el commit `4033595`.
 
-[Unreleased]: https://github.com/kenshivr/werawoof/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/kenshivr/werawoof/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/kenshivr/werawoof/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/kenshivr/werawoof/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/kenshivr/werawoof/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/kenshivr/werawoof/compare/v1.0.0...v1.0.1
