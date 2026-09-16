@@ -13,7 +13,7 @@ Una plataforma de matches para dueños de perros: swipe, match y chat en tiempo 
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![Vercel](https://img.shields.io/badge/Vercel-desplegado-000000?style=flat-square&logo=vercel&logoColor=white)](https://werawoof.com)
 [![CI](https://github.com/kenshivr/werawoof/actions/workflows/ci.yml/badge.svg)](https://github.com/kenshivr/werawoof/actions/workflows/ci.yml)
-[![Lighthouse](https://img.shields.io/badge/Lighthouse%20m%C3%B3vil-99%20·%20100%20·%20100%20·%20100-4ade80?style=flat-square&logo=lighthouse&logoColor=white)](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fwerawoof.com)
+[![Lighthouse](https://img.shields.io/badge/Lighthouse%20m%C3%B3vil-100%20·%20100%20·%20100%20·%20100-4ade80?style=flat-square&logo=lighthouse&logoColor=white)](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fwerawoof.com)
 [![PWA](https://img.shields.io/badge/PWA-instalable-4ade80?style=flat-square&logo=pwa&logoColor=white)](https://werawoof.com)
 ![Idioma](https://img.shields.io/badge/idioma-espa%C3%B1ol-93c5fd?style=flat-square)
 
@@ -72,11 +72,11 @@ WeraWoof nació con un backend en Go + Gin (PostgreSQL, Redis, WebSockets) aloja
   <img src="docs/screenshots/desktop-chat.webp" width="49%" alt="Chat en tiempo real en escritorio entre dos dueños" />
 </p>
 
-[PageSpeed Insights](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fwerawoof.com) sobre la landing de producción, 2026-09-11:
+[PageSpeed Insights](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fwerawoof.com) sobre la landing de producción (móvil medido el 2026-09-16 con la landing prerenderizada, escritorio el 2026-09-11):
 
 | Dispositivo | Rendimiento | Accesibilidad | Recomendaciones | SEO | FCP   | LCP   |
 | ----------- | ----------- | ------------- | --------------- | --- | ----- | ----- |
-| Móvil       | 99          | 100           | 100             | 100 | 0.9 s | 1.7 s |
+| Móvil       | 100         | 100           | 100             | 100 | 0.9 s | 1.7 s |
 | Escritorio  | 100         | 100           | 100             | 100 | 0.4 s | 0.7 s |
 
 ---
@@ -133,20 +133,20 @@ WeraWoof nació con un backend en Go + Gin (PostgreSQL, Redis, WebSockets) aloja
 
 ## Stack
 
-| Capa            | Tecnología                                                                           |
-| --------------- | ------------------------------------------------------------------------------------ |
-| **Framework**   | Nuxt 3 (Vue 3, SSR) sobre Nitro                                                      |
-| **Lenguaje**    | TypeScript (strict)                                                                  |
-| **Estado**      | Pinia                                                                                |
-| **Estilos**     | Tailwind CSS, fuentes self-hosted                                                    |
-| **Backend**     | Supabase: Postgres, Auth, Realtime, Storage                                          |
-| **SDK cliente** | `@nuxtjs/supabase` (supabase-js, cookies SSR)                                        |
-| **Servidor**    | Server routes de Nitro para contacto, newsletter, visitas y borrado de cuenta        |
-| **Correo**      | SMTP de Gmail con nodemailer (cuenta dedicada)                                       |
-| **Analítica**   | Vercel Analytics                                                                     |
-| **Calidad**     | ESLint, Prettier, Vitest, husky + lint-staged · Lighthouse 99 móvil / 100 escritorio |
-| **CI/CD**       | GitHub Actions (lint + typecheck + tests), Vercel (deploy)                           |
-| **Hosting**     | Vercel                                                                               |
+| Capa            | Tecnología                                                                            |
+| --------------- | ------------------------------------------------------------------------------------- |
+| **Framework**   | Nuxt 3 (Vue 3, SSR; landing y quiénes somos prerenderizadas) sobre Nitro              |
+| **Lenguaje**    | TypeScript (strict)                                                                   |
+| **Estado**      | Pinia                                                                                 |
+| **Estilos**     | Tailwind CSS, fuentes self-hosted                                                     |
+| **Backend**     | Supabase: Postgres, Auth, Realtime, Storage                                           |
+| **SDK cliente** | `@nuxtjs/supabase` (supabase-js, cookies SSR)                                         |
+| **Servidor**    | Server routes de Nitro para contacto, newsletter, visitas y borrado de cuenta         |
+| **Correo**      | SMTP de Gmail con nodemailer (cuenta dedicada)                                        |
+| **Analítica**   | Vercel Analytics                                                                      |
+| **Calidad**     | ESLint, Prettier, Vitest, husky + lint-staged · Lighthouse 100 móvil / 100 escritorio |
+| **CI/CD**       | GitHub Actions (lint + typecheck + tests), Vercel (deploy)                            |
+| **Hosting**     | Vercel                                                                                |
 
 ---
 
