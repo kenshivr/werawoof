@@ -125,7 +125,7 @@ WeraWoof was originally built with a Go + Gin backend (PostgreSQL, Redis, WebSoc
 
 ### 📊 Admin Dashboard
 
-- Restricted to users with the `admin` role
+- Restricted to users with the `admin` role; opened from the "Panel de admin" card on the profile page (the installed PWA has no address bar)
 - Users, dogs, matches, subscribers and page-visit stats aggregated by a single Postgres function
 - Page-visit tracking from a server route (path, IP and user agent)
 

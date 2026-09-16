@@ -125,7 +125,7 @@ WeraWoof nació con un backend en Go + Gin (PostgreSQL, Redis, WebSockets) aloja
 
 ### 📊 Panel de administración
 
-- Solo para usuarios con el rol `admin`
+- Solo para usuarios con el rol `admin`; se entra desde la tarjeta "Panel de admin" del perfil (la PWA instalada no tiene barra de direcciones)
 - Usuarios, perros, matches, suscriptores y visitas, agregados por una sola función de Postgres
 - Registro de visitas desde una server route (ruta, IP y user agent)
 

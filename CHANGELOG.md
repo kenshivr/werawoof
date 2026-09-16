@@ -6,6 +6,15 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+### Added
+
+- Acceso al panel de administración desde el perfil: los usuarios con rol `admin` ven una
+  tarjeta "Panel de admin" en `/app/profile` que lleva a `/app/admin`. Hasta ahora la única
+  forma de entrar era escribir la URL, y la app instalada como PWA no tiene barra de
+  direcciones. El botón es solo un atajo: la autorización sigue en Postgres
+  (`get_admin_dashboard()` exige `is_admin()` y el `UPDATE` de `profiles.role` está revocado).
+  Getter `isAdmin` en el store de auth con sus tests.
+
 ### Fixed
 
 - Panel de admin: con la base de datos vacía las barras de Dislikes y Desktop mostraban
