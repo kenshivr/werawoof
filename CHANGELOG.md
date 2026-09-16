@@ -17,6 +17,9 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ### Fixed
 
+- Panel de admin: los íconos `group`, `fingerprint` y `percent` no aparecían (se veía el
+  nombre del ícono en texto) porque faltaban en el subconjunto self-hosted de Material
+  Symbols. Fuente regenerada con los tres íconos y lista actualizada en `assets/css/fonts.css`.
 - Panel de admin: con la base de datos vacía las barras de Dislikes y Desktop mostraban
   100.0 %, porque se calculaban como `100 - likes` y `100 - mobile`. Ahora cada lado se
   calcula por separado con el helper `utils/percent.ts` (`shareOf`), que devuelve 0 cuando
