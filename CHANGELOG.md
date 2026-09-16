@@ -6,6 +6,14 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+### Changed
+
+- Landing (`/`) y `/quienes-somos` se prerenderizan en el build y Vercel las sirve como HTML
+  estático desde el edge, sin esperar al servidor de Nuxt en cada visita (`routeRules` en
+  `nuxt.config.ts`). Nada en esas páginas depende de datos por request: el auth solo se lee al
+  hacer click en "Club", y el registro de visitas y el newsletter corren en el cliente. El resto
+  del sitio sigue con server rendering.
+
 ## [1.1.1] - 2026-09-16
 
 ### Added
