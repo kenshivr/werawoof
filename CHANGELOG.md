@@ -6,6 +6,13 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+### Added
+
+- Manifiesto de Agentic Resource Discovery en `/.well-known/ai-catalog.json` (y su nombre
+  nuevo, `/.well-known/ard.json`) con los datos del sitio y un catálogo vacío: WeraWoof no
+  expone agentes ni APIs para terceros. Antes esa ruta devolvía el HTML de la app y la
+  auditoría "Navegación con agentes" de Lighthouse la marcaba como JSON inválido.
+
 ## [1.1.0] - 2026-09-15
 
 ### Added

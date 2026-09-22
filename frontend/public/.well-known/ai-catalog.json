@@ -1,0 +1,10 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "WeraWoof",
+    "identifier": "https://werawoof.com",
+    "documentationUrl": "https://werawoof.com/llms.txt",
+    "logoUrl": "https://werawoof.com/icon-512.png"
+  },
+  "entries": []
+}
