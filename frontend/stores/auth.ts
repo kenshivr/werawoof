@@ -48,6 +48,11 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => !!claims.value)
 
+  /* Solo UX (mostrar/ocultar accesos). La autorización real vive en
+     Postgres: is_admin() dentro de get_admin_dashboard() y el UPDATE de
+     profiles.role revocado, así que esto no protege nada por sí solo. */
+  const isAdmin = computed(() => profile.value?.role === 'admin')
+
   /* id del usuario logueado (claims.sub === profiles.id) */
   const uid = computed(() => claims.value?.sub ?? null)
 
@@ -170,6 +175,7 @@ export const useAuthStore = defineStore('auth', () => {
     uid,
     profile,
     isAuthenticated,
+    isAdmin,
     login,
     register,
     loginWithGoogle,

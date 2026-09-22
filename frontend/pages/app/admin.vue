@@ -285,13 +285,13 @@
                   <span class="font-bold text-[#281808]">Desktop</span>
                   <span class="text-[#7d571e]"
                     >{{ data.devices.desktop_visits.toLocaleString() }} visitas ·
-                    {{ (100 - data.devices.mobile_rate).toFixed(1) }}%</span
+                    {{ desktopRate.toFixed(1) }}%</span
                   >
                 </div>
                 <div class="h-3 bg-[#ffeadb] rounded-full overflow-hidden">
                   <div
                     class="h-full bg-[#281808] rounded-full transition-all"
-                    :style="{ width: `${100 - data.devices.mobile_rate}%` }"
+                    :style="{ width: `${desktopRate}%` }"
                   />
                 </div>
               </div>
@@ -433,13 +433,13 @@
                     <span class="font-bold text-red-500">Dislikes</span>
                     <span class="text-[#7d571e]"
                       >{{ data.engagement.total_dislikes.toLocaleString() }} ·
-                      {{ (100 - likesRate).toFixed(1) }}%</span
+                      {{ dislikesRate.toFixed(1) }}%</span
                     >
                   </div>
                   <div class="h-3 bg-[#ffeadb] rounded-full overflow-hidden">
                     <div
                       class="h-full bg-red-300 rounded-full transition-all"
-                      :style="{ width: `${100 - likesRate}%` }"
+                      :style="{ width: `${dislikesRate}%` }"
                     />
                   </div>
                 </div>
@@ -952,8 +952,21 @@ const engagementCards = computed(() => {
 const likesRate = computed(() => {
   const e = data.value?.engagement
   if (!e) return 0
-  const total = e.total_likes + e.total_dislikes
-  return total > 0 ? (e.total_likes / total) * 100 : 0
+  return shareOf(e.total_likes, e.total_likes + e.total_dislikes)
+})
+
+// Cada lado se calcula por separado: `100 - likesRate` daba 100% de dislikes
+// con la BD vacía.
+const dislikesRate = computed(() => {
+  const e = data.value?.engagement
+  if (!e) return 0
+  return shareOf(e.total_dislikes, e.total_likes + e.total_dislikes)
+})
+
+const desktopRate = computed(() => {
+  const d = data.value?.devices
+  if (!d) return 0
+  return shareOf(d.desktop_visits, d.mobile_visits + d.desktop_visits)
 })
 
 const matchActivityRate = computed(() => {

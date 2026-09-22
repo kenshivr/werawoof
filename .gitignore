@@ -23,3 +23,5 @@ frontend/node_modules/
 
 # Previews locales de correos (no van al repo)
 preview-newsletter/
+# Local Pi runtime state
+.atl/

@@ -56,6 +56,11 @@ export default defineNuxtConfig({
   css: ['~/assets/css/fonts.css'],
 
   routeRules: {
+    /* Landing pages are prerendered at build time and served as static HTML
+       from the edge: nothing on them depends on per-request server data
+       (auth is only read on click, tracking and newsletter run client-side). */
+    '/': { prerender: true },
+    '/quienes-somos': { prerender: true },
     '/app': { redirect: '/app/dogs' },
   },
 

@@ -13,6 +13,35 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
   expone agentes ni APIs para terceros. Antes esa ruta devolvía el HTML de la app y la
   auditoría "Navegación con agentes" de Lighthouse la marcaba como JSON inválido.
 
+### Changed
+
+- Landing (`/`) y `/quienes-somos` se prerenderizan en el build y Vercel las sirve como HTML
+  estático desde el edge, sin esperar al servidor de Nuxt en cada visita (`routeRules` en
+  `nuxt.config.ts`). Nada en esas páginas depende de datos por request: el auth solo se lee al
+  hacer click en "Club", y el registro de visitas y el newsletter corren en el cliente. El resto
+  del sitio sigue con server rendering.
+
+## [1.1.1] - 2026-09-16
+
+### Added
+
+- Acceso al panel de administración desde el perfil: los usuarios con rol `admin` ven una
+  tarjeta "Panel de admin" en `/app/profile` que lleva a `/app/admin`. Hasta ahora la única
+  forma de entrar era escribir la URL, y la app instalada como PWA no tiene barra de
+  direcciones. El botón es solo un atajo: la autorización sigue en Postgres
+  (`get_admin_dashboard()` exige `is_admin()` y el `UPDATE` de `profiles.role` está revocado).
+  Getter `isAdmin` en el store de auth con sus tests.
+
+### Fixed
+
+- Panel de admin: los íconos `group`, `fingerprint` y `percent` no aparecían (se veía el
+  nombre del ícono en texto) porque faltaban en el subconjunto self-hosted de Material
+  Symbols. Fuente regenerada con los tres íconos y lista actualizada en `assets/css/fonts.css`.
+- Panel de admin: con la base de datos vacía las barras de Dislikes y Desktop mostraban
+  100.0 %, porque se calculaban como `100 - likes` y `100 - mobile`. Ahora cada lado se
+  calcula por separado con el helper `utils/percent.ts` (`shareOf`), que devuelve 0 cuando
+  no hay total; con datos, ambos lados siguen sumando 100 %.
+
 ## [1.1.0] - 2026-09-15
 
 ### Added
@@ -149,7 +178,8 @@ Redis y WebSockets) alojado en Railway. En septiembre de 2026 ese backend se
 reemplazó por completo por Supabase; la implementación en Go sigue en la
 historia de git hasta el commit `4033595`.
 
-[Unreleased]: https://github.com/kenshivr/werawoof/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/kenshivr/werawoof/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/kenshivr/werawoof/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/kenshivr/werawoof/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/kenshivr/werawoof/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/kenshivr/werawoof/compare/v1.0.0...v1.0.1

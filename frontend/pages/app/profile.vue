@@ -174,6 +174,25 @@
           </p>
         </div>
 
+        <!-- Admin access (role checked again server-side by get_admin_dashboard) -->
+        <div v-if="authStore.isAdmin" class="mt-10 w-full max-w-2xl mx-auto">
+          <NuxtLink
+            to="/app/admin"
+            class="flex items-center justify-between gap-4 bg-white border border-[#DBD8D0] rounded-2xl p-5 hover:border-[#B78F64] transition-all shadow-[0_4px_20px_rgba(113,62,24,0.07)]"
+          >
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[#713E18]">admin_panel_settings</span>
+              <div>
+                <p class="text-sm font-bold text-[#382615] font-jakarta">Panel de admin</p>
+                <p class="text-xs text-[#4f4539] font-jakarta">
+                  Usuarios, canes, matches y métricas del proyecto
+                </p>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-[#795832]">arrow_forward</span>
+          </NuxtLink>
+        </div>
+
         <!-- Danger zone -->
         <div
           class="mt-10 w-full max-w-2xl mx-auto border border-red-200 rounded-2xl p-6 bg-red-50/40"
@@ -648,6 +667,15 @@
             <p class="text-center mt-3 text-xs text-[#795832]/60 font-jakarta">
               Podés cambiar estos datos cuando quieras
             </p>
+            <!-- Admin access (role checked again server-side by get_admin_dashboard) -->
+            <NuxtLink
+              v-if="authStore.isAdmin"
+              to="/app/admin"
+              class="w-full mt-4 h-12 flex items-center justify-center gap-2 bg-white border border-[#DBD8D0] text-[#382615] rounded-xl text-sm font-bold font-jakarta hover:border-[#B78F64] transition-all"
+            >
+              <span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+              Panel de admin
+            </NuxtLink>
             <button
               type="button"
               class="w-full mt-2 py-3 text-red-400 text-sm font-bold rounded-xl hover:bg-red-50 transition-colors font-jakarta"
