@@ -85,8 +85,8 @@ WeraWoof was originally built with a Go + Gin backend (PostgreSQL, Redis, WebSoc
 - Per-page `canonical` and `og:url` on every public page (`useCanonical`).
 - `noindex, nofollow` on `/app/*` and the `/auth` utility pages (`login` and `register` stay indexable).
 - The 404 page returns a real HTTP 404, not a 200 that Google would treat as a valid page.
-- `llms.txt` for AI search engines, with their crawlers left unblocked in `robots.txt`.
-- JSON-LD structured data (`useJsonLd`): `Organization`, `WebSite` and `WebApplication` on the home page, `AboutPage` and `Person` on about us, `ContactPage` on contact.
+- `llms.txt` and `llms-full.txt` for AI search engines, with their crawlers left unblocked in `robots.txt`.
+- JSON-LD structured data (`useJsonLd`): `Organization`, `WebSite` and `WebApplication` on the home page, `AboutPage` and `Person` on about us, `ContactPage` on contact, `FAQPage` on the home page.
 - ARD manifest at `/.well-known/ai-catalog.json`.
 
 ---
@@ -346,7 +346,7 @@ werawoof/
     │   ├── setup.ts                   # Nitro globals + nodemailer mock for every spec
     │   └── mocks/                     # #supabase/server and nodemailer fakes
     ├── assets/css/fonts.css           # Self-hosted fonts
-    └── public/                        # Icons, manifest, OG image, robots.txt, llms.txt
+    └── public/                        # Icons, manifest, OG image, robots.txt, llms.txt, llms-full.txt
 ```
 
 ---

@@ -17,6 +17,41 @@ const SITE_URL = 'https://werawoof.com'
 const homeDescription =
   'Crea el perfil de tu perro, haz swipe, consigue matches y chatea con otros dueños para organizar paseos, playdates o cruzas. Gratis, en México.'
 
+const faqItems = [
+  {
+    question: '¿Qué es WeraWoof?',
+    answer:
+      'Es una app web gratuita para dueños de perros. Creas el perfil de tu perro, haces swipe entre perros cercanos, y cuando a los dos dueños les gusta la pareja, hacen match y pueden chatear para organizar un paseo o un playdate.',
+  },
+  {
+    question: '¿Es gratis?',
+    answer:
+      'Sí. Crear tu cuenta, el perfil de tu perro, los matches y el chat son gratis. No hay suscripciones ni compras dentro de la app.',
+  },
+  {
+    question: '¿Funciona en mi ciudad?',
+    answer:
+      'Sí. WeraWoof funciona en toda la República: comparte tu ubicación aproximada, elige un radio de 1 a 100 km y la app te muestra perros cerca de ti. Entre más gente de tu zona se una, más matches vas a ver.',
+  },
+  {
+    question: '¿Es solo para cruzas?',
+    answer:
+      'No. La mayoría busca amigos para su perro: compañeros de juego, de paseo o de parque. Si buscas una pareja para cruza, también puedes decirlo en el perfil.',
+  },
+  {
+    question: '¿Cómo instalo la app en el teléfono?',
+    answer:
+      'WeraWoof es una PWA: abre werawoof.com en Chrome (Android) o Safari (iPhone), entra al menú del navegador y elige "Agregar a la pantalla de inicio". Se instala como una app, sin pasar por la tienda.',
+  },
+  {
+    question: '¿Qué pasa con mis datos y la ubicación?',
+    answer:
+      'Guardamos tu perfil, las fotos de tu perro y tu ubicación aproximada (nunca la exacta) para calcular la distancia. Puedes borrar tu cuenta cuando quieras desde tu perfil.',
+    // The visible answer ends with a link to the privacy notice; the JSON-LD text stays plain.
+    privacyLink: true,
+  },
+]
+
 useJsonLd({
   '@context': 'https://schema.org',
   '@graph': [
@@ -60,6 +95,20 @@ useJsonLd({
       ],
       author: { '@id': `${SITE_URL}/#organization` },
       areaServed: { '@type': 'Country', name: 'México' },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${SITE_URL}/#faq`,
+      mainEntity: faqItems.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.privacyLink
+            ? `${item.answer} Los detalles están en nuestro Aviso de Privacidad.`
+            : item.answer,
+        },
+      })),
     },
   ],
 })
@@ -120,7 +169,7 @@ const handleClubClick = () => {
             sizes="100vw"
             width="1600"
             height="1066"
-            alt="Wera, a golden-colored dog, sitting happily in a sunny park."
+            alt="Wera, una perrita dorada, sentada feliz en un parque soleado."
             class="w-full h-full object-cover"
             fetchpriority="high"
           />
@@ -131,12 +180,12 @@ const handleClubClick = () => {
         <div class="relative z-10 w-full max-w-7xl mx-auto px-8">
           <div class="max-w-2xl mx-auto md:mx-0 text-center md:text-left">
             <h1 class="text-h1 font-h1 text-white mb-6 font-jakarta">
-              Encuentra al match perfecto para tu can
+              El Tinder para perros: encuentra amigos y paseos para tu perro
             </h1>
             <p class="text-body-lg text-white/90 mb-10 leading-relaxed">
-              Únete a la comunidad más chida para amantes de los canes. Ya sea para jugar, salir a
-              caminar o vivir nuevas aventuras, el mejor cuate de tu can está a un swipe de
-              distancia.
+              Únete a la comunidad más chida de dueños de perros en México. Ya sea para jugar, salir
+              a caminar o vivir nuevas aventuras, el mejor cuate de tu perro está a un swipe de
+              distancia. Gratis.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               <NuxtLink
@@ -165,7 +214,7 @@ const handleClubClick = () => {
               >El Proceso</span
             >
             <h2 class="text-h2 font-h2 text-on-surface font-jakarta">
-              Así de fácil es la felicidad
+              Cómo funciona WeraWoof en 3 pasos
             </h2>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
@@ -195,7 +244,7 @@ const handleClubClick = () => {
                 2. Swipe &amp; Conecta
               </h3>
               <p class="text-body-md text-on-surface-variant">
-                Explora canes y dueños de tu zona. Encuentra los que mejor se lleven con el tuyo.
+                Explora perros y dueños cerca de ti. Encuentra los que mejor se lleven con el tuyo.
               </p>
             </div>
             <div
@@ -227,7 +276,7 @@ const handleClubClick = () => {
                 :src="'/images/hand.webp'"
                 :srcset="'/images/hand-400.webp 400w, /images/hand.webp 640w'"
                 sizes="(min-width: 768px) 60vw, 100vw"
-                alt="Wera playing with a playful expression."
+                alt="Wera, la perrita que inspiró WeraWoof, jugando."
                 class="w-full h-full object-cover"
                 loading="lazy"
                 width="640"
@@ -287,12 +336,41 @@ const handleClubClick = () => {
         </div>
       </section>
 
+      <!-- FAQ -->
+      <section class="py-xl bg-[#DBD8D0]">
+        <div class="max-w-3xl mx-auto px-8">
+          <h2 class="text-h2 font-h2 text-on-surface font-jakarta text-center mb-12">
+            Preguntas frecuentes
+          </h2>
+          <div class="flex flex-col gap-4">
+            <details
+              v-for="item in faqItems"
+              :key="item.question"
+              class="bg-white p-6 rounded-2xl shadow-[0_4px_20px_rgba(113,62,24,0.08)]"
+            >
+              <summary class="cursor-pointer font-semibold text-on-surface font-jakarta">
+                {{ item.question }}
+              </summary>
+              <p class="text-body-md text-on-surface-variant mt-4">
+                {{ item.answer }}
+                <template v-if="item.privacyLink">
+                  Los detalles están en nuestro
+                  <NuxtLink to="/politica-de-privacidad" class="underline"
+                    >Aviso de Privacidad</NuxtLink
+                  >.
+                </template>
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
       <!-- CTA -->
       <section class="py-xl bg-primary text-on-primary">
         <div class="max-w-4xl mx-auto px-8 text-center">
           <h2 class="text-h1 font-h1 mb-6 font-jakarta">¿Listo para más colas meneando?</h2>
           <p class="text-body-lg mb-10 opacity-90">
-            Empieza hoy y encuentra al cuate que tu can ha estado esperando.
+            Crea el perfil de tu perro gratis y encuentra al cuate que ha estado esperando.
           </p>
           <NuxtLink
             to="/auth/register"

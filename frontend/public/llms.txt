@@ -1,18 +1,74 @@
 # WeraWoof
 
-> App web para dueños de perros: perfiles de canes, swipe, matches y chat en tiempo real para organizar paseos, playdates o cruzas. El contenido del usuario vive detrás de un login: solo estas páginas son públicas.
+> App web gratuita para dueños de perros en México: perfil del perro, swipe, matches y chat para organizar paseos, playdates o cruzas. Funciona con ubicación aproximada y un radio de 1 a 100 km, y se instala como PWA.
 
-## Páginas públicas
+## Qué es
 
-- [Inicio](https://werawoof.com/): landing con el funcionamiento de la app
-- [Comunidad](https://werawoof.com/comunidad): la comunidad WeraWoof
-- [Quiénes somos](https://werawoof.com/quienes-somos): historia y equipo del proyecto
-- [Contacto](https://werawoof.com/contacto): formulario de contacto
-- [Política de privacidad](https://werawoof.com/politica-de-privacidad): qué datos se guardan y cómo se usan
-- [Términos de servicio](https://werawoof.com/terminos-de-servicio): condiciones de uso de la plataforma
+WeraWoof es una app web para dueños de perros. Cada dueño crea el perfil de su perro, hace swipe entre perros cercanos y, cuando a los dos les gusta la pareja, hacen match y chatean para organizar un paseo, un playdate o una cruza.
+Funciona en toda la República Mexicana, es gratuita y no requiere tienda de aplicaciones: es una PWA que se instala desde el navegador.
+La hizo Brayan Vidal Romero, desarrollador de software, inspirada en Wera, una perrita real.
+
+## Cómo funciona
+
+1. Crea tu perfil: cuenta sobre ti y tu perro, su nivel de energía, sus juguetes favoritos y lo que lo hace único.
+2. Swipe y conecta: explora perros y dueños cerca de ti y encuentra los que mejor se lleven con el tuyo.
+3. A juntarse: cuando hay match, coordinen un encuentro seguro en un parque cercano.
+
+## Funciones
+
+- Perfil de cada perro con fotos, raza y nivel de energía.
+- Swipe para descubrir otros perros.
+- Match cuando el like es recíproco.
+- Chat en tiempo real entre dueños.
+- Cercanía por coordenadas, con radio de 1 a 100 km.
+- Lugares pet friendly.
+- Miembros verificados.
+- Inicio de sesión con correo o con Google.
+- PWA instalable en Android y iPhone.
+
+## Preguntas frecuentes
+
+**¿Qué es WeraWoof?**
+Es una app web gratuita para dueños de perros. Creas el perfil de tu perro, haces swipe entre perros cercanos, y cuando a los dos dueños les gusta la pareja, hacen match y pueden chatear para organizar un paseo o un playdate.
+
+**¿Es gratis?**
+Sí. Crear tu cuenta, el perfil de tu perro, los matches y el chat son gratis. No hay suscripciones ni compras dentro de la app.
+
+**¿Funciona en mi ciudad?**
+Sí. WeraWoof funciona en toda la República: comparte tu ubicación aproximada, elige un radio de 1 a 100 km y la app te muestra perros cerca de ti. Entre más gente de tu zona se una, más matches vas a ver.
+
+**¿Es solo para cruzas?**
+No. La mayoría busca amigos para su perro: compañeros de juego, de paseo o de parque. Si buscas una pareja para cruza, también puedes decirlo en el perfil.
+
+**¿Cómo instalo la app en el teléfono?**
+WeraWoof es una PWA: abre werawoof.com en Chrome (Android) o Safari (iPhone), entra al menú del navegador y elige "Agregar a la pantalla de inicio". Se instala como una app, sin pasar por la tienda.
+
+**¿Qué pasa con mis datos y la ubicación?**
+Guardamos tu perfil, las fotos de tu perro y tu ubicación aproximada (nunca la exacta) para calcular la distancia. Puedes borrar tu cuenta cuando quieras desde tu perfil.
+
+## Páginas
+
+- [WeraWoof: el Tinder para perros. Matches, playdates y chat](https://werawoof.com/): landing con el funcionamiento de la app y las preguntas frecuentes
+- [Quiénes somos: la historia de Wera](https://werawoof.com/quienes-somos): por qué nació la app y quién la hizo
+- [Comunidad: reseñas de dueños de perros](https://werawoof.com/comunidad): historias de dueños que encontraron amigos y paseos para su perro
+- [Contacto](https://werawoof.com/contacto): dudas, ideas, problemas y propuesta de lugares pet friendly
+- [Aviso de privacidad](https://werawoof.com/politica-de-privacidad): qué datos se guardan, para qué y cómo borrarlos
+- [Términos de servicio](https://werawoof.com/terminos-de-servicio): reglas de uso de cuentas, contenido, matches y chat
 - [Iniciar sesión](https://werawoof.com/auth/login): entrada a la app
-- [Crear cuenta](https://werawoof.com/auth/register): registro de usuario
+- [Crear cuenta gratis](https://werawoof.com/auth/register): registro con correo o con Google
 
-## Código
+## Datos y privacidad
 
-- [Repositorio en GitHub](https://github.com/kenshivr/werawoof): código fuente del proyecto (Nuxt 3 + Supabase, desplegado en Vercel)
+Se guardan el perfil, las fotos del perro y la ubicación aproximada, nunca la exacta; los demás usuarios solo ven la distancia en kilómetros. La cuenta se puede borrar desde el perfil.
+Detalles en el [Aviso de privacidad](https://werawoof.com/politica-de-privacidad).
+
+## Código y contacto
+
+- [Repositorio en GitHub](https://github.com/kenshivr/werawoof): código abierto, licencia MIT (Nuxt 3 + Supabase, desplegado en Vercel)
+- [Contacto](https://werawoof.com/contacto): formulario de contacto de la app
+- [Autor: Brayan Vidal Romero](https://kenshivr.github.io/Brayan/): portafolio del desarrollador
+
+## Optional
+
+- [Versión extendida de este archivo](https://werawoof.com/llms-full.txt): historia, términos y privacidad con más detalle
+- [Sitemap](https://werawoof.com/sitemap.xml): lista de páginas públicas

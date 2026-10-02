@@ -8,6 +8,11 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ### Added
 
+- `llms.txt` reescrito con el formato de llmstxt.org (resumen, funciones, preguntas frecuentes,
+  páginas, privacidad y código) y nuevo `llms-full.txt` con la historia, un resumen de los
+  términos y el detalle de privacidad.
+- Sección "Preguntas frecuentes" en la landing (seis preguntas con `<details>`) y su
+  `FAQPage` JSON-LD, generados desde la misma lista para que no se desfasen.
 - Datos estructurados JSON-LD: `Organization`, `WebSite` y `WebApplication` en la home,
   `AboutPage` y `Person` en quiénes somos, y `ContactPage` en contacto (composable
   `useJsonLd`). Antes el sitio no declaraba ningún schema.org.
@@ -32,6 +37,9 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ### Changed
 
+- Textos de la landing con las palabras de búsqueda reales ("Tinder para perros", "dueños de
+  perros", "cerca de ti", "gratis"), H2 descriptivo ("Cómo funciona WeraWoof en 3 pasos") y
+  `alt` de las imágenes en español. Quiénes somos abre con una frase que dice qué es la app.
 - Landing (`/`) y `/quienes-somos` se prerenderizan en el build y Vercel las sirve como HTML
   estático desde el edge, sin esperar al servidor de Nuxt en cada visita (`routeRules` en
   `nuxt.config.ts`). Nada en esas páginas depende de datos por request: el auth solo se lee al

@@ -91,6 +91,8 @@ useJsonLd({
               >
               <h2 class="text-h2 font-h2 text-on-surface font-jakarta mb-6">¿Qué es WeraWoof?</h2>
               <p class="text-body-lg text-on-surface-variant leading-relaxed mb-6">
+                WeraWoof es una app web gratuita para dueños de perros en México: creas el perfil de
+                tu perro, haces swipe, haces match y chateas para organizar paseos o playdates.
                 WeraWoof es una plataforma que conecta a dueños de canes para que sus peludos
                 encuentren compañeros de juego, aventura y cariño. Como Tinder, pero para los que ya
                 tienen dueño en el corazón.
