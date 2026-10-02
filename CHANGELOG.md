@@ -21,6 +21,12 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
   hacer click en "Club", y el registro de visitas y el newsletter corren en el cliente. El resto
   del sitio sigue con server rendering.
 
+### Fixed
+
+- El ícono de la pestaña del navegador era el favicon por defecto de Nuxt (las montañas verdes
+  del proyecto inicial). Ahora `favicon.ico` (16/32/48 px) y un `favicon-32.png` se generan
+  desde el ícono de huellas de la app, el mismo que ya usaban la PWA y el `apple-touch-icon`.
+
 ## [1.1.1] - 2026-09-16
 
 ### Added
