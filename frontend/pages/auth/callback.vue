@@ -1,5 +1,6 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
+useSeoMeta({ robots: 'noindex, nofollow' })
 
 /* Aterrizan acá el OAuth de Google y el link de confirmación de email.
    El módulo de Supabase intercambia el code (PKCE) solo al cargar la página;

@@ -79,6 +79,15 @@ WeraWoof was originally built with a Go + Gin backend (PostgreSQL, Redis, WebSoc
 | Mobile  | 100         | 100           | 100            | 100 | 0.9 s | 1.7 s |
 | Desktop | 100         | 100           | 100            | 100 | 0.4 s | 0.7 s |
 
+### SEO
+
+- `sitemap.xml` served by a server route, listing the six public pages.
+- Per-page `canonical` and `og:url` on every public page (`useCanonical`).
+- `noindex, nofollow` on `/app/*` and the `/auth` utility pages (`login` and `register` stay indexable).
+- The 404 page returns a real HTTP 404, not a 200 that Google would treat as a valid page.
+- `llms.txt` for AI search engines, with their crawlers left unblocked in `robots.txt`.
+- ARD manifest at `/.well-known/ai-catalog.json`.
+
 ---
 
 ## Features
@@ -320,6 +329,7 @@ werawoof/
     │   ├── MatchCelebration.vue
     │   └── EmojiPicker.client.vue
     ├── layouts/                       # app · public · onboarding · default
+    ├── composables/                   # useCanonical (per-page canonical + og:url) · usePostLoginPath
     ├── middleware/                     # auth · guest · admin (route guards)
     ├── plugins/
     │   ├── auth.client.ts             # Syncs the profile with the Supabase session
@@ -327,6 +337,7 @@ werawoof/
     ├── stores/                        # Pinia: auth · dogs · messages · reviews
     ├── server/
     │   ├── api/                       # contact · newsletter · track · account.delete
+    │   ├── routes/sitemap.xml.ts      # Sitemap of the public pages
     │   └── utils/mail.ts              # nodemailer + Gmail SMTP
     ├── types/                         # auth · dog · match · message · review
     │   └── database.types.ts          # Generated from the Supabase schema

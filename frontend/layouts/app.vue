@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const route = useRoute()
+useSeoMeta({ robots: 'noindex, nofollow' })
 
 const isActive = (path: string) =>
   path === '/app/dogs'

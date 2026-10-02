@@ -30,4 +30,5 @@
 
 <script setup lang="ts">
 definePageMeta({ layout: 'public' })
+useSeoMeta({ robots: 'noindex, nofollow' })
 </script>

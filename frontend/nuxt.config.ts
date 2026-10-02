@@ -15,6 +15,7 @@ export default defineNuxtConfig({
         { name: 'author', content: 'Brayan Vidal Romero' },
         { property: 'og:type', content: 'website' },
         { property: 'og:site_name', content: 'WeraWoof' },
+        { property: 'og:locale', content: 'es_MX' },
         {
           property: 'og:title',
           content: 'WeraWoof — Matches, playdates y chat para dueños de perros',
@@ -24,10 +25,13 @@ export default defineNuxtConfig({
           content:
             'Conecta a tu perro: perfiles, swipe, matches y chat en tiempo real para organizar playdates o cruzas.',
         },
-        { property: 'og:url', content: 'https://werawoof.com' },
         { property: 'og:image', content: 'https://werawoof.com/og-werawoof.png' },
         { property: 'og:image:width', content: '1200' },
         { property: 'og:image:height', content: '630' },
+        {
+          property: 'og:image:alt',
+          content: 'WeraWoof: matches, playdates y chat para dueños de perros',
+        },
         /* LinkedIn clasifica todo enlace compartido como "Article" (así lo
            modela su Share API) y toma de aquí la "Publish date" que muestra el
            Post Inspector. Fecha del lanzamiento en werawoof.com (1.0.0). */
@@ -62,6 +66,11 @@ export default defineNuxtConfig({
        (auth is only read on click, tracking and newsletter run client-side). */
     '/': { prerender: true },
     '/quienes-somos': { prerender: true },
+    '/comunidad': { prerender: true },
+    '/contacto': { prerender: true },
+    '/politica-de-privacidad': { prerender: true },
+    '/terminos-de-servicio': { prerender: true },
+    '/sitemap.xml': { prerender: true },
     '/app': { redirect: '/app/dogs' },
   },
 

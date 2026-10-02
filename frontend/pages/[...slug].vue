@@ -105,4 +105,9 @@
 
 <script setup lang="ts">
 definePageMeta({ layout: false })
+
+/* Real 404: without this the catch-all answers 200 (soft 404). */
+const event = useRequestEvent()
+if (import.meta.server && event) setResponseStatus(event, 404)
+useSeoMeta({ robots: 'noindex, nofollow' })
 </script>

@@ -1,2 +1,7 @@
+# AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended) are intentionally NOT blocked.
 User-Agent: *
-Disallow:
+Disallow: /app/
+Disallow: /auth/callback
+Disallow: /api/
+
+Sitemap: https://werawoof.com/sitemap.xml

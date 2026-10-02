@@ -79,6 +79,15 @@ WeraWoof nació con un backend en Go + Gin (PostgreSQL, Redis, WebSockets) aloja
 | Móvil       | 100         | 100           | 100             | 100 | 0.9 s | 1.7 s |
 | Escritorio  | 100         | 100           | 100             | 100 | 0.4 s | 0.7 s |
 
+### SEO
+
+- `sitemap.xml` generado por una server route, con las seis páginas públicas.
+- `canonical` y `og:url` propios en cada página pública (`useCanonical`).
+- `noindex, nofollow` en `/app/*` y en las páginas de utilidad de `/auth` (`login` y `register` siguen indexables).
+- La 404 responde con HTTP 404 real, no con un 200 que Google tome por página válida.
+- `llms.txt` para los buscadores con IA, sin bloquear a sus rastreadores en `robots.txt`.
+- Manifiesto ARD en `/.well-known/ai-catalog.json`.
+
 ---
 
 ## Funcionalidades
@@ -320,6 +329,7 @@ werawoof/
     │   ├── MatchCelebration.vue
     │   └── EmojiPicker.client.vue
     ├── layouts/                       # app · public · onboarding · default
+    ├── composables/                   # useCanonical (canonical + og:url por página) · usePostLoginPath
     ├── middleware/                     # auth · guest · admin (guards de ruta)
     ├── plugins/
     │   ├── auth.client.ts             # Sincroniza el perfil con la sesión de Supabase
@@ -327,6 +337,7 @@ werawoof/
     ├── stores/                        # Pinia: auth · dogs · messages · reviews
     ├── server/
     │   ├── api/                       # contact · newsletter · track · account.delete
+    │   ├── routes/sitemap.xml.ts      # Sitemap con las páginas públicas
     │   └── utils/mail.ts              # nodemailer + SMTP de Gmail
     ├── types/                         # auth · dog · match · message · review
     │   └── database.types.ts          # Generado desde el esquema de Supabase

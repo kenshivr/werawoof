@@ -1,5 +1,6 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
+useCanonical()
 
 const reviewsStore = useReviewsStore()
 const authStore = useAuthStore()

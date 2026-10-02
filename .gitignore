@@ -25,3 +25,6 @@ frontend/node_modules/
 preview-newsletter/
 # Local Pi runtime state
 .atl/
+
+odd
+/odd

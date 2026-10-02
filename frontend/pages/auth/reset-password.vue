@@ -34,6 +34,7 @@
 
 <script setup lang="ts">
 definePageMeta({ layout: 'default' })
+useSeoMeta({ robots: 'noindex, nofollow' })
 
 /* El link de recuperación llega con un code que el módulo de Supabase
    intercambia solo: al aterrizar acá ya hay sesión temporal activa. */

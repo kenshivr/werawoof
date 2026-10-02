@@ -12,6 +12,15 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
   nuevo, `/.well-known/ard.json`) con los datos del sitio y un catálogo vacío: WeraWoof no
   expone agentes ni APIs para terceros. Antes esa ruta devolvía el HTML de la app y la
   auditoría "Navegación con agentes" de Lighthouse la marcaba como JSON inválido.
+- `sitemap.xml` con las seis páginas públicas (server route en `server/routes/sitemap.xml.ts`,
+  prerenderizado en el build). Antes la URL devolvía el HTML de la app con 200.
+- `canonical` y `og:url` propios en cada página pública y en `/auth/login` y `/auth/register`
+  (composable `useCanonical`). Antes `og:url` apuntaba a la home en todas las rutas y no había
+  `canonical`, así que Google trataba `http://werawoof.com/` como una página aparte.
+- `og:locale` (`es_MX`) y `og:image:alt` en el head global.
+- `/comunidad`, `/contacto`, `/politica-de-privacidad` y `/terminos-de-servicio` se prerenderizan
+  en el build, igual que la landing. Las reseñas se cargan en el cliente y el envío del
+  formulario de contacto también, así que nada depende de datos por request.
 
 ### Changed
 
@@ -25,7 +34,14 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 - El ícono de la pestaña del navegador era el favicon por defecto de Nuxt (las montañas verdes
   del proyecto inicial). Ahora `favicon.ico` (16/32/48 px) y un `favicon-32.png` se generan
-  desde el ícono de huellas de la app, el mismo que ya usaban la PWA y el `apple-touch-icon`.
+  desde el ícono de huellas de la app, el mismo que ya usaban la PWA y el `apple-touch-icon`,
+  con fondo transparente: en la pestaña se ven solo las huellas, sin el cuadro crema.
+- La página 404 respondía HTTP 200 (soft 404). Ahora el servidor responde 404 y la página lleva
+  `noindex`.
+- `/app/*` y las páginas de utilidad de `/auth` (recuperar y restablecer contraseña, revisar
+  correo, callback) no tenían `noindex` y duplicaban la meta de la home. Ahora lo llevan.
+- `robots.txt` declara el sitemap y bloquea `/app/`, `/auth/callback` y `/api/`. Los rastreadores
+  de IA siguen sin bloquearse a propósito.
 
 ## [1.1.1] - 2026-09-16
 

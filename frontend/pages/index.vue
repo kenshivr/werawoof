@@ -1,5 +1,6 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
+useCanonical()
 
 const authStore = useAuthStore()
 const router = useRouter()

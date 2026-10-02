@@ -1,5 +1,6 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'public' })
+useCanonical()
 </script>
 
 <template>
