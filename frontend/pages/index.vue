@@ -13,6 +13,57 @@ useSeoMeta({
     'Crea el perfil de tu perro, haz swipe, consigue matches y chatea con otros dueños para organizar paseos, playdates o cruzas. Gratis, en México.',
 })
 
+const SITE_URL = 'https://werawoof.com'
+const homeDescription =
+  'Crea el perfil de tu perro, haz swipe, consigue matches y chatea con otros dueños para organizar paseos, playdates o cruzas. Gratis, en México.'
+
+useJsonLd({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}/#organization`,
+      name: 'WeraWoof',
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon-512.png`,
+      founder: { '@type': 'Person', '@id': `${SITE_URL}/#brayan`, name: 'Brayan Vidal Romero' },
+      sameAs: ['https://github.com/kenshivr/werawoof', 'https://www.instagram.com/kenshi.vr'],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      name: 'WeraWoof',
+      url: SITE_URL,
+      inLanguage: 'es-MX',
+      publisher: { '@id': `${SITE_URL}/#organization` },
+    },
+    {
+      '@type': 'WebApplication',
+      '@id': `${SITE_URL}/#app`,
+      name: 'WeraWoof',
+      url: SITE_URL,
+      applicationCategory: 'SocialNetworkingApplication',
+      operatingSystem: 'Web, Android (PWA)',
+      browserRequirements: 'Requires JavaScript',
+      inLanguage: 'es-MX',
+      isAccessibleForFree: true,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'MXN' },
+      image: `${SITE_URL}/og-werawoof.png`,
+      description: homeDescription,
+      featureList: [
+        'Perfil para cada perro con fotos, raza, edad y personalidad',
+        'Swipe para descubrir otros perros',
+        'Matches cuando el interés es mutuo',
+        'Chat en tiempo real entre dueños',
+        'Perros cercanos filtrados por radio',
+        'Lugares pet friendly',
+      ],
+      author: { '@id': `${SITE_URL}/#organization` },
+      areaServed: { '@type': 'Country', name: 'México' },
+    },
+  ],
+})
+
 const authStore = useAuthStore()
 const router = useRouter()
 

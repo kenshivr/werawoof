@@ -12,6 +12,33 @@ useSeoMeta({
   twitterDescription:
     'WeraWoof nació por Wera, una perrita real. Conoce la historia, a quién hizo la app y por qué queremos que ningún perro se quede sin amigos.',
 })
+
+const pageUrl = 'https://werawoof.com/quienes-somos'
+
+useJsonLd({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'AboutPage',
+      '@id': `${pageUrl}#aboutpage`,
+      url: pageUrl,
+      name: 'Quiénes somos: la historia de Wera · WeraWoof',
+      description:
+        'WeraWoof nació por Wera, una perrita real. Conoce la historia, a quién hizo la app y por qué queremos que ningún perro se quede sin amigos.',
+      isPartOf: { '@id': 'https://werawoof.com/#website' },
+      about: { '@id': 'https://werawoof.com/#organization' },
+      inLanguage: 'es-MX',
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://werawoof.com/#brayan',
+      name: 'Brayan Vidal Romero',
+      jobTitle: 'Desarrollador de Software',
+      url: pageUrl,
+      sameAs: ['https://kenshivr.github.io/Brayan/', 'https://www.instagram.com/kenshi.vr'],
+    },
+  ],
+})
 </script>
 
 <template>

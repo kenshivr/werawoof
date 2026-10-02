@@ -8,6 +8,9 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ### Added
 
+- Datos estructurados JSON-LD: `Organization`, `WebSite` y `WebApplication` en la home,
+  `AboutPage` y `Person` en quiénes somos, y `ContactPage` en contacto (composable
+  `useJsonLd`). Antes el sitio no declaraba ningún schema.org.
 - Manifiesto de Agentic Resource Discovery en `/.well-known/ai-catalog.json` (y su nombre
   nuevo, `/.well-known/ard.json`) con los datos del sitio y un catálogo vacío: WeraWoof no
   expone agentes ni APIs para terceros. Antes esa ruta devolvía el HTML de la app y la

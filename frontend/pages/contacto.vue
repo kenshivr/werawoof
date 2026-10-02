@@ -13,6 +13,20 @@ useSeoMeta({
     '¿Dudas, ideas o problemas con la app? Escríbenos y te respondemos. También puedes proponer lugares pet friendly para la comunidad.',
 })
 
+const pageUrl = 'https://werawoof.com/contacto'
+
+useJsonLd({
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  '@id': `${pageUrl}#contactpage`,
+  url: pageUrl,
+  name: 'Contacto · WeraWoof',
+  description:
+    '¿Dudas, ideas o problemas con la app? Escríbenos y te respondemos. También puedes proponer lugares pet friendly para la comunidad.',
+  isPartOf: { '@id': 'https://werawoof.com/#website' },
+  inLanguage: 'es-MX',
+})
+
 const form = reactive({
   name: '',
   phone: '',
