@@ -1,6 +1,17 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'public' })
 useCanonical()
+useSeoMeta({
+  title: 'Aviso de privacidad · WeraWoof',
+  description:
+    'Qué datos guarda WeraWoof (perfil, fotos de tu perro, ubicación aproximada), para qué y cómo borrarlos.',
+  ogTitle: 'Aviso de privacidad · WeraWoof',
+  ogDescription:
+    'Qué datos guarda WeraWoof (perfil, fotos de tu perro, ubicación aproximada), para qué y cómo borrarlos.',
+  twitterTitle: 'Aviso de privacidad · WeraWoof',
+  twitterDescription:
+    'Qué datos guarda WeraWoof (perfil, fotos de tu perro, ubicación aproximada), para qué y cómo borrarlos.',
+})
 </script>
 
 <template>

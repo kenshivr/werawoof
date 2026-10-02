@@ -490,6 +490,8 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
 
+useSeoMeta({ title: 'Editar perro' })
+
 definePageMeta({ layout: 'app', middleware: 'auth' })
 
 const route = useRoute()

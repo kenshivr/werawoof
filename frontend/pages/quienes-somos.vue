@@ -1,6 +1,17 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 useCanonical()
+useSeoMeta({
+  title: 'Quiénes somos: la historia de Wera · WeraWoof',
+  description:
+    'WeraWoof nació por Wera, una perrita real. Conoce la historia, a quién hizo la app y por qué queremos que ningún perro se quede sin amigos.',
+  ogTitle: 'Quiénes somos: la historia de Wera · WeraWoof',
+  ogDescription:
+    'WeraWoof nació por Wera, una perrita real. Conoce la historia, a quién hizo la app y por qué queremos que ningún perro se quede sin amigos.',
+  twitterTitle: 'Quiénes somos: la historia de Wera · WeraWoof',
+  twitterDescription:
+    'WeraWoof nació por Wera, una perrita real. Conoce la historia, a quién hizo la app y por qué queremos que ningún perro se quede sin amigos.',
+})
 </script>
 
 <template>

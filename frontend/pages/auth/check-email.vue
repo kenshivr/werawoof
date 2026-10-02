@@ -30,5 +30,5 @@
 
 <script setup lang="ts">
 definePageMeta({ layout: 'public' })
-useSeoMeta({ robots: 'noindex, nofollow' })
+useSeoMeta({ title: 'Revisa tu correo', robots: 'noindex, nofollow' })
 </script>

@@ -21,6 +21,11 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 - `/comunidad`, `/contacto`, `/politica-de-privacidad` y `/terminos-de-servicio` se prerenderizan
   en el build, igual que la landing. Las reseñas se cargan en el cliente y el envío del
   formulario de contacto también, así que nada depende de datos por request.
+- Título y descripción únicos en cada página pública y en `/auth/register`, con su `og:title`,
+  `og:description` y equivalentes de Twitter. Las páginas de la app y de auth llevan un título
+  corto ("Matches", "Mis perros", "Revisa tu correo"…) al que un `titleTemplate` en `app.vue`
+  agrega el sufijo `· WeraWoof`. Antes todas las rutas compartían el título y la descripción de
+  la home.
 
 ### Changed
 

@@ -964,6 +964,8 @@
 import draggable from 'vuedraggable'
 import type { Coords } from '~/stores/location'
 
+useSeoMeta({ title: 'Mi perfil' })
+
 definePageMeta({ layout: 'app', middleware: 'auth' })
 
 const authStore = useAuthStore()

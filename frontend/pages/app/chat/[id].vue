@@ -3,6 +3,8 @@ import type { Match } from '~/types/match'
 import type { Dog } from '~/types/dog'
 import type { Message } from '~/types/message'
 
+useSeoMeta({ title: 'Chat' })
+
 definePageMeta({ layout: 'app', middleware: 'auth', bottomNav: false })
 
 const route = useRoute()

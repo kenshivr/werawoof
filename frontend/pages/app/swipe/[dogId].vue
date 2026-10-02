@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Dog } from '~/types/dog'
 
+useSeoMeta({ title: 'Explorar' })
+
 definePageMeta({ layout: 'app', middleware: 'auth' })
 
 interface Candidate extends Dog {

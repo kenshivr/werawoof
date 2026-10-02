@@ -503,6 +503,8 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
 
+useSeoMeta({ title: 'Agregar perro' })
+
 definePageMeta({ layout: 'app', middleware: 'auth' })
 
 const dogsStore = useDogsStore()

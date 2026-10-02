@@ -783,6 +783,7 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({ title: 'Admin' })
 definePageMeta({ layout: 'app', middleware: ['auth', 'admin'] })
 
 interface Dog {

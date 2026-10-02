@@ -1,6 +1,17 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 useCanonical()
+useSeoMeta({
+  title: 'WeraWoof: el Tinder para perros. Matches, playdates y chat',
+  description:
+    'Crea el perfil de tu perro, haz swipe, consigue matches y chatea con otros dueños para organizar paseos, playdates o cruzas. Gratis, en México.',
+  ogTitle: 'WeraWoof: el Tinder para perros. Matches, playdates y chat',
+  ogDescription:
+    'Crea el perfil de tu perro, haz swipe, consigue matches y chatea con otros dueños para organizar paseos, playdates o cruzas. Gratis, en México.',
+  twitterTitle: 'WeraWoof: el Tinder para perros. Matches, playdates y chat',
+  twitterDescription:
+    'Crea el perfil de tu perro, haz swipe, consigue matches y chatea con otros dueños para organizar paseos, playdates o cruzas. Gratis, en México.',
+})
 
 const authStore = useAuthStore()
 const router = useRouter()

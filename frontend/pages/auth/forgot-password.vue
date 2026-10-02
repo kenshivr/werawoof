@@ -1,6 +1,6 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'public', middleware: 'guest', ssr: false })
-useSeoMeta({ robots: 'noindex, nofollow' })
+useSeoMeta({ title: 'Recuperar contraseña', robots: 'noindex, nofollow' })
 
 const authStore = useAuthStore()
 const email = ref('')

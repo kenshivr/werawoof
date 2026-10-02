@@ -1,6 +1,17 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 useCanonical()
+useSeoMeta({
+  title: 'Términos de servicio · WeraWoof',
+  description:
+    'Reglas de uso de WeraWoof: cuentas, contenido, matches y chat entre dueños de perros.',
+  ogTitle: 'Términos de servicio · WeraWoof',
+  ogDescription:
+    'Reglas de uso de WeraWoof: cuentas, contenido, matches y chat entre dueños de perros.',
+  twitterTitle: 'Términos de servicio · WeraWoof',
+  twitterDescription:
+    'Reglas de uso de WeraWoof: cuentas, contenido, matches y chat entre dueños de perros.',
+})
 </script>
 
 <template>

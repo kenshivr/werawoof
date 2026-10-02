@@ -157,6 +157,7 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({ title: 'Mis perros' })
 definePageMeta({ layout: 'app', middleware: 'auth' })
 
 const dogsStore = useDogsStore()

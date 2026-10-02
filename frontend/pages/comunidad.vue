@@ -1,6 +1,17 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 useCanonical()
+useSeoMeta({
+  title: 'Comunidad: reseñas de dueños de perros · WeraWoof',
+  description:
+    'Historias reales de dueños que encontraron amigos, paseos y playdates para su perro en WeraWoof. Lee las reseñas o deja la tuya.',
+  ogTitle: 'Comunidad: reseñas de dueños de perros · WeraWoof',
+  ogDescription:
+    'Historias reales de dueños que encontraron amigos, paseos y playdates para su perro en WeraWoof. Lee las reseñas o deja la tuya.',
+  twitterTitle: 'Comunidad: reseñas de dueños de perros · WeraWoof',
+  twitterDescription:
+    'Historias reales de dueños que encontraron amigos, paseos y playdates para su perro en WeraWoof. Lee las reseñas o deja la tuya.',
+})
 
 const reviewsStore = useReviewsStore()
 const authStore = useAuthStore()

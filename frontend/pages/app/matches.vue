@@ -146,6 +146,8 @@
 import type { Match } from '~/types/match'
 import type { Dog } from '~/types/dog'
 
+useSeoMeta({ title: 'Matches' })
+
 definePageMeta({ layout: 'app', middleware: 'auth' })
 
 const dogsStore = useDogsStore()

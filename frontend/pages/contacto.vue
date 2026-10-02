@@ -1,6 +1,17 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 useCanonical()
+useSeoMeta({
+  title: 'Contacto · WeraWoof',
+  description:
+    '¿Dudas, ideas o problemas con la app? Escríbenos y te respondemos. También puedes proponer lugares pet friendly para la comunidad.',
+  ogTitle: 'Contacto · WeraWoof',
+  ogDescription:
+    '¿Dudas, ideas o problemas con la app? Escríbenos y te respondemos. También puedes proponer lugares pet friendly para la comunidad.',
+  twitterTitle: 'Contacto · WeraWoof',
+  twitterDescription:
+    '¿Dudas, ideas o problemas con la app? Escríbenos y te respondemos. También puedes proponer lugares pet friendly para la comunidad.',
+})
 
 const form = reactive({
   name: '',
