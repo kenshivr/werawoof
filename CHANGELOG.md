@@ -6,6 +6,8 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-02
+
 ### Added
 
 - `llms.txt` reescrito con el formato de llmstxt.org (resumen, funciones, preguntas frecuentes,
@@ -216,7 +218,8 @@ Redis y WebSockets) alojado en Railway. En septiembre de 2026 ese backend se
 reemplazó por completo por Supabase; la implementación en Go sigue en la
 historia de git hasta el commit `4033595`.
 
-[Unreleased]: https://github.com/kenshivr/werawoof/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/kenshivr/werawoof/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/kenshivr/werawoof/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/kenshivr/werawoof/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/kenshivr/werawoof/compare/v1.0.2...v1.1.0
 [1.0.2]: https://github.com/kenshivr/werawoof/compare/v1.0.1...v1.0.2
