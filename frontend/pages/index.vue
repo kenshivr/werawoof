@@ -82,7 +82,12 @@ useJsonLd({
       browserRequirements: 'Requires JavaScript',
       inLanguage: 'es-MX',
       isAccessibleForFree: true,
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'MXN' },
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'MXN',
+        areaServed: { '@type': 'Country', name: 'México' },
+      },
       image: `${SITE_URL}/og-werawoof.png`,
       description: homeDescription,
       featureList: [
@@ -94,7 +99,6 @@ useJsonLd({
         'Lugares pet friendly',
       ],
       author: { '@id': `${SITE_URL}/#organization` },
-      areaServed: { '@type': 'Country', name: 'México' },
     },
     {
       '@type': 'FAQPage',
