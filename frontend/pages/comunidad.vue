@@ -85,6 +85,23 @@ async function submitReview() {
       </section>
 
       <div class="max-w-5xl mx-auto w-full px-6 py-14 flex flex-col gap-14">
+        <!-- Intro: static text so the page says what the community is even before reviews load -->
+        <section class="max-w-3xl mx-auto text-center">
+          <h2 class="text-2xl md:text-3xl font-bold text-[#7d571e] font-jakarta mb-4">
+            Dueños de perros que se ayudan entre sí
+          </h2>
+          <p class="text-[#4f4539] leading-relaxed mb-4">
+            La comunidad de WeraWoof son dueños de perros de toda la República Mexicana que usan la
+            app para encontrar amigos de paseo y de juego para su perro. Aquí cuentan cómo les fue:
+            con quién hicieron match, a qué parque fueron y cómo se llevaron sus perros.
+          </p>
+          <p class="text-[#4f4539] leading-relaxed">
+            Las reseñas las escriben usuarios registrados, una por cuenta, con una calificación de 1
+            a 5 estrellas. Si ya usaste WeraWoof, inicia sesión y deja la tuya: ayuda a otros dueños
+            a animarse a su primer playdate.
+          </p>
+        </section>
+
         <!-- Reviews grid -->
         <section>
           <!-- Loading -->

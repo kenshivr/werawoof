@@ -206,7 +206,7 @@ const copy = computed(() =>
           <div class="w-full max-w-md space-y-6">
             <!-- Header -->
             <div class="text-center md:text-left">
-              <h2 class="text-h2 font-h2 text-on-surface mb-2 font-jakarta">{{ copy.heading }}</h2>
+              <h1 class="text-h2 font-h2 text-on-surface mb-2 font-jakarta">{{ copy.heading }}</h1>
               <p class="text-body-md text-on-surface-variant">
                 <span class="hidden md:inline">
                   {{ copy.desktopSubText }}

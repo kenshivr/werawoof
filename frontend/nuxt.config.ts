@@ -4,7 +4,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      htmlAttrs: { lang: 'es' },
+      htmlAttrs: { lang: 'es-MX' },
       title: 'WeraWoof — Matches, playdates y chat para dueños de perros',
       meta: [
         {

@@ -1,5 +1,7 @@
 const SITE_URL = 'https://werawoof.com'
 
+/* lastmod is updated by hand, only when that page's content changes. A build date would mark
+   every page as changed on each deploy, and Google ignores lastmod once it proves inaccurate. */
 const pages = [
   { path: '/', lastmod: '2026-10-02', changefreq: 'weekly', priority: '1.0' },
   { path: '/quienes-somos', lastmod: '2026-10-02', changefreq: 'monthly', priority: '0.7' },

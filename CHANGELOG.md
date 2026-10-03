@@ -6,6 +6,21 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+### Added
+
+- `/comunidad` abre con un texto que explica quiénes forman la comunidad y cómo se escriben
+  las reseñas. Antes la página solo tenía el título y la lista de reseñas, que se carga en el
+  navegador, así que Google veía una página casi vacía.
+
+### Changed
+
+- El idioma del sitio se declara como `es-MX` en lugar de `es`.
+
+### Fixed
+
+- `/auth/login` y `/auth/register` no tenían H1: el título del formulario ("Crea tu cuenta",
+  "Bienvenido de nuevo") ahora es el H1 de la página, con el mismo estilo.
+
 ## [1.2.0] - 2026-10-02
 
 ### Added
