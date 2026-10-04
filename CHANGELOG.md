@@ -6,6 +6,8 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-04
+
 ### Added
 
 - Sección "Guías" con cuatro artículos (playdate seguro, parques pet friendly en CDMX, cómo
@@ -13,6 +15,9 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
   `/guias/<slug>`, prerenderizadas, con título, descripción, canonical, `Article` y
   `BreadcrumbList` JSON-LD propios. Los textos viven en `frontend/content/guias.ts`. Enlazadas
   desde el footer y la landing, y listadas en `sitemap.xml`, `llms.txt` y `llms-full.txt`.
+- Kit de marca para redes en `docs/brand/`: logos en alta resolución con fondo transparente y
+  piezas para perfil, post, post vertical, historia y portadas de Facebook, X, LinkedIn y
+  YouTube, generadas desde `redes.html` con `render-redes.sh`.
 - `/comunidad` abre con un texto que explica quiénes forman la comunidad y cómo se escriben
   las reseñas. Antes la página solo tenía el título y la lista de reseñas, que se carga en el
   navegador, así que Google veía una página casi vacía.
@@ -238,7 +243,8 @@ Redis y WebSockets) alojado en Railway. En septiembre de 2026 ese backend se
 reemplazó por completo por Supabase; la implementación en Go sigue en la
 historia de git hasta el commit `4033595`.
 
-[Unreleased]: https://github.com/kenshivr/werawoof/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/kenshivr/werawoof/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/kenshivr/werawoof/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/kenshivr/werawoof/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/kenshivr/werawoof/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/kenshivr/werawoof/compare/v1.0.2...v1.1.0
