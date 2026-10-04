@@ -8,6 +8,11 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ### Added
 
+- Sección "Guías" con cuatro artículos (playdate seguro, parques pet friendly en CDMX, cómo
+  socializar a un perro adulto o tímido y qué es un Tinder para perros): `/guias` y
+  `/guias/<slug>`, prerenderizadas, con título, descripción, canonical, `Article` y
+  `BreadcrumbList` JSON-LD propios. Los textos viven en `frontend/content/guias.ts`. Enlazadas
+  desde el footer y la landing, y listadas en `sitemap.xml`, `llms.txt` y `llms-full.txt`.
 - `/comunidad` abre con un texto que explica quiénes forman la comunidad y cómo se escriben
   las reseñas. Antes la página solo tenía el título y la lista de reseñas, que se carga en el
   navegador, así que Google veía una página casi vacía.

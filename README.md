@@ -81,10 +81,11 @@ WeraWoof nació con un backend en Go + Gin (PostgreSQL, Redis, WebSockets) aloja
 
 ### SEO
 
-- `sitemap.xml` generado por una server route, con las seis páginas públicas.
+- `sitemap.xml` generado por una server route, con las páginas públicas y las cuatro guías.
 - `canonical` y `og:url` propios en cada página pública (`useCanonical`).
 - `noindex, nofollow` en `/app/*` y en las páginas de utilidad de `/auth` (`login` y `register` siguen indexables).
 - La 404 responde con HTTP 404 real, no con un 200 que Google tome por página válida.
+- Sección de guías (`/guias` y `/guias/<slug>`, prerenderizadas), con los textos en `frontend/content/guias.ts` y `Article` + `BreadcrumbList` JSON-LD por guía.
 - `llms.txt` y `llms-full.txt` para los buscadores con IA, sin bloquear a sus rastreadores en `robots.txt`.
 - Datos estructurados JSON-LD (`useJsonLd`): `Organization`, `WebSite` y `WebApplication` en la home, `AboutPage` y `Person` en quiénes somos, `ContactPage` en contacto, `FAQPage` en la home.
 - Manifiesto ARD en `/.well-known/ai-catalog.json`.
@@ -116,6 +117,7 @@ WeraWoof nació con un backend en Go + Gin (PostgreSQL, Redis, WebSockets) aloja
 ### 🌎 Comunidad
 
 - Página pública `/comunidad` con reseñas de los miembros (una por usuario, editable)
+- Guías para dueños de perros (`/guias`): cuatro artículos sobre playdates, parques en CDMX, socialización y cómo funciona una app tipo Tinder para perros
 - Landing, quiénes somos, formulario de contacto, newsletter y páginas legales, todas públicas
 
 ### 🔐 Autenticación
@@ -311,6 +313,7 @@ werawoof/
     ├── pages/
     │   ├── index.vue                  # Landing
     │   ├── comunidad.vue              # Reseñas públicas
+    │   ├── guias/                     # Índice de guías y artículo (textos en content/guias.ts)
     │   ├── quienes-somos.vue          # Quiénes somos
     │   ├── contacto.vue               # Formulario de contacto
     │   ├── politica-de-privacidad.vue · terminos-de-servicio.vue

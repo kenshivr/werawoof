@@ -366,6 +366,10 @@ const handleClubClick = () => {
               </p>
             </details>
           </div>
+          <p class="text-body-md text-on-surface-variant text-center mt-8">
+            ¿Quieres más consejos para tu perro?
+            <NuxtLink to="/guias" class="underline font-semibold">Lee nuestras guías</NuxtLink>.
+          </p>
         </div>
       </section>
 

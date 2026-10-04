@@ -97,11 +97,27 @@ Fuente: https://werawoof.com/politica-de-privacidad (última actualización: sep
 - Menores: la app está dirigida a mayores de 18 años y no recopila intencionalmente datos de menores.
 - Contacto para temas de privacidad: werawoofapp@gmail.com.
 
+## Guías
+
+WeraWoof publica cuatro guías en español de México, de unas 800 a 1200 palabras cada una:
+
+- Cómo organizar un playdate seguro para tu perro: elegir un compañero de tamaño y energía parecidos, un lugar neutral y presentarlos con calma; señales de que el juego va bien y de cuándo parar; salud y seguridad antes de salir.
+- Parques pet friendly en CDMX para pasear y socializar a tu perro: parques conocidos por sus paseadores de perros (Parque México, Parque España, Bosque de Chapultepec, Parque Lincoln y Parque Hundido), cómo elegir según el carácter del perro y por qué hay que confirmar en el lugar las reglas de correa, horarios y áreas para perros, que pueden cambiar.
+- Cómo socializar a un perro adulto o tímido: señales de incomodidad, distancia cómoda, paseo en paralelo, presentación con un solo perro tranquilo, lo que no conviene hacer y cuándo consultar a un veterinario o entrenador.
+- Tinder para perros: qué es y cómo funciona: perfil del perro, swipe, match y chat; para qué se usa, cómo usarla con seguridad y preguntas frecuentes sobre WeraWoof.
+
+Índice de las guías: https://werawoof.com/guias
+
 ## Páginas
 
 - [WeraWoof: el Tinder para perros. Matches, playdates y chat](https://werawoof.com/): landing con el funcionamiento de la app y las preguntas frecuentes
 - [Quiénes somos: la historia de Wera](https://werawoof.com/quienes-somos): por qué nació la app y quién la hizo
 - [Comunidad: reseñas de dueños de perros](https://werawoof.com/comunidad): historias de dueños que encontraron amigos y paseos para su perro
+- [Guías para dueños de perros](https://werawoof.com/guias): consejos prácticos sobre playdates, parques y socialización
+- [Cómo organizar un playdate seguro para tu perro](https://werawoof.com/guias/como-organizar-un-playdate-seguro-para-tu-perro): cómo elegir al compañero, el lugar y la primera presentación
+- [Parques pet friendly en CDMX para pasear y socializar a tu perro](https://werawoof.com/guias/parques-pet-friendly-cdmx-para-pasear-y-socializar-a-tu-perro): parques conocidos de la Ciudad de México y qué confirmar antes de ir
+- [Cómo socializar a un perro adulto o tímido](https://werawoof.com/guias/como-socializar-a-un-perro-adulto-o-timido): pasos graduales, señales de estrés y cuándo pedir ayuda
+- [Tinder para perros: qué es y cómo funciona](https://werawoof.com/guias/tinder-para-perros-que-es-y-como-funciona): perfil, swipe, match y chat para que un perro conozca amigos
 - [Contacto](https://werawoof.com/contacto): dudas, ideas, problemas y propuesta de lugares pet friendly
 - [Aviso de privacidad](https://werawoof.com/politica-de-privacidad): qué datos se guardan, para qué y cómo borrarlos
 - [Términos de servicio](https://werawoof.com/terminos-de-servicio): reglas de uso de cuentas, contenido, matches y chat

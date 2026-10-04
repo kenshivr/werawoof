@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <title>WeraWoof — kit de redes</title>
+    <!--
+      Fuente del kit de redes (docs/brand/redes/*.png). Cada formato se elige con ?f=<formato>.
+      Render: docs/brand/render-redes.sh (Brave/Chrome headless, tamaño exacto, escala 1).
+    -->
+    <style>
+      @font-face {
+        font-family: 'Plus Jakarta Sans';
+        font-weight: 800;
+        src: url('../../frontend/public/fonts/jakarta-800.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Be Vietnam Pro';
+        font-weight: 500;
+        src: url('../../frontend/public/fonts/vietnam-500.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Be Vietnam Pro';
+        font-weight: 600;
+        src: url('../../frontend/public/fonts/vietnam-600.woff2') format('woff2');
+      }
+      :root {
+        --cream: #fff8f5;
+        --peach: #ffddb5;
+        --orange: #e9931f;
+        --ink: #382615;
+        --muted: #5a4030;
+        --brown: #7d571e;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        background: var(--cream);
+        font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+        color: var(--ink);
+      }
+      .glow {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--peach) 0%, rgba(255, 221, 181, 0) 68%);
+      }
+      .paw {
+        position: absolute;
+        opacity: 0.08;
+      }
+      .stack {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .row {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.9em;
+      }
+      h1 {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-weight: 800;
+        line-height: 1.08;
+        letter-spacing: -0.025em;
+      }
+      h1 em {
+        font-style: normal;
+        color: var(--orange);
+      }
+      .sub {
+        color: var(--muted);
+        font-weight: 500;
+        line-height: 1.4;
+      }
+      .url {
+        font-weight: 600;
+        color: var(--brown);
+        display: flex;
+        align-items: center;
+        gap: 0.6em;
+      }
+      .bar {
+        display: flex;
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      .bar span:first-child {
+        background: var(--orange);
+        flex: 1;
+      }
+      .bar span:last-child {
+        background: #7d3e16;
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      const LOGO = 'logo-horizontal.png'
+      const PAW = 'logo-huella.png'
+      const TITLE = 'Encuentra <em>amigos</em><br />para tu perro'
+      const SUB = 'Matches, playdates y chat en tiempo real para dueños de perros en México.'
+
+      const paws = (list) =>
+        list
+          .map(([x, y, w, r]) => `<img class="paw" src="${PAW}" alt="" style="left:${x}px;top:${y}px;width:${w}px;transform:rotate(${r}deg)" />`)
+          .join('')
+      const glow = (x, y, s) => `<div class="glow" style="left:${x}px;top:${y}px;width:${s}px;height:${s}px"></div>`
+      const bar = (w, h) => `<div class="bar" style="width:${w}px;height:${h}px"><span></span><span></span></div>`
+
+      // Each format: [width, height, html]. Text stays inside each network's safe zone.
+      const formats = {
+        // Profile picture: every network crops it to a circle, so the paw sits well inside it.
+        perfil: [1080, 1080, `
+          <div class="stack"><img src="${PAW}" alt="WeraWoof" style="width:700px" /></div>`],
+        // Feed post, square.
+        post: [1080, 1080, `
+          ${glow(420, -320, 1000)}
+          ${paws([[60, 820, 220, -20], [860, 90, 160, 18]])}
+          <div class="stack" style="padding:0 90px">
+            <img src="${LOGO}" alt="WeraWoof" style="width:560px" />
+            <h1 style="font-size:92px;margin-top:70px">${TITLE}</h1>
+            <p class="sub" style="font-size:34px;margin-top:36px;max-width:820px">${SUB}</p>
+            <p class="url" style="font-size:34px;margin-top:56px">werawoof.com</p>
+          </div>`],
+        // Feed post, portrait 4:5 (best reach on Instagram).
+        'post-vertical': [1080, 1350, `
+          ${glow(380, -300, 1100)}
+          ${paws([[40, 1080, 240, -20], [870, 120, 170, 18], [820, 900, 120, 30]])}
+          <div class="stack" style="padding:0 90px">
+            <img src="${LOGO}" alt="WeraWoof" style="width:600px" />
+            <h1 style="font-size:100px;margin-top:90px">${TITLE}</h1>
+            <p class="sub" style="font-size:36px;margin-top:44px;max-width:840px">${SUB}</p>
+            <div style="margin-top:70px">${bar(260, 10)}</div>
+            <p class="url" style="font-size:38px;margin-top:40px">werawoof.com</p>
+          </div>`],
+        // Stories, reels cover, TikTok. Keeps 250px free top and bottom for the app UI.
+        historia: [1080, 1920, `
+          ${glow(300, -260, 1200)}
+          ${paws([[40, 1560, 260, -20], [860, 300, 180, 18], [70, 330, 120, -8]])}
+          <div class="stack" style="padding:250px 90px">
+            <img src="${LOGO}" alt="WeraWoof" style="width:760px" />
+            <h1 style="font-size:104px;margin-top:110px">${TITLE}</h1>
+            <p class="sub" style="font-size:40px;margin-top:50px;max-width:860px">${SUB}</p>
+            <p class="url" style="font-size:42px;margin-top:90px">werawoof.com</p>
+          </div>`],
+        // Facebook page cover. Mobile crops the sides: content stays in the central ~1100px.
+        'portada-facebook': [1640, 624, `
+          ${glow(900, -420, 1100)}
+          ${paws([[90, 420, 180, -20], [1420, 60, 150, 18]])}
+          <div class="stack">
+            <img src="${LOGO}" alt="WeraWoof" style="width:600px" />
+            <p class="sub" style="font-size:40px;margin-top:40px">Matches, playdates y chat para tu perro</p>
+            <p class="url" style="font-size:34px;margin-top:30px">werawoof.com</p>
+          </div>`],
+        // X (Twitter) header. The profile picture covers the bottom-left corner.
+        'portada-x': [1500, 500, `
+          ${glow(820, -380, 1000)}
+          ${paws([[1290, 300, 160, -18], [1330, 30, 110, 20]])}
+          <div class="stack" style="padding-left:260px">
+            <img src="${LOGO}" alt="WeraWoof" style="width:520px" />
+            <p class="sub" style="font-size:36px;margin-top:34px">Matches, playdates y chat para tu perro</p>
+            <p class="url" style="font-size:30px;margin-top:24px">werawoof.com</p>
+          </div>`],
+        // LinkedIn company page cover.
+        'portada-linkedin': [1128, 191, `
+          ${glow(640, -300, 700)}
+          ${paws([[1000, 90, 90, -18]])}
+          <div class="row" style="padding-left:220px;gap:40px">
+            <img src="${LOGO}" alt="WeraWoof" style="width:300px" />
+            <p class="sub" style="font-size:24px;text-align:left">Matches, playdates y chat<br />para dueños de perros en México</p>
+          </div>`],
+        // YouTube banner. Only the central 1546x423 is visible on every device.
+        'portada-youtube': [2560, 1440, `
+          ${glow(1400, -100, 1300)}
+          ${paws([[560, 900, 220, -20], [1760, 450, 170, 18]])}
+          <div class="stack">
+            <img src="${LOGO}" alt="WeraWoof" style="width:820px" />
+            <p class="sub" style="font-size:52px;margin-top:44px">Matches, playdates y chat para tu perro · werawoof.com</p>
+          </div>`],
+      }
+
+      const f = new URLSearchParams(location.search).get('f') || 'post'
+      const [w, h, html] = formats[f]
+      document.documentElement.style.width = document.body.style.width = w + 'px'
+      document.documentElement.style.height = document.body.style.height = h + 'px'
+      document.getElementById('root').innerHTML = html
+      document.title = `WeraWoof — ${f} ${w}×${h}`
+    </script>
+  </body>
+</html>

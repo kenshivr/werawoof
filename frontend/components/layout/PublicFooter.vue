@@ -128,6 +128,11 @@ async function subscribeNewsletter() {
                   >Comunidad</NuxtLink
                 >
               </li>
+              <li>
+                <NuxtLink to="/guias" class="hover:text-[#F4C07D] transition-colors"
+                  >Guías</NuxtLink
+                >
+              </li>
             </ul>
           </div>
         </div>

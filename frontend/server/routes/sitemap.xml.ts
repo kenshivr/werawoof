@@ -1,3 +1,5 @@
+import { guias } from '../../content/guias'
+
 const SITE_URL = 'https://werawoof.com'
 
 /* lastmod is updated by hand, only when that page's content changes. A build date would mark
@@ -6,6 +8,13 @@ const pages = [
   { path: '/', lastmod: '2026-10-02', changefreq: 'weekly', priority: '1.0' },
   { path: '/quienes-somos', lastmod: '2026-10-02', changefreq: 'monthly', priority: '0.7' },
   { path: '/comunidad', lastmod: '2026-10-02', changefreq: 'weekly', priority: '0.7' },
+  { path: '/guias', lastmod: '2026-10-04', changefreq: 'weekly', priority: '0.8' },
+  ...guias.map((g) => ({
+    path: `/guias/${g.slug}`,
+    lastmod: g.dateModified,
+    changefreq: 'monthly',
+    priority: '0.7',
+  })),
   { path: '/contacto', lastmod: '2026-10-02', changefreq: 'yearly', priority: '0.5' },
   {
     path: '/politica-de-privacidad',

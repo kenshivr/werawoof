@@ -51,6 +51,11 @@ Guardamos tu perfil, las fotos de tu perro y tu ubicación aproximada (nunca la 
 - [WeraWoof: el Tinder para perros. Matches, playdates y chat](https://werawoof.com/): landing con el funcionamiento de la app y las preguntas frecuentes
 - [Quiénes somos: la historia de Wera](https://werawoof.com/quienes-somos): por qué nació la app y quién la hizo
 - [Comunidad: reseñas de dueños de perros](https://werawoof.com/comunidad): historias de dueños que encontraron amigos y paseos para su perro
+- [Guías para dueños de perros](https://werawoof.com/guias): consejos prácticos sobre playdates, parques y socialización
+- [Cómo organizar un playdate seguro para tu perro](https://werawoof.com/guias/como-organizar-un-playdate-seguro-para-tu-perro): cómo elegir al compañero, el lugar y la primera presentación
+- [Parques pet friendly en CDMX para pasear y socializar a tu perro](https://werawoof.com/guias/parques-pet-friendly-cdmx-para-pasear-y-socializar-a-tu-perro): parques conocidos de la Ciudad de México y qué confirmar antes de ir
+- [Cómo socializar a un perro adulto o tímido](https://werawoof.com/guias/como-socializar-a-un-perro-adulto-o-timido): pasos graduales, señales de estrés y cuándo pedir ayuda
+- [Tinder para perros: qué es y cómo funciona](https://werawoof.com/guias/tinder-para-perros-que-es-y-como-funciona): perfil, swipe, match y chat para que un perro conozca amigos
 - [Contacto](https://werawoof.com/contacto): dudas, ideas, problemas y propuesta de lugares pet friendly
 - [Aviso de privacidad](https://werawoof.com/politica-de-privacidad): qué datos se guardan, para qué y cómo borrarlos
 - [Términos de servicio](https://werawoof.com/terminos-de-servicio): reglas de uso de cuentas, contenido, matches y chat

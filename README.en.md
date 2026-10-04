@@ -81,10 +81,11 @@ WeraWoof was originally built with a Go + Gin backend (PostgreSQL, Redis, WebSoc
 
 ### SEO
 
-- `sitemap.xml` served by a server route, listing the six public pages.
+- `sitemap.xml` served by a server route, listing the public pages and the four guides.
 - Per-page `canonical` and `og:url` on every public page (`useCanonical`).
 - `noindex, nofollow` on `/app/*` and the `/auth` utility pages (`login` and `register` stay indexable).
 - The 404 page returns a real HTTP 404, not a 200 that Google would treat as a valid page.
+- Guides section (`/guias` and `/guias/<slug>`, prerendered), with the texts in `frontend/content/guias.ts` and per-guide `Article` + `BreadcrumbList` JSON-LD (Spanish content).
 - `llms.txt` and `llms-full.txt` for AI search engines, with their crawlers left unblocked in `robots.txt`.
 - JSON-LD structured data (`useJsonLd`): `Organization`, `WebSite` and `WebApplication` on the home page, `AboutPage` and `Person` on about us, `ContactPage` on contact, `FAQPage` on the home page.
 - ARD manifest at `/.well-known/ai-catalog.json`.
@@ -116,6 +117,7 @@ WeraWoof was originally built with a Go + Gin backend (PostgreSQL, Redis, WebSoc
 ### 🌎 Community
 
 - Public `/comunidad` page with reviews from members (one review per user, editable)
+- Guides for dog owners (`/guias`, in Spanish): four articles on playdates, CDMX parks, socialization and how a Tinder-style app for dogs works
 - Public landing, about page, contact form, newsletter and legal pages
 
 ### 🔐 Authentication
@@ -311,6 +313,7 @@ werawoof/
     ├── pages/
     │   ├── index.vue                  # Landing
     │   ├── comunidad.vue              # Public reviews
+    │   ├── guias/                     # Guides index and article (texts in content/guias.ts)
     │   ├── quienes-somos.vue          # About
     │   ├── contacto.vue               # Contact form
     │   ├── politica-de-privacidad.vue · terminos-de-servicio.vue

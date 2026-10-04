@@ -1,3 +1,5 @@
+import { guias } from './content/guias'
+
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
@@ -70,6 +72,8 @@ export default defineNuxtConfig({
     '/contacto': { prerender: true },
     '/politica-de-privacidad': { prerender: true },
     '/terminos-de-servicio': { prerender: true },
+    '/guias': { prerender: true },
+    ...Object.fromEntries(guias.map((g) => [`/guias/${g.slug}`, { prerender: true }])),
     '/sitemap.xml': { prerender: true },
     '/app': { redirect: '/app/dogs' },
   },
