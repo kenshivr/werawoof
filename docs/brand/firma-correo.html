@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <title>WeraWoof — firma de correo</title>
+    <!--
+      Firma para Gmail / Outlook. Tablas y estilos inline a proposito: los clientes de correo
+      no cargan CSS externo ni fuentes web. El logo se sirve desde werawoof.com (PNG, no WebP,
+      porque Outlook de escritorio no muestra WebP).
+      Uso: abrir este archivo en el navegador, seleccionar todo (Ctrl+A), copiar y pegar en
+      Configuracion > Firma del cliente de correo. La firma es de marca, sin nombre de persona.
+    -->
+  </head>
+  <body style="margin: 0; padding: 24px; background: #ffffff">
+    <table cellpadding="0" cellspacing="0" border="0" style="font-family: Arial, Helvetica, sans-serif; color: #382615; font-size: 14px; line-height: 1.4">
+      <tr>
+        <td style="padding-right: 20px; border-right: 3px solid #e9931f; vertical-align: middle">
+          <a href="https://werawoof.com" style="text-decoration: none">
+            <img src="https://werawoof.com/images/logo-firma.png" width="180" height="51" alt="WeraWoof" style="display: block; border: 0" />
+          </a>
+        </td>
+        <td style="padding-left: 20px; vertical-align: middle">
+          <p style="margin: 0; font-size: 17px; font-weight: bold; color: #382615">WeraWoof</p>
+          <p style="margin: 2px 0 0; color: #5a4030">La comunidad de perros y sus dueños en México</p>
+          <p style="margin: 10px 0 0; color: #7d571e">
+            <a href="https://werawoof.com" style="color: #7d571e; text-decoration: none; font-weight: bold">werawoof.com</a>
+            <span style="color: #e9931f">&nbsp;·&nbsp;</span>
+            <a href="https://www.instagram.com/wera_woof" style="color: #7d571e; text-decoration: none">@wera_woof</a>
+            <span style="color: #e9931f">&nbsp;·&nbsp;</span>
+            <a href="mailto:werawoofapp@gmail.com" style="color: #7d571e; text-decoration: none">werawoofapp@gmail.com</a>
+          </p>
+          <p style="margin: 10px 0 0; font-size: 12px; color: #817568">El Tinder para perros: matches, playdates y chat. Gratis.</p>
+        </td>
+      </tr>
+    </table>
+    <!-- Only for the local preview (render-material.sh): the hosted logo does not exist until deploy.
+         Never copy the signature from a ?preview=1 tab, the image would point to a local path. -->
+    <script>
+      if (new URLSearchParams(location.search).get('preview')) {
+        document.querySelector('img').src = '../../frontend/public/images/logo-firma.png'
+      }
+    </script>
+  </body>
+</html>

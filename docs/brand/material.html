@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <title>WeraWoof — material de redes</title>
+    <!--
+      Fuente del material de redes (docs/brand/material/*.png). Cada pieza se elige con ?f=<pieza>.
+      Misma paleta, tipografias y fotos que la app; el kit base (perfil, portadas) vive en redes.html.
+      Render: docs/brand/render-material.sh (Edge/Chrome headless, tamano exacto, escala 1).
+    -->
+    <style>
+      @font-face {
+        font-family: 'Plus Jakarta Sans';
+        font-weight: 700;
+        src: url('../../frontend/public/fonts/jakarta-700.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Plus Jakarta Sans';
+        font-weight: 800;
+        src: url('../../frontend/public/fonts/jakarta-800.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Be Vietnam Pro';
+        font-weight: 500;
+        src: url('../../frontend/public/fonts/vietnam-500.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Be Vietnam Pro';
+        font-weight: 600;
+        src: url('../../frontend/public/fonts/vietnam-600.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Be Vietnam Pro';
+        font-weight: 700;
+        src: url('../../frontend/public/fonts/vietnam-700.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Material Symbols Outlined';
+        src: url('../../frontend/public/fonts/material-symbols.woff2') format('woff2');
+      }
+      :root {
+        --cream: #fff8f5;
+        --peach: #ffddb5;
+        --sand: #f4c07d;
+        --orange: #e9931f;
+        --ink: #382615;
+        --muted: #5a4030;
+        --brown: #7d571e;
+        --dark: #7d3e16;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        background: var(--cream);
+        font-family: 'Be Vietnam Pro', system-ui, sans-serif;
+        color: var(--ink);
+      }
+      .ms {
+        font-family: 'Material Symbols Outlined';
+        font-weight: normal;
+        font-style: normal;
+        line-height: 1;
+        display: inline-block;
+        font-variation-settings: 'FILL' 1, 'wght' 500;
+      }
+      .glow {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--peach) 0%, rgba(255, 221, 181, 0) 68%);
+      }
+      .paw {
+        position: absolute;
+        opacity: 0.08;
+      }
+      .stack {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+      .left {
+        align-items: flex-start;
+        text-align: left;
+      }
+      h1 {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-weight: 800;
+        line-height: 1.06;
+        letter-spacing: -0.025em;
+      }
+      h1 em,
+      .num {
+        font-style: normal;
+        color: var(--orange);
+      }
+      .sub {
+        color: var(--muted);
+        font-weight: 500;
+        line-height: 1.4;
+      }
+      .url {
+        font-weight: 600;
+        color: var(--brown);
+      }
+      .bar {
+        display: flex;
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      .bar span:first-child {
+        background: var(--orange);
+        flex: 1;
+      }
+      .bar span:last-child {
+        background: var(--dark);
+        flex: 1;
+      }
+      .photo {
+        display: block;
+        object-fit: cover;
+        border-radius: 48px;
+        box-shadow: 0 30px 60px rgba(56, 38, 21, 0.18);
+      }
+      .round {
+        border-radius: 50%;
+        border: 14px solid #fff;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        background: var(--sand);
+        color: var(--ink);
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 0.45em 1.1em;
+      }
+      .list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+      }
+      .list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.7em;
+        text-align: left;
+        line-height: 1.3;
+        font-weight: 600;
+      }
+      .list .ms {
+        color: var(--orange);
+        flex: none;
+      }
+      .handle {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        background: #fff;
+        border-radius: 999px;
+        padding: 0.4em 1.1em 0.4em 0.9em;
+        font-weight: 700;
+        color: var(--ink);
+        box-shadow: 0 16px 40px rgba(56, 38, 21, 0.12);
+      }
+      .num {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-weight: 800;
+        line-height: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      const LOGO = 'logo-horizontal.png'
+      const PAW = 'logo-huella.png'
+      const IMG = '../../frontend/public/images/'
+      const URL = 'werawoof.com'
+
+      const paws = (list) =>
+        list
+          .map(([x, y, w, r]) => `<img class="paw" src="${PAW}" alt="" style="left:${x}px;top:${y}px;width:${w}px;transform:rotate(${r}deg)" />`)
+          .join('')
+      const glow = (x, y, s) => `<div class="glow" style="left:${x}px;top:${y}px;width:${s}px;height:${s}px"></div>`
+      const bar = (w, h) => `<div class="bar" style="width:${w}px;height:${h}px"><span></span><span></span></div>`
+      const photo = (file, w, h, extra = '') => `<img class="photo" src="${IMG}${file}" alt="" style="width:${w}px;height:${h}px;${extra}" />`
+      const icon = (name, size) => `<span class="ms" style="font-size:${size}px">${name}</span>`
+
+      // One carousel slide: big number, title, body and a photo. Same frame for the three steps.
+      const step = (n, title, body, file) => `
+        ${glow(420, -320, 1000)}
+        ${paws([[870, 110, 150, 18], [40, 1120, 200, -20]])}
+        <div class="stack left" style="padding:110px 90px 0">
+          <img src="${LOGO}" alt="WeraWoof" style="width:340px" />
+          <p class="num" style="font-size:220px;margin-top:70px">${n}</p>
+          <h1 style="font-size:84px;margin-top:10px;max-width:900px">${title}</h1>
+          <p class="sub" style="font-size:34px;margin-top:30px;max-width:880px">${body}</p>
+          <div style="margin-top:50px;display:flex;align-items:flex-end;gap:40px;width:100%">
+            ${photo(file, 420, 300)}
+            <p class="url" style="font-size:32px;padding-bottom:16px">${URL}</p>
+          </div>
+        </div>`
+
+      // Each piece: [width, height, html]. Text stays inside each network's safe zone.
+      const formats = {
+        // Instagram feed 4:5. Wera as the hero image, the brand line below.
+        'post-wera': [1080, 1350, `
+          ${glow(360, 500, 1200)}
+          ${paws([[880, 1130, 170, 18], [30, 1150, 150, -20]])}
+          <div class="stack" style="padding:80px 90px 0;justify-content:flex-start">
+            ${photo('piso.webp', 900, 720, 'object-position:50% 30%')}
+            <h1 style="font-size:92px;margin-top:70px">Tu perro también<br />merece <em>amigos</em></h1>
+            <p class="sub" style="font-size:34px;margin-top:30px;max-width:840px">Perfiles, matches y playdates con perros cerca de ti. Gratis.</p>
+            <div style="margin-top:46px">${bar(220, 10)}</div>
+            <p class="url" style="font-size:34px;margin-top:30px">${URL}</p>
+          </div>`],
+
+        // Carousel, slide 1 of 4: cover.
+        'carrusel-1': [1080, 1350, `
+          ${glow(380, -300, 1100)}
+          ${paws([[40, 1080, 240, -20], [870, 120, 170, 18]])}
+          <div class="stack" style="padding:0 90px">
+            <img src="${LOGO}" alt="WeraWoof" style="width:520px" />
+            <h1 style="font-size:104px;margin-top:80px">¿Cómo funciona<br /><em>WeraWoof</em>?</h1>
+            <p class="sub" style="font-size:36px;margin-top:40px">Tres pasos y tu perro ya tiene plan.</p>
+            <div style="margin-top:90px;display:flex;align-items:center;gap:30px">
+              ${photo('bb.webp', 170, 170, 'border-radius:50%')}
+              ${photo('hand.webp', 170, 170, 'border-radius:50%')}
+              ${photo('horizontal.webp', 170, 170, 'border-radius:50%;object-position:30% 40%')}
+            </div>
+            <p class="sub" style="font-size:30px;margin-top:70px;display:flex;align-items:center;gap:14px">Desliza ${icon('arrow_forward', 36)}</p>
+          </div>`],
+        'carrusel-2': [1080, 1350, step(1, 'Crea el perfil de tu perro', 'Fotos, edad, tamaño y cómo le gusta jugar. Toma dos minutos.', 'bb.webp')],
+        'carrusel-3': [1080, 1350, step(2, 'Haz match con perros cerca', 'Desliza, da like y cuando el gusto es mutuo se abre el chat.', 'hand.webp')],
+        'carrusel-4': [1080, 1350, step(3, '¡A juntarse!', 'Acuerden parque, día y hora. Lo demás lo ponen ellos.', 'horizontal.webp')],
+
+        // Story and TikTok cover for a guide. Keeps 250px free top and bottom for the app UI.
+        'historia-guia': [1080, 1920, `
+          ${glow(300, 700, 1300)}
+          ${paws([[40, 1560, 260, -20], [860, 300, 180, 18]])}
+          <div class="stack" style="padding:250px 90px;justify-content:flex-start">
+            <img src="${LOGO}" alt="WeraWoof" style="width:480px" />
+            <p class="chip" style="font-size:30px;margin-top:70px">${icon('eco', 34)} Nueva guía</p>
+            <h1 style="font-size:92px;margin-top:40px">Parques <em>pet friendly</em><br />en CDMX</h1>
+            <p class="sub" style="font-size:36px;margin-top:30px;max-width:860px">Dónde pasear y socializar a tu perro, con horarios y qué llevar.</p>
+            <div style="margin-top:60px">${photo('vertical.webp', 620, 560, 'object-position:50% 25%')}</div>
+            <p class="url" style="font-size:38px;margin-top:70px">${URL}/guias</p>
+          </div>`],
+
+        // TikTok and Reels closing card: follow + site. Same safe zones as the story.
+        'tiktok-cierre': [1080, 1920, `
+          ${glow(300, 300, 1300)}
+          ${paws([[40, 1560, 260, -20], [860, 300, 180, 18], [70, 330, 120, -8]])}
+          <div class="stack" style="padding:250px 90px">
+            <img src="${PAW}" alt="WeraWoof" style="width:460px" />
+            <h1 style="font-size:104px;margin-top:70px">Síguenos para<br />más <em>woof</em></h1>
+            <p class="handle" style="font-size:40px;margin-top:80px">${icon('pets', 44)} @wera_woof</p>
+            <div style="margin-top:50px">${bar(260, 10)}</div>
+            <p class="url" style="font-size:42px;margin-top:50px">${URL}</p>
+          </div>`],
+
+        // Square tip post: value content, not an ad.
+        'post-tip': [1080, 1080, `
+          ${glow(600, -300, 1000)}
+          ${paws([[40, 820, 220, -20], [880, 60, 140, 18]])}
+          <div class="stack left" style="padding:90px">
+            <div style="display:flex;align-items:center;justify-content:space-between;width:100%">
+              <img src="${LOGO}" alt="WeraWoof" style="width:340px" />
+              ${photo('hand.webp', 200, 200, 'border-radius:50%;object-position:60% 40%')}
+            </div>
+            <h1 style="font-size:80px;margin-top:60px">3 señales de que tu<br />perro <em>quiere jugar</em></h1>
+            <ul class="list" style="font-size:36px;margin-top:50px;gap:28px;max-width:880px">
+              <li>${icon('check_circle', 44)} Reverencia de juego: pecho abajo y cola arriba.</li>
+              <li>${icon('check_circle', 44)} Cola suelta con movimiento amplio, no tiesa.</li>
+              <li>${icon('check_circle', 44)} Brincos cortos y voltea a verte entre uno y otro.</li>
+            </ul>
+            <p class="url" style="font-size:32px;margin-top:auto">Más consejos en ${URL}/guias</p>
+          </div>`],
+
+      }
+
+      const f = new URLSearchParams(location.search).get('f') || 'post-wera'
+      const [w, h, html] = formats[f]
+      document.documentElement.style.width = document.body.style.width = w + 'px'
+      document.documentElement.style.height = document.body.style.height = h + 'px'
+      document.getElementById('root').innerHTML = html
+      document.title = `WeraWoof — ${f} ${w}×${h}`
+    </script>
+  </body>
+</html>
