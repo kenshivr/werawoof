@@ -73,7 +73,7 @@ async function subscribeNewsletter() {
             </a>
             <!-- Instagram -->
             <a
-              href="https://www.instagram.com/kenshi.vr?igsh=MXdyZG9pMjFzNHN0aQ=="
+              href="https://www.instagram.com/wera_woof"
               target="_blank"
               rel="noopener noreferrer"
               class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 hover:border-white/40 transition-colors"

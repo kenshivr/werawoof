@@ -62,7 +62,7 @@ useJsonLd({
       url: SITE_URL,
       logo: `${SITE_URL}/icon-512.png`,
       founder: { '@type': 'Person', '@id': `${SITE_URL}/#brayan`, name: 'Brayan Vidal Romero' },
-      sameAs: ['https://github.com/kenshivr/werawoof', 'https://www.instagram.com/kenshi.vr'],
+      sameAs: ['https://github.com/kenshivr/werawoof', 'https://www.instagram.com/wera_woof'],
     },
     {
       '@type': 'WebSite',
