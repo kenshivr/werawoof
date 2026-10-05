@@ -6,6 +6,13 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+### Fixed
+
+- Editar un perro con 6 fotos dejaba la página en blanco: la página de crear permitía 6 fotos
+  y la de editar asumía 5, así que la grilla pedía `-1` cuadros vacíos y Vue cortaba el
+  render. El tope ahora es uno solo (`MAX_PHOTOS = 6` en `utils/photos.ts`) para las dos
+  páginas, y los cuadros vacíos nunca bajan de cero.
+
 ## [1.3.0] - 2026-10-04
 
 ### Added

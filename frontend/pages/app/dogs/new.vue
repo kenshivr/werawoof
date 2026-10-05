@@ -180,7 +180,7 @@
           <h2
             class="text-2xl font-bold text-primary font-jakarta border-b border-surface-container pb-3 mb-5"
           >
-            Fotos (hasta 6)
+            Fotos (hasta {{ MAX_PHOTOS }})
           </h2>
 
           <!-- photo preview grid: draggable 2 per row -->
@@ -215,7 +215,7 @@
             </draggable>
 
             <div
-              v-for="j in 6 - photos.length"
+              v-for="j in emptyPhotoSlots(photos.length)"
               :key="'slot-' + j"
               class="aspect-[4/3] rounded-[12px] border-2 border-dashed border-[#DBD8D0] bg-surface-container-low flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-[#F4C07D] transition-all group"
               @click="triggerFileInput"
@@ -284,7 +284,7 @@
       <!-- Photo grid -->
       <div>
         <p class="text-xs font-bold uppercase tracking-widest text-secondary mb-3 font-jakarta">
-          Subí fotos (hasta 6)
+          Subí fotos (hasta {{ MAX_PHOTOS }})
         </p>
         <div class="grid grid-cols-3 gap-2">
           <draggable v-model="photos" item-key="url" tag="div" class="contents" :animation="150">
@@ -314,7 +314,7 @@
             </template>
           </draggable>
           <div
-            v-for="j in 6 - photos.length"
+            v-for="j in emptyPhotoSlots(photos.length)"
             :key="'empty-' + j"
             class="aspect-square rounded-xl border-2 border-dashed border-[#DBD8D0] bg-[#fff1e8] flex items-center justify-center cursor-pointer hover:border-[#F4C07D] transition-all"
             @click="triggerFileInput"
@@ -574,7 +574,7 @@ function handleDrop(e: DragEvent) {
 function addFiles(files: FileList | null) {
   if (!files) return
   for (const file of Array.from(files)) {
-    if (photos.value.length >= 6) break
+    if (photos.value.length >= MAX_PHOTOS) break
     photos.value.push({ url: URL.createObjectURL(file), file })
   }
 }
