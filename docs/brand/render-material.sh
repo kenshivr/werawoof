@@ -32,6 +32,22 @@ declare -A SIZES=(
   [historia-guia]=1080,1920
   [tiktok-cierre]=1080,1920
   [post-tip]=1080,1080
+  [oscuro-chat]=1080,1350
+  [naranja-gratis]=1080,1080
+  [foto-swipe]=1080,1350
+  [split-checklist]=1080,1080
+  [historia-mito]=1080,1920
+  [historia-perfil]=1080,1920
+  [lugares]=1080,1080
+  [club]=1080,1350
+  [cafe-pasos]=1080,1350
+  [cafe-gratis]=1080,1080
+  [cafe-radio]=1080,1080
+  [cafe-privacidad]=1080,1350
+  [cafe-instalar]=1080,1920
+  [cafe-amigos]=1080,1080
+  [cafe-cta]=1080,1350
+  [cafe-guias]=1080,1920
 )
 
 ONLY=${1:-}
