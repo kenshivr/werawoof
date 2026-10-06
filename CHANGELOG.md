@@ -6,6 +6,12 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+### Changed
+
+- El material de redes (plantillas, scripts de render y piezas PNG) sale del repositorio: las
+  próximas tandas llevan fotos personales y las imágenes engordaban el clon en cada tanda. En
+  `docs/brand/` quedan los logos y la firma de correo, con un `README.md` que lo explica.
+
 ### Fixed
 
 - Editar un perro con 6 fotos dejaba la página en blanco: la página de crear permitía 6 fotos

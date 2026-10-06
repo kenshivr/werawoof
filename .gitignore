@@ -21,8 +21,10 @@ frontend/.cache/
 frontend/dist/
 frontend/node_modules/
 
-# Previews locales de correos (no van al repo)
+# Previews locales de correos y material de redes (no van al repo)
 preview-newsletter/
+docs/brand/material/
+docs/brand/redes/
 # Local Pi runtime state
 .atl/
 
