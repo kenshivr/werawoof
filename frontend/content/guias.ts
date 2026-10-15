@@ -28,6 +28,14 @@ export interface Guia {
   sections: GuiaSection[]
 }
 
+/** Author of every guide: the same Person entity declared on /quienes-somos. */
+export const guiaAuthor = {
+  '@type': 'Person',
+  '@id': 'https://werawoof.com/#brayan',
+  name: 'Brayan Vidal Romero',
+  url: 'https://werawoof.com/quienes-somos',
+} as const
+
 export const guias: Guia[] = [
   {
     slug: 'como-organizar-un-playdate-seguro-para-tu-perro',
@@ -621,6 +629,462 @@ export const guias: Guia[] = [
           {
             type: 'p',
             text: 'No. Abre werawoof.com en tu navegador y, si quieres, agrégala a la pantalla de inicio de tu teléfono para usarla como una app.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'como-presentar-dos-perros-por-primera-vez',
+    title: 'Cómo presentar dos perros por primera vez',
+    metaTitle: 'Cómo presentar dos perros por primera vez',
+    description:
+      'Cómo presentar dos perros por primera vez: lugar neutral, paseo en paralelo, lenguaje corporal y cuándo separarlos. Incluye qué hacer si vivirán juntos.',
+    datePublished: '2026-10-15',
+    dateModified: '2026-10-15',
+    readingMinutes: 5,
+    intro:
+      'Para presentar dos perros por primera vez, elige un lugar neutral, usa correas flojas y empieza caminando en paralelo a distancia. Acorta la distancia poco a poco, permite olfateos breves y sepáralos antes de que la emoción suba. Observa su lenguaje corporal y, si ves rigidez, gruñidos o mirada fija, aléjalos con calma y vuelve a intentarlo otro día. Si van a vivir juntos, el primer encuentro también debe ser fuera de casa.',
+    sections: [
+      {
+        heading: 'Por qué la primera presentación importa',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Los perros se forman una impresión del otro en los primeros minutos, y esa impresión pesa en los encuentros siguientes. Una presentación tensa, apresurada o frente a frente puede dejar a uno de los dos con una mala experiencia que se repite cada vez que se vean.',
+          },
+          {
+            type: 'p',
+            text: 'Hacerlo con calma no garantiza que vayan a ser mejores amigos, porque a veces simplemente no hay química. Lo que sí logra es que el primer contacto sea seguro, que ninguno se sienta acorralado y que tú tengas margen para intervenir antes de que algo escale.',
+          },
+        ],
+      },
+      {
+        heading: 'Antes del encuentro',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Una buena presentación se prepara antes de salir de casa. Conviene cuidar estos puntos:',
+          },
+          {
+            type: 'ul',
+            items: [
+              'Salud: confirma con el otro dueño que ambos perros tengan vacunas y desparasitación al día, y que ninguno esté enfermo. Si tienes dudas, consulta a tu veterinario.',
+              'Equipo: correas largas pero resistentes y arneses o collares que no se puedan zafar. Evita las correas retráctiles, porque se tensan de golpe.',
+              'Lugar neutral: ni la casa ni el parque habitual de alguno de los dos. Un espacio que ninguno considere suyo reduce la defensa del territorio.',
+              'Dos personas: cada perro debe ir con su propio dueño, que lo conozca y pueda leerlo.',
+              'Sin juguetes ni comida: los recursos son una causa frecuente de conflicto, así que déjalos en casa.',
+              'Horario tranquilo: temprano en la mañana o al final de la tarde, cuando hay menos gente, menos ruido y menos calor.',
+            ],
+          },
+        ],
+      },
+      {
+        heading: 'La presentación, paso a paso',
+        blocks: [
+          {
+            type: 'ol',
+            items: [
+              'Caminen en paralelo. Empiecen a una distancia en la que ninguno de los dos reaccione, con los perros del lado contrario al del otro dueño. Un paseo así puede durar varios minutos.',
+              'Acorten la distancia por turnos. Si ambos se ven relajados, acérquense un poco; si alguno se tensa, vuelvan a separarse. No hay prisa.',
+              'Permitan un olfateo breve, de dos o tres segundos, con la correa floja. Una correa tensa transmite nerviosismo al perro.',
+              'Sepárenlos y repitan. Caminen unos pasos, dejen que se calmen y vuelvan a acercarlos. Varios contactos cortos funcionan mejor que uno largo.',
+              'Suéltenlos solo si todo va bien y existe una zona cercada. Dejen primero las correas arrastrando si es seguro, y mantengan la sesión corta.',
+            ],
+          },
+          {
+            type: 'p',
+            text: 'Si en cualquier paso algo no se ve bien, regresa al anterior. No es un fracaso: así se construye la confianza.',
+          },
+        ],
+      },
+      {
+        heading: 'Cómo leer el lenguaje corporal',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Durante toda la presentación, fíjate más en el cuerpo de los perros que en sus ladridos. Estas son señales buenas:',
+          },
+          {
+            type: 'ul',
+            items: [
+              'Cuerpo suelto y movimientos flexibles, casi como si se sacudieran.',
+              'La reverencia de juego: pecho abajo, trasero arriba.',
+              'Pausas por voluntad propia, olfateo del suelo o rascarse, que ayudan a bajar la tensión.',
+              'Turnos al perseguir: a veces uno corre y a veces el otro.',
+            ],
+          },
+          {
+            type: 'h3',
+            text: 'Señales de alerta',
+          },
+          {
+            type: 'ul',
+            items: [
+              'Cuerpo rígido y movimientos lentos y tiesos.',
+              'Mirada fija, sin parpadear.',
+              'Pelo erizado en el lomo.',
+              'Gruñidos serios, labios levantados o dientes visibles.',
+              'Cola rígida y alta, aunque se mueva.',
+              'Intentos insistentes de montar al otro perro o de acorralarlo.',
+            ],
+          },
+        ],
+      },
+      {
+        heading: 'Cuándo cortar el encuentro y cómo',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Si ves varias señales de alerta, termina el encuentro sin dramatismo. Llama a tu perro con voz tranquila, distráelo con una golosina o un cambio de dirección y aléjate en un arco amplio, sin jalar la correa de golpe. Un tirón brusco puede aumentar la tensión y asustar más al perro.',
+          },
+          {
+            type: 'p',
+            text: 'No hace falta decidir que esos dos perros nunca podrán convivir. Pueden haber estado nerviosos, cansados o con demasiada energía. Retomen otro día, a mayor distancia y con una sesión más corta. Si después de varios intentos hay gruñidos fuertes o peleas, consulta a un entrenador o etólogo con métodos basados en premios.',
+          },
+        ],
+      },
+      {
+        heading: 'Si uno va a vivir con el otro',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Cuando un perro nuevo llegará a una casa donde ya vive otro, la primera presentación también debe ser afuera, en terreno neutral. Después de un paseo juntos, entren a casa primero con el perro que ya vive ahí, y luego con el nuevo, con las correas puestas.',
+          },
+          {
+            type: 'ul',
+            items: [
+              'Retira de la vista juguetes, huesos, platos de comida y camas, al menos los primeros días.',
+              'Supervisa todas las interacciones y no los dejes solos hasta que veas que conviven con tranquilidad.',
+              'Dales descansos separados, cada uno con su espacio, su cama y su plato.',
+              'Dale atención al perro que ya vivía en casa, para que no sienta que lo desplazaron.',
+            ],
+          },
+          {
+            type: 'p',
+            text: 'La adaptación puede tardar días o semanas. Si hay tensión constante, pide orientación profesional.',
+          },
+        ],
+      },
+      {
+        heading: 'Errores comunes',
+        blocks: [
+          {
+            type: 'ul',
+            items: [
+              'Acercarlos frente a frente con la correa tensa, que se interpreta como un desafío.',
+              'Forzarlos a olfatearse cuando uno de los dos intenta alejarse.',
+              'Regañar o castigar el gruñido: es una advertencia, y si lo castigas el perro puede dejar de avisar.',
+              'Hacer encuentros largos desde el principio, en lugar de varios cortos.',
+              'Presentarlos en la casa o en el parque favorito de uno de los dos.',
+              'Ignorar el lenguaje corporal porque el otro dueño dice que su perro es muy bueno.',
+            ],
+          },
+        ],
+      },
+      {
+        heading: 'Cómo encontrar buenos candidatos para presentar',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Una presentación sale mejor cuando ya sabes algo del otro perro: su edad, tamaño, nivel de energía y cómo reacciona con perros desconocidos. Eso lo puedes conseguir platicando con vecinos, con compañeros de paseo o en la veterinaria, siempre que el otro dueño sea honesto.',
+          },
+          {
+            type: 'p',
+            text: 'Otra opción es una app como WeraWoof, donde cada perfil muestra la edad, el tamaño, la raza y las etiquetas de personalidad del perro, como enérgico, tranquilo o tímido, antes de quedar. Si te interesa organizar el resto del encuentro, tenemos una guía sobre cómo organizar un playdate seguro. En México, lo importante es que cualquier primera cita sea en un lugar público y con tiempo para ir despacio.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'que-raza-es-mi-perro-como-saberlo',
+    title: 'Qué raza es mi perro: cómo saberlo',
+    metaTitle: 'Qué raza es mi perro: cómo saberlo',
+    description:
+      'Cómo saber qué raza es tu perro: pistas físicas y de comportamiento, opinión del veterinario, pruebas de ADN y sus límites. Para qué sirve y para qué no.',
+    datePublished: '2026-10-15',
+    dateModified: '2026-10-15',
+    readingMinutes: 5,
+    intro:
+      'Para saber qué raza es tu perro puedes fijarte en su tamaño, cabeza, orejas, pelaje y comportamiento, pedir la opinión de tu veterinario o hacer una prueba de ADN. Las dos primeras opciones son solo estimaciones, y la prueba de ADN es la más precisa, aunque tiene límites. En México la mayoría de los perros son mestizos, y conocer su mezcla ayuda con el ejercicio y la salud, pero no define su carácter.',
+    sections: [
+      {
+        heading: 'La mayoría de los perros en México son mestizos',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Si no sabes qué raza es tu perro, estás en buena compañía. En México y en muchos países, una gran parte de los perros son mestizos, es decir, el resultado de varias razas mezcladas a lo largo de generaciones. Muchos llegaron a casa por adopción, regalo o rescate, sin papeles ni pedigrí.',
+          },
+          {
+            type: 'p',
+            text: 'Eso no es un problema. Un perro mestizo puede ser tan sano, cariñoso y fácil de educar como cualquier otro. Lo que importa es conocerlo a él: cuánta energía tiene, cómo juega y cómo se lleva con otros perros. La raza es solo una pista más.',
+          },
+        ],
+      },
+      {
+        heading: 'Pistas físicas',
+        blocks: [
+          {
+            type: 'p',
+            text: 'La forma más sencilla de empezar es observar su cuerpo. Algunos rasgos que suelen dar pistas:',
+          },
+          {
+            type: 'ul',
+            items: [
+              'Tamaño y peso adulto: separan a las razas pequeñas de las medianas y grandes.',
+              'Forma de la cabeza y el hocico: corto y ancho, largo y fino, o de proporciones medias.',
+              'Orejas: paradas, caídas, semicaídas o en forma de botón.',
+              'Pelaje: corto, largo, rizado, duro o doble capa, y sus colores y manchas.',
+              'Cola: larga, enroscada, corta o con mucho pelo.',
+              'Patas y complexión: cuerpo largo y patas cortas, o patas largas y pecho profundo.',
+            ],
+          },
+          {
+            type: 'p',
+            text: 'Estas pistas engañan sobre todo en cachorros. Un cachorro de pocas semanas puede cambiar mucho de tamaño, de color de pelo y de forma de orejas al crecer, y es común que un cachorro que parecía de una raza termine pareciéndose a otra.',
+          },
+        ],
+      },
+      {
+        heading: 'Pistas de comportamiento',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Algunas razas se criaron durante generaciones para tareas concretas, y a veces esos instintos aparecen en perros mestizos:',
+          },
+          {
+            type: 'ul',
+            items: [
+              'Pastoreo: rodear, empujar o intentar agrupar personas, niños u otros animales.',
+              'Rastreo: pasar mucho tiempo con la nariz pegada al suelo, siguiendo olores.',
+              'Cobro: cargar objetos en la boca y traerlos de vuelta con entusiasmo.',
+              'Guardia: vigilar la casa, ladrar a los extraños y mantenerse alerta.',
+            ],
+          },
+          {
+            type: 'p',
+            text: 'Estas conductas sugieren una herencia, pero no prueban nada. Un perro puede cobrar pelotas sin tener sangre de retriever, y muchos perros ladran a los extraños por la forma en que fueron criados y socializados. Tómalas como una pista, no como un diagnóstico.',
+          },
+        ],
+      },
+      {
+        heading: 'La opinión del veterinario',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Tu veterinario ve muchos perros y suele reconocer rasgos de razas a simple vista. Puede decirte, por ejemplo, que tu perro tiene una complexión parecida a la de cierto grupo de razas. También puede orientarte sobre el tamaño adulto esperado y las revisiones de salud que convienen según la edad.',
+          },
+          {
+            type: 'p',
+            text: 'Aun así, es una estimación basada en rasgos visibles, no una confirmación. En un mestizo con varias razas mezcladas, dos profesionales pueden dar opiniones distintas, y ninguna es definitiva.',
+          },
+        ],
+      },
+      {
+        heading: 'Pruebas de ADN para perros',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Las pruebas de ADN son la opción más precisa. En general funcionan así: tomas una muestra con un hisopo de la parte interna de la mejilla de tu perro, la envías a un laboratorio y recibes un reporte. Ese reporte suele indicar los porcentajes de las razas que detectó y, en algunos casos, ciertas predisposiciones de salud.',
+          },
+          {
+            type: 'ul',
+            items: [
+              'El resultado depende de las razas que el laboratorio tiene en su base de datos, por lo que algunas mezclas, sobre todo de razas poco comunes o locales, pueden quedar sin identificar.',
+              'Los porcentajes son estimaciones y pueden cambiar si el laboratorio actualiza su base.',
+              'Las predisposiciones de salud son riesgos, no diagnósticos. Coméntalas con tu veterinario antes de tomar decisiones.',
+              'El costo y el servicio varían según la empresa y la disponibilidad en México, así que conviene comparar antes de comprar.',
+            ],
+          },
+        ],
+      },
+      {
+        heading: 'Apps y fotos para identificar la raza',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Existen apps que analizan una foto y sugieren una raza. Son divertidas y pueden servir como curiosidad, pero son poco fiables con los mestizos, porque están pensadas para compararlos contra razas puras. El resultado cambia con el ángulo de la foto, la luz y la postura del perro. No tomes decisiones de salud ni de entrenamiento basándote en ellas.',
+          },
+        ],
+      },
+      {
+        heading: 'Para qué sirve saberlo y para qué no',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Conocer la posible mezcla de tu perro puede ayudarte con varias cosas prácticas:',
+          },
+          {
+            type: 'ul',
+            items: [
+              'Ejercicio: una mezcla de razas muy activas necesita más actividad y estímulo mental que una de razas tranquilas.',
+              'Salud: algunas razas tienen más riesgo de ciertos problemas, y tu veterinario puede vigilarlos desde temprano.',
+              'Convivencia: saber qué instintos puede tener te ayuda a entender por qué persigue, cava o ladra.',
+            ],
+          },
+          {
+            type: 'p',
+            text: 'Lo que no hace es definir su carácter. Dos perros de la misma raza pueden ser muy distintos, y un perro con fama de rudo puede ser cariñoso, o al revés. La crianza, la socialización y la personalidad pesan mucho más que la etiqueta.',
+          },
+        ],
+      },
+      {
+        heading: 'Mestizo con orgullo',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Si tu perro es mestizo, no necesitas encontrar una raza para presentarlo. En WeraWoof, la lista de razas empieza con la opción "Mestizo", y el perfil muestra su tamaño y sus etiquetas de personalidad, como juguetón, tranquilo o enérgico, que son los datos que realmente ayudan a encontrar amigos compatibles.',
+          },
+          {
+            type: 'p',
+            text: 'Lo que cuenta al buscar compañeros de juego es cómo se comporta tu perro con otros perros, no su árbol genealógico. Si quieres saber cómo dar el primer paso, revisa nuestra guía sobre cómo presentar dos perros por primera vez.',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: 'como-encontrar-amigos-para-tu-perro',
+    title: 'Cómo encontrar amigos para tu perro',
+    metaTitle: 'Cómo encontrar amigos para tu perro',
+    description:
+      'Dónde y cómo encontrar amigos para tu perro en México: qué tipo de compañero buscar, lugares, primer encuentro y cómo mantener la amistad.',
+    datePublished: '2026-10-15',
+    dateModified: '2026-10-15',
+    readingMinutes: 5,
+    intro:
+      'Para encontrar amigos para tu perro, primero define qué tipo de compañero le conviene según su tamaño, energía y estilo de juego. Después busca en parques, grupos de paseo de tu colonia, escuelas de adiestramiento, veterinarias y apps para dueños de perros. Haz un primer encuentro corto en un lugar neutral y mantén la amistad con constancia. No todos los perros quieren muchos amigos, y está bien que tu perro tenga solo uno o dos.',
+    sections: [
+      {
+        heading: 'Por qué un perro necesita amigos perrunos',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Tu perro te quiere a ti, pero convivir con otros perros le da algo que las personas no pueden dar: un compañero que entiende su idioma. Jugar con otros perros le permite gastar energía, practicar sus modales, aprender a leer señales y a poner límites sin lastimar.',
+          },
+          {
+            type: 'p',
+            text: 'Esto no es solo para cachorros. Los perros adultos y mayores también se benefician de tener compañía, aunque su forma de jugar cambie con la edad. Un paseo con un amigo conocido suele ser más estimulante para el perro que el mismo recorrido de siempre en solitario.',
+          },
+        ],
+      },
+      {
+        heading: 'Qué tipo de amigo busca tu perro',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Antes de buscar, observa a tu perro. Una buena amistad depende de la compatibilidad más que de la raza:',
+          },
+          {
+            type: 'ul',
+            items: [
+              'Tamaño: un perro pequeño y uno muy grande pueden llevarse bien, pero el juego brusco del grande puede lastimar al chico sin querer.',
+              'Energía: un perro tranquilo y uno muy activo se desgastan mutuamente. Busca ritmos parecidos.',
+              'Estilo de juego: perseguir, luchar, jalar juguetes u olfatear. Los estilos compatibles evitan malentendidos.',
+              'Edad: los cachorros y los perros mayores suelen necesitar compañeros más suaves.',
+            ],
+          },
+          {
+            type: 'p',
+            text: 'También conviene aceptar que no todos los perros quieren muchos amigos. Algunos prefieren paseos tranquilos y uno o dos compañeros de confianza, y eso es perfectamente normal. Si el tuyo es tímido, ve a su ritmo.',
+          },
+        ],
+      },
+      {
+        heading: 'Dónde buscar en México',
+        blocks: [
+          {
+            type: 'p',
+            text: 'No hace falta ir lejos. Estos son lugares comunes para conocer a otros dueños:',
+          },
+          {
+            type: 'ul',
+            items: [
+              'Parques y áreas caninas: en la Ciudad de México y otras ciudades hay parques donde se ve a muchos dueños paseando. Confirma en el lugar las reglas de correa y horarios.',
+              'Grupos de paseo de tu colonia: muchos vecinos se organizan por mensajería para salir a caminar a la misma hora.',
+              'Escuelas de adiestramiento y clases de cachorros: los perros ahí ya están en un entorno controlado y con guía profesional.',
+              'Veterinarias y estéticas caninas: pregunta si hay tablón de avisos o si conocen a otros dueños con perros parecidos al tuyo.',
+              'Vecinos y familia: a veces el mejor amigo del perro vive en la misma calle.',
+              'Eventos pet friendly: ferias, convivencias o actividades abiertas para perros.',
+              'Apps para dueños de perros: permiten buscar por cercanía y carácter antes de salir.',
+            ],
+          },
+        ],
+      },
+      {
+        heading: 'Cómo acercarte a otro dueño sin incomodar',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Antes de dejar que tu perro se acerque a otro, pregunta. Una frase sencilla como "¿le gusta jugar con otros perros?" funciona, y si la respuesta es no, respétala sin insistir. Hay perros en entrenamiento, en recuperación o con miedo a otros perros, y sus dueños agradecen que se les dé espacio.',
+          },
+          {
+            type: 'p',
+            text: 'Si hay buena respuesta, pregunta lo básico: edad, tamaño, si está vacunado y cómo reacciona con perros desconocidos. Cuéntale también cómo es el tuyo. La honestidad desde el principio evita malos ratos.',
+          },
+        ],
+      },
+      {
+        heading: 'El primer encuentro',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Haz que el primer encuentro sea corto y sin presión. Elige un lugar neutral, usa correas flojas y empiecen caminando juntos antes de dejar que se huelan. Observa el lenguaje corporal de ambos y termina antes de que alguno se canse.',
+          },
+          {
+            type: 'p',
+            text: 'Tenemos una guía sobre cómo presentar dos perros por primera vez, con los pasos y las señales que conviene vigilar. Y si quieres organizar una cita de juego completa, revisa la guía sobre cómo organizar un playdate seguro.',
+          },
+        ],
+      },
+      {
+        heading: 'Cómo mantener la amistad',
+        blocks: [
+          {
+            type: 'ul',
+            items: [
+              'Constancia: varios encuentros cortos a lo largo de las semanas valen más que uno muy largo.',
+              'Horarios: acordar un día y una hora fija, como el sábado por la mañana, facilita que ocurra.',
+              'Turnarse los lugares: así ningún perro siente que siempre juega en terreno ajeno.',
+              'Un grupo de chat entre dueños: sirve para avisar si alguien llega tarde, cancelar o proponer otro plan.',
+              'Respeto a los límites: si un día alguno de los perros no tiene ganas, se cancela y ya.',
+            ],
+          },
+        ],
+      },
+      {
+        heading: 'Señales de que no son compatibles',
+        blocks: [
+          {
+            type: 'p',
+            text: 'A veces dos perros simplemente no congenian, y no pasa nada. Fíjate en estas señales después de varios encuentros:',
+          },
+          {
+            type: 'ul',
+            items: [
+              'Uno de los dos intenta esconderse, se pega a su dueño o evita al otro.',
+              'El juego siempre es de uno que acosa y otro que huye.',
+              'Hay gruñidos, rigidez o mirada fija con frecuencia.',
+              'Uno defiende juguetes, comida o a su dueño cada vez que se ven.',
+            ],
+          },
+          {
+            type: 'p',
+            text: 'Si pasa esto, no los obligues. Pueden convivir con paseos en paralelo a distancia o simplemente buscar otros compañeros. Si hay conductas fuertes, consulta a un entrenador profesional.',
+          },
+        ],
+      },
+      {
+        heading: 'Cómo ayuda una app como WeraWoof',
+        blocks: [
+          {
+            type: 'p',
+            text: 'Buscar por casualidad en el parque funciona a veces, pero una app permite elegir antes de salir. En WeraWoof creas el perfil de tu perro con sus fotos, su tamaño y sus etiquetas de personalidad, haces swipe entre perros cercanos en un radio de 1 a 100 km y, cuando hay match, usas el chat para quedar en el parque.',
+          },
+          {
+            type: 'p',
+            text: 'La app es gratuita y se usa desde el navegador, sin descargarla de una tienda. Funciona en toda la República Mexicana, y entre más dueños de tu zona se sumen, más amigos posibles verás cerca de ti.',
           },
         ],
       },

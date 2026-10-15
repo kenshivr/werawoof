@@ -6,11 +6,22 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
 
 ## [Unreleased]
 
+### Added
+
+- Tres guías nuevas: cómo presentar dos perros por primera vez, qué raza es mi perro y cómo
+  encontrar amigos para tu perro. Salen de búsquedas reales de Search Console ("cómo presentar
+  dos perros", "qué raza es mi perro", "amigos para mi perro"). Quedan listadas en el índice,
+  el sitemap y los archivos `llms.txt` y `llms-full.txt`.
+
 ### Changed
 
 - El material de redes (plantillas, scripts de render y piezas PNG) sale del repositorio: las
   próximas tandas llevan fotos personales y las imágenes engordaban el clon en cada tanda. En
   `docs/brand/` quedan los logos y la firma de correo, con un `README.md` que lo explica.
+- Las guías ya tienen autor con nombre: la línea bajo el título dice "Por Brayan Vidal, creador
+  de WeraWoof" con enlace a Quiénes somos, y el `Article` de datos estructurados apunta a la
+  misma persona declarada en esa página (`#brayan`) en vez de a la organización. Google pide
+  autores identificables en el contenido; el publisher sigue siendo WeraWoof.
 
 ### Fixed
 

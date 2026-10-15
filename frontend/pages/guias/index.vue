@@ -8,7 +8,7 @@ const SITE_URL = 'https://werawoof.com'
 const pageUrl = `${SITE_URL}/guias`
 const title = 'Guías para dueños de perros · WeraWoof'
 const description =
-  'Guías prácticas para dueños de perros en México: playdates seguros, parques pet friendly en CDMX, cómo socializar a un perro tímido y más.'
+  'Guías para dueños de perros en México: presentar dos perros, playdates seguros, cómo saber su raza, encontrar amigos y parques en CDMX.'
 
 useSeoMeta({
   title,

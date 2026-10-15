@@ -8,7 +8,7 @@ const pages = [
   { path: '/', lastmod: '2026-10-02', changefreq: 'weekly', priority: '1.0' },
   { path: '/quienes-somos', lastmod: '2026-10-02', changefreq: 'monthly', priority: '0.7' },
   { path: '/comunidad', lastmod: '2026-10-02', changefreq: 'weekly', priority: '0.7' },
-  { path: '/guias', lastmod: '2026-10-04', changefreq: 'weekly', priority: '0.8' },
+  { path: '/guias', lastmod: '2026-10-15', changefreq: 'weekly', priority: '0.8' },
   ...guias.map((g) => ({
     path: `/guias/${g.slug}`,
     lastmod: g.dateModified,

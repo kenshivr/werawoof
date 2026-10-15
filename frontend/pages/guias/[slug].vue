@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getGuia, guias } from '~/content/guias'
+import { getGuia, guiaAuthor, guias } from '~/content/guias'
 
 definePageMeta({ layout: false })
 
@@ -47,7 +47,7 @@ useJsonLd({
       datePublished: guia.datePublished,
       dateModified: guia.dateModified,
       inLanguage: 'es-MX',
-      author: organization,
+      author: guiaAuthor,
       publisher: {
         ...organization,
         logo: { '@type': 'ImageObject', url: `${SITE_URL}/icon-512.png` },
@@ -93,7 +93,13 @@ const publishedLabel = new Intl.DateTimeFormat('es-MX', {
               {{ guia.title }}
             </h1>
             <p class="text-white/60 text-sm font-jakarta">
-              Por WeraWoof · {{ publishedLabel }} · {{ guia.readingMinutes }} min de lectura
+              Por
+              <NuxtLink
+                to="/quienes-somos"
+                class="text-white/90 underline underline-offset-2 hover:text-[#F4C07D] transition-colors"
+                >Brayan Vidal</NuxtLink
+              >, creador de WeraWoof · {{ publishedLabel }} · {{ guia.readingMinutes }} min de
+              lectura
             </p>
           </div>
         </header>
