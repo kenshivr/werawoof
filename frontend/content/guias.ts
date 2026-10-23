@@ -494,7 +494,7 @@ export const guias: Guia[] = [
   {
     slug: 'tinder-para-perros-que-es-y-como-funciona',
     title: 'Tinder para perros: qué es y cómo funciona una app para conocer otros perros',
-    metaTitle: 'Tinder para perros: qué es y cómo funciona',
+    metaTitle: 'Tinder para perros: cómo funciona y app gratis en México',
     description:
       'Qué es un Tinder para perros, cómo funciona (perfil, swipe, match y chat), qué cuidar y cómo usar WeraWoof para conocer otros perros en México.',
     datePublished: '2026-10-04',

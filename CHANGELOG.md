@@ -22,6 +22,10 @@ Todos los cambios notables de WeraWoof se documentan aquí. El formato sigue
   de WeraWoof" con enlace a Quiénes somos, y el `Article` de datos estructurados apunta a la
   misma persona declarada en esa página (`#brayan`) en vez de a la organización. Google pide
   autores identificables en el contenido; el publisher sigue siendo WeraWoof.
+- El título de la guía "Tinder para perros" en los resultados de búsqueda ahora dice "cómo
+  funciona y app gratis en México". Search Console la muestra en la posición 11 con cero clics;
+  el título nuevo conserva la pregunta que la gente busca y agrega lo que nos diferencia de los
+  medios. El encabezado y la descripción de la página no cambian.
 
 ### Fixed
 
